@@ -39,7 +39,7 @@ export const logoutEndpoint: (pluginOptions: AuthjsPluginConfig) => Endpoint = p
         }),
       },
     );
-
+    // @ts-expect-error _strategy not officially on User type
     if (req.user._strategy === AUTHJS_STRATEGY_NAME) {
       // Generate expired cookies using authjs
       const { signOut } = NextAuth(

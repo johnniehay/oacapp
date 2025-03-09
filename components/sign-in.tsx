@@ -21,6 +21,7 @@ export default function SignIn({ className }: { className?: string }) {
     //   }}
     // >
     //   <Button className={className} type="submit">Sign in with Google</Button>
+    // @ts-expect-error Popover doesn't include className
     <Popover className={className} withArrow>
       <PopoverTarget>
         <Button>Sign in</Button>

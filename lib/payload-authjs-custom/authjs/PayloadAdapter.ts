@@ -269,7 +269,7 @@ export function PayloadAdapter({
         collection: userCollectionSlug,
         id: payloadUser.id,
         data: {
-          sessions: [...(payloadUser.sessions || []), session],
+          sessions: [...(payloadUser.sessions || []), {...session, expires:session.expires.toISOString()}],
         },
       })) as User;
 
@@ -341,8 +341,7 @@ export function PayloadAdapter({
         collection: userCollectionSlug,
         id: payloadUser.id,
         data: {
-          sessions: payloadUser.sessions?.map(s =>
-            s.sessionToken === session.sessionToken ? session : s,
+          sessions: payloadUser.sessions?.map(s => s.sessionToken === session.sessionToken ? {...session, expires:session.expires?.toISOString()} : s
           ),
         },
       })) as User;
@@ -431,9 +430,9 @@ export function PayloadAdapter({
           collection: userCollectionSlug,
           id: payloadUser.id,
           data: {
-            verificationTokens: [...(payloadUser.verificationTokens || []), token],
+            verificationTokens: [...(payloadUser.verificationTokens || []), {...token, expires:token.expires.toISOString()}],
           },
-        })) as User;
+        })) as unknown as User;
       }
 
       const createdToken = payloadUser.verificationTokens?.find(t => t.token === token.token);
@@ -530,7 +529,8 @@ const createUserAndBypassPasswordCheck = async (
   },
 ) => {
   // Generate a random password
-  data.password = crypto.randomBytes(32).toString("hex");
+  if ("password" in data)
+    data.password = crypto.randomBytes(32).toString("hex");
 
   // Create the user
   const user = await (
@@ -541,16 +541,19 @@ const createUserAndBypassPasswordCheck = async (
   });
 
   // Remove the salt and hash after the user was created
-  await (
-    await payload
-  ).update({
-    collection,
-    id: user.id,
-    data: {
-      salt: null,
-      hash: null,
-    },
-  });
+  if ("salt" in data && "hash" in data) {
+    await (
+      await payload
+    ).update({
+      collection,
+      id: user.id,
+      data: {
+        // @ts-expect-error in assertion above is not enough to convince ts that this won't be called
+        salt: null,
+        hash: null,
+      },
+    });
+  }
 
   return user;
 };

@@ -1,4 +1,4 @@
-import { APIError, type Collection, type PayloadRequest } from "payload";
+import { APIError, type Collection, CollectionSlug, type PayloadRequest } from "payload";
 
 /**
  * Get the collection from the request
@@ -12,7 +12,7 @@ export const getRequestCollection = (req: PayloadRequest): Collection => {
     throw new APIError(`No collection was specified`, 400);
   }
 
-  const collection = req.payload.collections[collectionSlug];
+  const collection = req.payload.collections[collectionSlug as CollectionSlug]; //TODO assert slug
 
   if (!collection) {
     throw new APIError(`Collection with the slug ${collectionSlug} was not found`, 404);

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { NonPublicPermissions, Permission, rolePermissions, Roles } from "@/lib/roles";
-import { User } from "@prisma/client";
+import { User } from "next-auth";
+
 import { cookies } from "next/headers";
 
 export async function getPermissions() {

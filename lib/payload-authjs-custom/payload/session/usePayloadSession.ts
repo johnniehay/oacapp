@@ -8,6 +8,7 @@ import { Context, type SessionContext } from "./PayloadSessionProvider";
  * Client side hook to retrieve the session from the context provider (PayloadSessionProvider)
  */
 export const usePayloadSession = <TSlug extends CollectionSlug = "users">() => {
+  // @ts-expect-error Context not asserted
   const result = use<SessionContext<TSlug>>(Context);
 
   if (!result) {

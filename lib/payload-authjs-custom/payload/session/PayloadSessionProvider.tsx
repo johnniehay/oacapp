@@ -23,7 +23,9 @@ export interface SessionContext<TSlug extends CollectionSlug> {
   refetch: () => Promise<PayloadSession<TSlug> | null>;
 }
 
-export const Context = createContext<SessionContext<never>>({
+type ExtendedCollectionSlug =  CollectionSlug
+
+export const Context = createContext<SessionContext<CollectionSlug>>({
   status: "loading",
   session: null,
   refresh: () => new Promise(resolve => resolve(null)),

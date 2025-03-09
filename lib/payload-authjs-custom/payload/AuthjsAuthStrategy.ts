@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import type { AuthStrategy, CollectionConfig, User as PayloadUser } from "payload";
+import type { AuthStrategy, CollectionConfig, CollectionSlug, User as PayloadUser } from "payload";
 import { withPayload } from "../authjs/withPayload";
 import type { AuthjsPluginConfig } from "./plugin";
 import { getAllVirtualFields } from "./utils/getAllVirtualFields";
@@ -25,7 +25,7 @@ export function AuthjsAuthStrategy(
       const { auth } = NextAuth(
         withPayload(pluginOptions.authjsConfig, {
           payload,
-          userCollectionSlug: collection.slug,
+          userCollectionSlug: collection.slug as CollectionSlug, //TODO assert slug
         }),
       );
       const session = await auth();
@@ -38,7 +38,7 @@ export function AuthjsAuthStrategy(
       // Find user in database
       const payloadUser = (
         await payload.find({
-          collection: collection.slug,
+          collection: collection.slug as CollectionSlug,
           where: session.user.id
             ? // Find user by id if it exists
             { id: { equals: session.user.id } }
