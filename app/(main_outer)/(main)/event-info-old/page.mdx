@@ -1,0 +1,75 @@
+import {
+    BackgroundImage,
+    Box,
+    Center,
+    Container, Group,
+    Image,
+    NavLink,
+    Paper,
+    Skeleton,
+    Stack,
+    TableOfContents,
+    Text,
+    Title,
+
+} from "@mantine/core";
+import TOC from "./toc";
+import Link from "next/link";
+import {IconArrowRight, IconMapPin} from '@tabler/icons-react'
+import {HotelCards} from "./hotel";
+import {SimpleGrid} from "@mantine/core";
+
+<BackgroundImage src={"https://oac.firstsa.org/wp-content/uploads/2024/10/CT_background.jpg"} radius="md" mih="50vh" display="flex" > {/* bga="fixed" pos="sticky" className="-top-[4rem] md:-top-[11rem] xs:max-md:-top-[6rem]"> */}
+
+<Center p="md" m={"auto"}> {/*pos="sticky" top="2rem"*/}
+
+<Stack c="white" align="center" justify="center" className="grow text-center">
+# FIRST® LEGO® League Open Africa Championship
+## 7-9 May 2025
+
+</Stack>
+
+</Center>
+</BackgroundImage>
+
+<Paper shadow="lg" radius="md" p="sm">
+<Stack size="lg" p="lg" gap="3rem" radius="md" className="bg-contain bg-right bg-no-repeat rounded-md" style={{"backgroundImage":"linear-gradient(250deg, rgba(130, 201, 30, 0) 0%, var(--mantine-color-body) 57%),url(https://oac.firstsa.org/wp-content/uploads/2024/10/Competition.jpg)"}}>
+# Event
+## The Open Africa Championship
+    <Text className="sm:w-1/2">The Open Africa Championship is a premier event in South Africa uniting the worlds brightest young minds in the fields of STEM, particularly focusing on robotics and coding. The Championship is envisioned not just as a competition but as a platform that highlights the technological potential of African youth, contributing significantly to the continent’s visibility in the global Robotics and Coding landscape. The OAC is based on FIRST advancement policy and therefore by invitation only.</Text>
+</Stack>
+</Paper>
+<Paper shadow="lg" radius="md" p="sm">
+    <Group grow>
+        <Image radius="md" src={"https://oac.firstsa.org/wp-content/uploads/2024/10/Center.jpg"} ></Image>
+        <Stack size="lg" p="sm" gap="3rem" radius="md" miw="5rem">
+# Venue
+## Cape Town International Convention Center
+The CTICC is the leading international convention center on the African continent.
+
+<NavLink component={Link}
+         href="https://maps.app.goo.gl/UBWserEN2t1hde4z9"
+         leftSection={<IconMapPin/>}
+         rightSection={<IconArrowRight/>}
+         label="Cape Town International Convention Center"
+         description={<>
+    Convention Square,<br />
+    1 Lower Long Street,<br />
+    Cape Town, 8001,<br />
+    South Africa
+         </>} />
+        </Stack>
+    </Group>
+</Paper>
+<Paper shadow="lg" radius="md" p="sm">
+    <Title>Hotels</Title>
+    <SimpleGrid cols={3}>
+        <HotelCards />
+    </SimpleGrid>
+</Paper>
+Test **bold**
+<Box h="200vh" />
+Test **after**
+
+
+<TOC />
