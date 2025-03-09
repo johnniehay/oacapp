@@ -24,16 +24,16 @@ export type SignInWithAuthjsButtonProps = {
  * A button that redirects the user to the Auth.js sign in page
  */
 export function SignInWithAuthjsButton({
-  authjsBasePath,
-  icon,
-  text,
-} :SignInWithAuthjsButtonProps)  {
-    icon = icon ?? (<img src="https://authjs.dev/img/logo-sm.png" alt="Auth.js Logo" />)
-    text = text ?? (
-        <>
-            Sign in with <strong>Auth.js</strong>
-        </>
-    )
+                                         authjsBasePath,
+                                         icon,
+                                         text,
+                                       }: SignInWithAuthjsButtonProps) {
+  icon = icon ?? (<img src="https://authjs.dev/img/logo-sm.png" alt="Auth.js Logo"/>)
+  text = text ?? (
+    <>
+      Sign in with <strong>Auth.js</strong>
+    </>
+  )
   return (
     <form
       style={{ display: "flex", justifyContent: "center" }}

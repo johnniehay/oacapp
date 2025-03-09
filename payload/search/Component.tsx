@@ -1,8 +1,8 @@
 'use client'
-import { Input } from'@/payload/components/ui/input'
-import { Label } from'@/payload/components/ui/label'
+import { Input } from '@/payload/components/ui/input'
+import { Label } from '@/payload/components/ui/label'
 import React, { useState, useEffect } from 'react'
-import { useDebounce } from'@/payload/utilities/useDebounce'
+import { useDebounce } from '@/payload/utilities/useDebounce'
 import { useRouter } from 'next/navigation'
 
 export const Search: React.FC = () => {

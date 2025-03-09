@@ -58,20 +58,20 @@ export const generateUsersCollection = (
           // Add sessions tab only if session strategy is database
           ...(isSessionStrategyDatabase(pluginOptions.authjsConfig)
             ? [
-                {
-                  label: "Sessions",
-                  fields: [sessionsField],
-                },
-              ]
+              {
+                label: "Sessions",
+                fields: [sessionsField],
+              },
+            ]
             : []),
           // Add verification tokens tab only if email provider is available
           ...(isEmailProviderAvailable(pluginOptions.authjsConfig)
             ? [
-                {
-                  label: "Verification Tokens",
-                  fields: [verificationTokensField],
-                },
-              ]
+              {
+                label: "Verification Tokens",
+                fields: [verificationTokensField],
+              },
+            ]
             : []),
         ],
       },

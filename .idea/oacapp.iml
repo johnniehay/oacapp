@@ -12,6 +12,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/part-db" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/payload-authjs" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/payload-authjs/packages/payload-authjs" />
+      <excludePattern pattern="importMap.js" />
     </content>
     <content url="file://$MODULE_DIR$/vendor/payload-authjs/packages/payload-authjs" />
     <content url="file://$MODULE_DIR$/vendor/payload-authjs/packages/payload-authjs/dist" />

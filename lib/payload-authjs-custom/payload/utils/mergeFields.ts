@@ -11,10 +11,10 @@ import { fieldAffectsData, tabHasName } from "payload/shared";
  * @param patchFields - The fields that should merge with the base fields (but base fields have priority)
  */
 export const mergeFields = ({
-  path,
-  baseFields,
-  patchFields,
-}: {
+                              path,
+                              baseFields,
+                              patchFields,
+                            }: {
   path: string;
   baseFields: Field[];
   patchFields: Field[];
@@ -82,10 +82,10 @@ export const mergeFields = ({
             tabType === "named"
               ? (tab as NamedTab).name
               : // If tab has custom originalTabLabel, search by that
-                tab.custom?.originalTabLabel
+              tab.custom?.originalTabLabel
                 ? tab.custom.originalTabLabel
                 : // Otherwise, search by label (if it's a string)
-                  typeof tab.label === "string"
+                typeof tab.label === "string"
                   ? tab.label
                   : "",
           );

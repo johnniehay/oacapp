@@ -3,8 +3,8 @@ import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-f
 
 import { useFormContext } from 'react-hook-form'
 
-import { Checkbox as CheckboxUi } from'@/payload/components/ui/checkbox'
-import { Label } from'@/payload/components/ui/label'
+import { Checkbox as CheckboxUi } from '@/payload/components/ui/checkbox'
+import { Label } from '@/payload/components/ui/label'
 import React from 'react'
 
 import { Error } from '../Error'
@@ -12,9 +12,9 @@ import { Width } from '../Width'
 
 export const Checkbox: React.FC<
   CheckboxField & {
-    errors: Partial<FieldErrorsImpl>
-    register: UseFormRegister<FieldValues>
-  }
+  errors: Partial<FieldErrorsImpl>
+  register: UseFormRegister<FieldValues>
+}
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   const props = register(name, { required: required })
   const { setValue } = useFormContext()
@@ -39,7 +39,7 @@ export const Checkbox: React.FC<
           {label}
         </Label>
       </div>
-      {errors[name] && <Error />}
+      {errors[name] && <Error/>}
     </Width>
   )
 }

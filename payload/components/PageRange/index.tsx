@@ -39,10 +39,10 @@ export const PageRange: React.FC<{
   if (totalDocs && indexEnd > totalDocs) indexEnd = totalDocs
 
   const { plural, singular } =
-    collectionLabelsFromProps ||
-    (collection ? defaultCollectionLabels[collection] : undefined) ||
-    defaultLabels ||
-    {}
+  collectionLabelsFromProps ||
+  (collection ? defaultCollectionLabels[collection] : undefined) ||
+  defaultLabels ||
+  {}
 
   return (
     <div className={[className, 'font-semibold'].filter(Boolean).join(' ')}>

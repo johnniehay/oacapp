@@ -2,10 +2,10 @@ import { RequiredDataFromCollectionSlug } from 'payload'
 import type { UpdateArgs } from './update-1'
 
 export const update3: (args: UpdateArgs) => RequiredDataFromCollectionSlug<'updates'> = ({
-  heroImage,
-  blockImage,
-  author,
-}) => {
+                                                                                           heroImage,
+                                                                                           blockImage,
+                                                                                           author,
+                                                                                         }) => {
   return {
     slug: 'dollar-and-sense-the-financial-forecast',
     _status: 'published',

@@ -1,5 +1,5 @@
-import { Button, type ButtonProps } from'@/payload/components/ui/button'
-import { cn } from'@/payload/utilities/ui'
+import { Button, type ButtonProps } from '@/payload/components/ui/button'
+import { cn } from '@/payload/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
@@ -36,8 +36,8 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
       ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : '/event-info'}/${
-          reference.value.slug
-        }`
+        reference.value.slug
+      }`
       : url
 
   if (!href) return null

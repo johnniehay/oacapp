@@ -1,9 +1,9 @@
 'use client'
 
-import { cn } from'@/payload/utilities/ui'
+import { cn } from '@/payload/utilities/ui'
 import * as SelectPrimitive from '@radix-ui/react-select'
 // import { Check, ChevronDown, ChevronUp } from 'lucide-react'
-import { IconCheck as Check, IconChevronDown as ChevronDown, IconChevronUp as ChevronUp} from '@tabler/icons-react'
+import { IconCheck as Check, IconChevronDown as ChevronDown, IconChevronUp as ChevronUp } from '@tabler/icons-react'
 import * as React from 'react'
 
 const Select = SelectPrimitive.Root
@@ -25,7 +25,7 @@ const SelectTrigger: React.FC<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 opacity-50" />
+      <ChevronDown className="h-4 w-4 opacity-50"/>
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 )
@@ -38,21 +38,21 @@ const SelectScrollUpButton: React.FC<
     ref={ref}
     {...props}
   >
-    <ChevronUp className="h-4 w-4" />
+    <ChevronUp className="h-4 w-4"/>
   </SelectPrimitive.ScrollUpButton>
 )
 
 const SelectScrollDownButton: React.FC<
   { ref?: React.Ref<HTMLDivElement> } & React.ComponentProps<
-    typeof SelectPrimitive.ScrollDownButton
-  >
+  typeof SelectPrimitive.ScrollDownButton
+>
 > = ({ className, ref, ...props }) => (
   <SelectPrimitive.ScrollDownButton
     className={cn('flex cursor-default items-center justify-center py-1', className)}
     ref={ref}
     {...props}
   >
-    <ChevronDown className="h-4 w-4" />
+    <ChevronDown className="h-4 w-4"/>
   </SelectPrimitive.ScrollDownButton>
 )
 
@@ -66,24 +66,24 @@ const SelectContent: React.FC<
       className={cn(
         'relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded border bg-card text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
         position === 'popper' &&
-          'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
+        'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
         className,
       )}
       position={position}
       ref={ref}
       {...props}
     >
-      <SelectScrollUpButton />
+      <SelectScrollUpButton/>
       <SelectPrimitive.Viewport
         className={cn(
           'p-1',
           position === 'popper' &&
-            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
+          'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
         )}
       >
         {children}
       </SelectPrimitive.Viewport>
-      <SelectScrollDownButton />
+      <SelectScrollDownButton/>
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
 )
@@ -100,8 +100,8 @@ const SelectLabel: React.FC<
 
 const SelectItem: React.FC<
   { ref?: React.Ref<HTMLDivElement>; value: string } & React.ComponentProps<
-    typeof SelectPrimitive.Item
-  >
+  typeof SelectPrimitive.Item
+>
 > = ({ children, className, ref, ...props }) => (
   <SelectPrimitive.Item
     className={cn(
@@ -113,7 +113,7 @@ const SelectItem: React.FC<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" />
+        <Check className="h-4 w-4"/>
       </SelectPrimitive.ItemIndicator>
     </span>
 

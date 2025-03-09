@@ -6,8 +6,8 @@ type ContactArgs = {
 }
 
 export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pages'> = ({
-  contactForm,
-}) => {
+                                                                                          contactForm,
+                                                                                        }) => {
   return {
     slug: 'contact',
     _status: 'published',

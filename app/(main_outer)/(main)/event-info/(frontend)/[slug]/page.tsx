@@ -60,21 +60,21 @@ export default async function Page({ params: paramsPromise }: Args) {
   }
 
   if (!page) {
-    return <PayloadRedirects url={url} />
+    return <PayloadRedirects url={url}/>
   }
 
   const { hero, layout } = page
 
   return (
     <article className="pt-4 pb-6">
-      <PageClient />
+      <PageClient/>
       {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+      <PayloadRedirects disableNotFound url={url}/>
 
-      {draft && <LivePreviewListener />}
+      {draft && <LivePreviewListener/>}
 
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
+      <RenderBlocks blocks={layout}/>
     </article>
   )
 }

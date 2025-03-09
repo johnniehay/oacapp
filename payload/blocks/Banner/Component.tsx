@@ -1,8 +1,8 @@
 import type { BannerBlock as BannerBlockProps } from 'src/payload-types'
 
-import { cn } from'@/payload/utilities/ui'
+import { cn } from '@/payload/utilities/ui'
 import React from 'react'
-import RichText from'@/payload/components/RichText'
+import RichText from '@/payload/components/RichText'
 
 type Props = {
   className?: string
@@ -19,7 +19,7 @@ export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
           'border-warning bg-warning/30': style === 'warning',
         })}
       >
-        <RichText data={content} enableGutter={false} enableProse={false} />
+        <RichText data={content} enableGutter={false} enableProse={false}/>
       </div>
     </div>
   )

@@ -114,6 +114,7 @@ export function withPayload(
       }
       return true;
     }
+
     authjsConfig.callbacks = {
       ...callbacks,
       // Prevent injecting the same wrapper multiple times

@@ -7,8 +7,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from'@/payload/components/ui/pagination'
-import { cn } from'@/payload/utilities/ui'
+} from '@/payload/components/ui/pagination'
+import { cn } from '@/payload/utilities/ui'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -41,7 +41,7 @@ export const Pagination: React.FC<{
 
           {hasExtraPrevPages && (
             <PaginationItem>
-              <PaginationEllipsis />
+              <PaginationEllipsis/>
             </PaginationItem>
           )}
 
@@ -82,7 +82,7 @@ export const Pagination: React.FC<{
 
           {hasExtraNextPages && (
             <PaginationItem>
-              <PaginationEllipsis />
+              <PaginationEllipsis/>
             </PaginationItem>
           )}
 

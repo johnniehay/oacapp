@@ -41,13 +41,13 @@ export function AuthjsAuthStrategy(
           collection: collection.slug,
           where: session.user.id
             ? // Find user by id if it exists
-              { id: { equals: session.user.id } }
+            { id: { equals: session.user.id } }
             : // Otherwise find user by email
-              {
-                email: {
-                  equals: session.user.email,
-                },
+            {
+              email: {
+                equals: session.user.email,
               },
+            },
         })
       ).docs.at(0);
 

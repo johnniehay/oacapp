@@ -1,5 +1,5 @@
 import type { MDXComponents } from 'mdx/types'
-import {Title} from "@mantine/core";
+import { Title } from "@mantine/core";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

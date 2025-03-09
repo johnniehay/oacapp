@@ -3,14 +3,14 @@ import type { Update, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import RichText from'@/payload/components/RichText'
+import RichText from '@/payload/components/RichText'
 
-import { CollectionArchive } from'@/payload/components/CollectionArchive'
+import { CollectionArchive } from '@/payload/components/CollectionArchive'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
-    id?: string
-  }
+  id?: string
+}
 > = async (props) => {
   const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
 
@@ -32,12 +32,12 @@ export const ArchiveBlock: React.FC<
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
         ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
-              },
+          where: {
+            categories: {
+              in: flattenedCategories,
             },
-          }
+          },
+        }
         : {}),
     })
 
@@ -56,10 +56,10 @@ export const ArchiveBlock: React.FC<
     <div className="my-16" id={`block-${id}`}>
       {introContent && (
         <div className="container mb-16">
-          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
+          <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false}/>
         </div>
       )}
-      <CollectionArchive updates={updates} />
+      <CollectionArchive updates={updates}/>
     </div>
   )
 }

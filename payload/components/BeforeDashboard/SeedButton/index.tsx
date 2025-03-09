@@ -60,7 +60,7 @@ export const SeedButton: React.FC = () => {
           }),
           {
             loading: 'Seeding with data....',
-            success: <SuccessMessage />,
+            success: <SuccessMessage/>,
             error: 'An error occurred while seeding.',
           },
         )

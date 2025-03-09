@@ -33,11 +33,11 @@ const getUpdatesSitemap = unstable_cache(
 
     const sitemap = results.docs
       ? results.docs
-          .filter((update) => Boolean(update?.slug))
-          .map((update) => ({
-            loc: `${SITE_URL}/updates/${update?.slug}`,
-            lastmod: update.updatedAt || dateFallback,
-          }))
+        .filter((update) => Boolean(update?.slug))
+        .map((update) => ({
+          loc: `${SITE_URL}/updates/${update?.slug}`,
+          lastmod: update.updatedAt || dateFallback,
+        }))
       : []
 
     return sitemap

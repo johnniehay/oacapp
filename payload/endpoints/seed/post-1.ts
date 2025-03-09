@@ -8,10 +8,10 @@ export type UpdateArgs = {
 }
 
 export const update1: (args: UpdateArgs) => RequiredDataFromCollectionSlug<'updates'> = ({
-  heroImage,
-  blockImage,
-  author,
-}) => {
+                                                                                           heroImage,
+                                                                                           blockImage,
+                                                                                           author,
+                                                                                         }) => {
   return {
     slug: 'digital-horizons',
     _status: 'published',

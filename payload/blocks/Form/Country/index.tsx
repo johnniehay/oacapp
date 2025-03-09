@@ -1,14 +1,14 @@
 import type { CountryField } from '@payloadcms/plugin-form-builder/types'
 import type { Control, FieldErrorsImpl } from 'react-hook-form'
 
-import { Label } from'@/payload/components/ui/label'
+import { Label } from '@/payload/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from'@/payload/components/ui/select'
+} from '@/payload/components/ui/select'
 import React from 'react'
 import { Controller } from 'react-hook-form'
 
@@ -18,9 +18,9 @@ import { countryOptions } from './options'
 
 export const Country: React.FC<
   CountryField & {
-    control: Control
-    errors: Partial<FieldErrorsImpl>
-  }
+  control: Control
+  errors: Partial<FieldErrorsImpl>
+}
 > = ({ name, control, errors, label, required, width }) => {
   return (
     <Width width={width}>
@@ -43,7 +43,7 @@ export const Country: React.FC<
           return (
             <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
               <SelectTrigger className="w-full" id={name}>
-                <SelectValue placeholder={label} />
+                <SelectValue placeholder={label}/>
               </SelectTrigger>
               <SelectContent>
                 {countryOptions.map(({ label, value }) => {
@@ -59,7 +59,7 @@ export const Country: React.FC<
         }}
         rules={{ required }}
       />
-      {errors[name] && <Error />}
+      {errors[name] && <Error/>}
     </Width>
   )
 }

@@ -5,10 +5,10 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 import type { Update } from '../../../payload-types'
 
 export const revalidateUpdate: CollectionAfterChangeHook<Update> = ({
-  doc,
-  previousDoc,
-  req: { payload, context },
-}) => {
+                                                                      doc,
+                                                                      previousDoc,
+                                                                      req: { payload, context },
+                                                                    }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
       const path = `/updates/${doc.slug}`

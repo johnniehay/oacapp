@@ -26,7 +26,7 @@ export function CopyButton({ code }: { code: string }) {
         }}
       >
         <p>{text}</p>
-        <CopyIcon />
+        <CopyIcon/>
       </Button>
     </div>
   )

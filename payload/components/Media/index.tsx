@@ -15,8 +15,8 @@ export const Media: React.FC<Props> = (props) => {
     <Tag
       {...(htmlElement !== null
         ? {
-            className,
-          }
+          className,
+        }
         : {})}
     >
       {isVideo ? <VideoMedia {...props} /> : <ImageMedia {...props} />}

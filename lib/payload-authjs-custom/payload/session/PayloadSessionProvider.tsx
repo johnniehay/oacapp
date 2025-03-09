@@ -55,10 +55,10 @@ interface Props<TSlug extends CollectionSlug> {
 export const PayloadSessionProvider: React.FC<Props<CollectionSlug>> = <
   TSlug extends CollectionSlug = "users",
 >({
-  userCollectionSlug = "users" as TSlug,
-  session = null,
-  children,
-}: Props<TSlug>) => {
+    userCollectionSlug = "users" as TSlug,
+    session = null,
+    children,
+  }: Props<TSlug>) => {
   const [isLoading, setIsLoading] = useState(!session);
   const [localSession, setLocalSession] = useState<PayloadSession<TSlug> | null>(session);
 

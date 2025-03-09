@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import {
-    ColorSchemeScript,
-    // createTheme,
-    // DEFAULT_THEME,
-    MantineProvider,
-    // mergeMantineTheme,
+  ColorSchemeScript,
+  // createTheme,
+  // DEFAULT_THEME,
+  MantineProvider,
+  // mergeMantineTheme,
 } from "@mantine/core";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
@@ -38,21 +38,21 @@ export const metadata: Metadata = {
 // );
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-        <Head>
-            <ColorSchemeScript />
-        </Head>
-      <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        className={"antialiased"}
-      >
-          <MantineProvider theme={theme}>{children}</MantineProvider>
-      </body>
+    <Head>
+      <ColorSchemeScript/>
+    </Head>
+    <body
+      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={"antialiased"}
+    >
+    <MantineProvider theme={theme}>{children}</MantineProvider>
+    </body>
     </html>
   );
 }

@@ -23,14 +23,17 @@ export type SignInWithAuthjsButtonProps = {
  * A button that redirects the user to the Auth.js sign in page
  */
 export const SignInWithAuthjsButton: React.FC<SignInWithAuthjsButtonProps> = ({
-  authjsBasePath,
-  icon = <img src="https://authjs.dev/img/logo-sm.png" alt="Auth.js Logo" />,
-  text = (
-    <>
-      Sign in with <strong>Auth.js</strong>
-    </>
-  ),
-}) => {
+                                                                                authjsBasePath,
+                                                                                icon = <img
+                                                                                  src="https://authjs.dev/img/logo-sm.png"
+                                                                                  alt="Auth.js Logo"/>,
+                                                                                text = (
+                                                                                  <>
+                                                                                    Sign in
+                                                                                    with <strong>Auth.js</strong>
+                                                                                  </>
+                                                                                ),
+                                                                              }) => {
   return (
     <form
       style={{ display: "flex", justifyContent: "center" }}

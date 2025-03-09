@@ -22,9 +22,9 @@ interface Options<TSlug extends CollectionSlug> {
  * @deprecated Use `getPayloadSession` instead
  */
 export const getPayloadUser = async <TSlug extends CollectionSlug = "users">({
-  serverUrl = process.env.NEXT_PUBLIC_SERVER_URL,
-  userCollectionSlug = "users" as TSlug,
-}: Options<TSlug> = {}): Promise<DataFromCollectionSlug<TSlug> | undefined> => {
+                                                                               serverUrl = process.env.NEXT_PUBLIC_SERVER_URL,
+                                                                               userCollectionSlug = "users" as TSlug,
+                                                                             }: Options<TSlug> = {}): Promise<DataFromCollectionSlug<TSlug> | undefined> => {
   const requestCookies = await cookies();
 
   if (serverUrl === undefined) {

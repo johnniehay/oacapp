@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 export default function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false)
@@ -8,7 +8,7 @@ export default function InstallPrompt() {
 
   useEffect(() => {
     setIsIOS(
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as unknown as {MSStream : never}).MSStream
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as unknown as { MSStream: never }).MSStream
     )
 
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)

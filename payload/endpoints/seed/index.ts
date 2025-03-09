@@ -26,9 +26,9 @@ const globals: GlobalSlug[] = ['header', 'footer']
 // The app is not running to revalidate the pages and so the API routes are not available
 // These error messages can be ignored: `Error hitting revalidate route for...`
 export const seed = async ({
-  payload,
-  req,
-}: {
+                             payload,
+                             req,
+                           }: {
   payload: Payload
   req: PayloadRequest
 }): Promise<void> => {

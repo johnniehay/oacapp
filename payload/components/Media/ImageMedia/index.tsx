@@ -2,14 +2,14 @@
 
 import type { StaticImageData } from 'next/image'
 
-import { cn } from'@/payload/utilities/ui'
+import { cn } from '@/payload/utilities/ui'
 import NextImage from 'next/image'
 import React from 'react'
 
 import type { Props as MediaProps } from '../types'
 
-import { cssVariables } from'@/payload/cssVariables'
-import { getClientSideURL } from'@/payload/utilities/getURL'
+import { cssVariables } from '@/payload/cssVariables'
+import { getClientSideURL } from '@/payload/utilities/getURL'
 
 const { breakpoints } = cssVariables
 
@@ -52,8 +52,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
-        .join(', ')
+      .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
+      .join(', ')
 
   return (
     <picture>

@@ -23,7 +23,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   NotificationSubscriptions NotificationSubscription[]
-
 }
 
 model Account {

@@ -1,9 +1,9 @@
 'use client'
 
-import {useState, useEffect, ChangeEvent, useContext} from 'react'
+import { useState, useEffect, ChangeEvent, useContext } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './push-subscribe-actions'
-import {Button, Fieldset, Group, MultiSelect, Switch, TextInput} from "@mantine/core";
-import {subscribeContext} from "@/components/client-shell";
+import { Button, Fieldset, Group, MultiSelect, Switch, TextInput } from "@mantine/core";
+import { subscribeContext } from "@/components/client-shell";
 
 
 function urlBase64ToUint8Array(base64String: string) {
@@ -24,7 +24,7 @@ export default function PushNotificationManager() {
   // const [subscription, setSubscription] = useState<PushSubscription | null>(
   //   null
   // )
-  const {subscription,setSubscription} = useContext(subscribeContext)
+  const { subscription, setSubscription } = useContext(subscribeContext)
   const [message, setMessage] = useState('')
   const [topic, setTopic] = useState('')
 
@@ -55,24 +55,24 @@ export default function PushNotificationManager() {
     })
     setSubscription(sub)
     const serializedSub = JSON.parse(JSON.stringify(sub))
-    await subscribeUser({sub:serializedSub, topic})
+    await subscribeUser({ sub: serializedSub, topic })
   }
 
   async function unsubscribeFromPush() {
     setSubscription(null)
     const serializedSub = JSON.parse(JSON.stringify(subscription))
-    await unsubscribeUser({sub:serializedSub})
+    await unsubscribeUser({ sub: serializedSub })
     await subscription?.unsubscribe()
   }
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification({message})
+      await sendNotification({ message })
       setMessage('')
     }
   }
 
-  async function handleOnChangeSubscribed(event:ChangeEvent<HTMLInputElement>) {
+  async function handleOnChangeSubscribed(event: ChangeEvent<HTMLInputElement>) {
     if (event.currentTarget.checked) {
       await subscribeToPush()
     } else {
@@ -88,41 +88,41 @@ export default function PushNotificationManager() {
     <div>
       <Fieldset legend="Push Notifications">
         <Switch
-            defaultChecked={!!subscription}
-            labelPosition="left"
-            label="Subscribe to Push Notifications"
-            onLabel="Subcribed"
-            offLabel="Unsubcribed"
-            onChange={(event) => handleOnChangeSubscribed(event)}
-            description={subscription ? "You are subscribed to push notifications." : "You are not subscribed to push notifications." }
+          defaultChecked={!!subscription}
+          labelPosition="left"
+          label="Subscribe to Push Notifications"
+          onLabel="Subcribed"
+          offLabel="Unsubcribed"
+          onChange={(event) => handleOnChangeSubscribed(event)}
+          description={subscription ? "You are subscribed to push notifications." : "You are not subscribed to push notifications."}
         />
-      {subscription ? (
-        <>
+        {subscription ? (
+          <>
 
-          {/*<p>You are subscribed to push notifications.</p>*/}
-          {/*<button onClick={unsubscribeFromPush}>Unsubscribe</button>*/}
-          <Group>
-            <TextInput
-              placeholder="Enter notification message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+            {/*<p>You are subscribed to push notifications.</p>*/}
+            {/*<button onClick={unsubscribeFromPush}>Unsubscribe</button>*/}
+            <Group>
+              <TextInput
+                placeholder="Enter notification message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <Button onClick={sendTestNotification}>Send Test</Button>
+            </Group>
+          </>
+        ) : (
+          <>
+            {/*<p>You are not subscribed to push notifications.</p>*/}
+            {/*<button onClick={subscribeToPush}>Subscribe</button>*/}
+            <MultiSelect
+              placeholder="Enter push topic"
+              data={['team', '1111', '1001', 'volunteer', 'all']}
+              value={topic.split(':')}
+              onChange={(e) => setTopic(e.join(":"))}
             />
-            <Button onClick={sendTestNotification}>Send Test</Button>
-          </Group>
-        </>
-      ) : (
-        <>
-          {/*<p>You are not subscribed to push notifications.</p>*/}
-          {/*<button onClick={subscribeToPush}>Subscribe</button>*/}
-          <MultiSelect
-            placeholder="Enter push topic"
-            data={['team', '1111', '1001', 'volunteer','all']}
-            value={topic.split(':')}
-            onChange={(e) => setTopic(e.join(":"))}
-          />
 
-        </>
-      )}
+          </>
+        )}
       </Fieldset>
     </div>
   )

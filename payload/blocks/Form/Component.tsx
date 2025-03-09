@@ -4,12 +4,12 @@ import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-b
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import RichText from'@/payload/components/RichText'
-import { Button } from'@/payload/components/ui/button'
+import RichText from '@/payload/components/RichText'
+import { Button } from '@/payload/components/ui/button'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 import { fields } from './fields'
-import { getClientSideURL } from'@/payload/utilities/getURL'
+import { getClientSideURL } from '@/payload/utilities/getURL'
 
 export type FormBlockType = {
   blockName?: string
@@ -116,12 +116,12 @@ export const FormBlock: React.FC<
   return (
     <div className="container lg:max-w-[48rem]">
       {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
+        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false}/>
       )}
       <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
+            <RichText data={confirmationMessage}/>
           )}
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}

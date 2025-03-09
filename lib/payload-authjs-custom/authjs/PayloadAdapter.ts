@@ -35,16 +35,17 @@ export interface PayloadAdapterOptions {
    */
   userCollectionSlug?: CollectionSlug;
 }
+
 /**
  * Auth.js Database Adapter for Payload CMS
  *
  * @see https://authjs.dev/guides/creating-a-database-adapter
  */
 export function PayloadAdapter({
-  payload,
-  payloadConfig,
-  userCollectionSlug = "users",
-}: PayloadAdapterOptions): Adapter {
+                                 payload,
+                                 payloadConfig,
+                                 userCollectionSlug = "users",
+                               }: PayloadAdapterOptions): Adapter {
   // Get the Payload instance
   if (!payload && payloadConfig) {
     payload = getPayload({ config: payloadConfig });
@@ -67,7 +68,7 @@ export function PayloadAdapter({
       let payloadUser: User;
       if (
         (await payload).collections[userCollectionSlug]?.config.custom.enableLocalStrategy ===
-          true &&
+        true &&
         !(user as User).password
       ) {
         // If the local strategy is enabled and the user does not have a password, bypass the password check
@@ -440,9 +441,9 @@ export function PayloadAdapter({
       return createdToken
         ? toAdapterVerificationToken(payloadUser.email, createdToken)
         : {
-            identifier: email,
-            ...token,
-          };
+          identifier: email,
+          ...token,
+        };
     },
     async useVerificationToken({ identifier: email, token }) {
       (await logger).debug({ email, token }, `Using verification token for email '${email}'`);

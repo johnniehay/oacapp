@@ -1,9 +1,9 @@
 "use client"
 
-import {useDisclosure} from "@mantine/hooks";
-import {createContext, useContext} from "react";
+import { useDisclosure } from "@mantine/hooks";
+import { createContext, useContext } from "react";
 
-type NavbarContextType = [boolean, {toggle: () => void}] ;
+type NavbarContextType = [boolean, { toggle: () => void }];
 
 const NavbarContext = createContext<NavbarContextType | null>(null);
 
@@ -20,15 +20,15 @@ export const useCurrentNavbarDisclosure = () => {
 };
 
 export default function StateProvider({
-                                                children,
-                                            }: Readonly<{
-    children: React.ReactNode;
+                                        children,
+                                      }: Readonly<{
+  children: React.ReactNode;
 }>) {
-    const [openedNavbar, { toggle: toggleNavbar }] = useDisclosure()
+  const [openedNavbar, { toggle: toggleNavbar }] = useDisclosure()
 
-    return (
-        <NavbarContext.Provider value={[openedNavbar, {toggle: toggleNavbar}]}>
-            {children}
-        </NavbarContext.Provider>
-    )
+  return (
+    <NavbarContext.Provider value={[openedNavbar, { toggle: toggleNavbar }]}>
+      {children}
+    </NavbarContext.Provider>
+  )
 }

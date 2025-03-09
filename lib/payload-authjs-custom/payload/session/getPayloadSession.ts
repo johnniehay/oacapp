@@ -30,8 +30,8 @@ export interface PayloadSession<TSlug extends CollectionSlug> {
  */
 export const getPayloadSession = cache(
   async <TSlug extends CollectionSlug = "users">({
-    userCollectionSlug = "users" as TSlug,
-  }: Options<TSlug> = {}): Promise<PayloadSession<TSlug> | null> => {
+                                                   userCollectionSlug = "users" as TSlug,
+                                                 }: Options<TSlug> = {}): Promise<PayloadSession<TSlug> | null> => {
     // Get the server URL
     const serverUrl = await getServerUrl();
 

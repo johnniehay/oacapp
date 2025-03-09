@@ -1,12 +1,12 @@
 'use client'
-import { cn } from'@/payload/utilities/ui'
-import useClickableCard from'@/payload/utilities/useClickableCard'
+import { cn } from '@/payload/utilities/ui'
+import useClickableCard from '@/payload/utilities/useClickableCard'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
 
 import type { Update } from '@/payload-types'
 
-import { Media } from'@/payload/components/Media'
+import { Media } from '@/payload/components/Media'
 
 export type CardUpdateData = Pick<Update, 'slug' | 'categories' | 'meta' | 'title'>
 
@@ -39,7 +39,7 @@ export const Card: React.FC<{
     >
       <div className="relative w-full ">
         {!metaImage && <div className="">No image</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw"/>}
       </div>
       <div className="p-4">
         {showCategories && hasCategories && (

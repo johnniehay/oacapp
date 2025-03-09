@@ -2,10 +2,10 @@ import { RequiredDataFromCollectionSlug } from 'payload'
 import type { UpdateArgs } from './update-1'
 
 export const update2: (args: UpdateArgs) => RequiredDataFromCollectionSlug<'updates'> = ({
-  heroImage,
-  blockImage,
-  author,
-}) => {
+                                                                                           heroImage,
+                                                                                           blockImage,
+                                                                                           author,
+                                                                                         }) => {
   return {
     slug: 'global-gaze',
     _status: 'published',
