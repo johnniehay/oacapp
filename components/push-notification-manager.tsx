@@ -26,7 +26,7 @@ export default function PushNotificationManager() {
   // )
   const { subscription, setSubscription } = useContext(subscribeContext)
   const [message, setMessage] = useState('')
-  const [topic, setTopic] = useState('')
+  const [topics, setTopics] = useState<string[]>([])
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -55,7 +55,7 @@ export default function PushNotificationManager() {
     })
     setSubscription(sub)
     const serializedSub = JSON.parse(JSON.stringify(sub))
-    await subscribeUser({ sub: serializedSub, topic })
+    await subscribeUser({ sub: serializedSub, topics })
   }
 
   async function unsubscribeFromPush() {
@@ -117,8 +117,8 @@ export default function PushNotificationManager() {
             <MultiSelect
               placeholder="Enter push topic"
               data={['team', '1111', '1001', 'volunteer', 'all']}
-              value={topic.split(':')}
-              onChange={(e) => setTopic(e.join(":"))}
+              value={topics}
+              onChange={(e) => setTopics(e)}
             />
 
           </>

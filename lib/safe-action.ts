@@ -3,7 +3,9 @@ import {
   DEFAULT_SERVER_ERROR_MESSAGE,
 } from "next-safe-action";
 import { z } from "zod";
-import { auth } from "@/auth";
+import { getLocalPayloadSession } from "@/lib/payload-authjs-custom/payload/session/getLocalPayloadSession";
+import { getPayload } from "payload";
+import config from '@payload-config'
 
 class ActionError extends Error {
 }
@@ -49,8 +51,9 @@ export const actionClient = createSafeActionClient({
 export const optionalAuthActionClient = actionClient
   // Define authorization session but don't check.
   .use(async ({ next }) => {
-    const session = await auth()
-    return next({ ctx: { session } });
+    const session = await getLocalPayloadSession()
+    const payload = await getPayload({config})
+    return next({ ctx: { session, payload } });
   })
 
 // Auth client defined by extending the base one.

@@ -7,12 +7,13 @@ import { Categories } from '@/payload/collections/Categories'
 import { Media } from '@/payload/collections/Media'
 import { Pages } from '@/payload/collections/Pages'
 import { Updates } from '@/payload/collections/Updates'
-// import { Users } from '@/payload/collections/Users'
+import { Users } from '@/payload/collections/Users'
 import { Footer } from '@/payload/Footer/config'
 import { Header } from '@/payload/Header/config'
 import { plugins } from '@/payload/plugins'
 import sharp from "sharp";
 import { defaultLexical } from "@/payload/fields/defaultLexical";
+import { NotificationSubscriptions } from "@/payload/collections/NotificationSubscriptions";
 // import {SignInWithAuthjsButton} from "@/components/SignInWithAuthjsButton";
 
 export default buildConfig({
@@ -27,14 +28,16 @@ export default buildConfig({
   ],
 
   // Define and configure your collections in this array
-  collections: [{
-    slug: "users",
-    fields: [{
-      name: "role",
-      type: "text",
-      label: "Role"
-    }]
-  }, Pages, Updates, Media, Categories],
+  collections: [
+    // {
+    //   slug: "users",
+    //   fields: [{
+    //     name: "role",
+    //     type: "text",
+    //     label: "Role"
+    //   }]
+    // }
+  Users, Pages, Updates, Media, Categories,NotificationSubscriptions],
 
   globals: [Header, Footer],
 

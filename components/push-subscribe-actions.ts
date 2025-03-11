@@ -3,8 +3,13 @@
 import { z } from "zod";
 import { authActionClient, optionalAuthActionClient } from "@/lib/safe-action";
 import webpush from 'web-push'
-import { prisma } from "@/prisma";
-import { NotificationSubscription } from "@prisma/client";
+import { NotificationSubscription, NotificationTopic } from "@/payload-types";
+// import { getPayloadSession } from "@/lib/payload-authjs-custom/payload/session/getLocalPayloadSession";
+import { auth } from "@/auth";
+import { PaginatedDocs } from "payload";
+import { equals } from "sift/lib/utils";
+// import { prisma } from "@/prisma";
+// import { NotificationSubscription } from "@prisma/client";
 
 // This schema is used to validate input from client.
 
@@ -26,13 +31,13 @@ const schemaPushSubscription = z.object({
 // const schemaPushSubscription = z.custom<webpush.PushSubscription>
 const schemaPushSubscriptionTopic = z.object({
   sub: schemaPushSubscription,
-  topic: z.string().max(100),
+  topics: z.array(z.string().max(100)),
 });
 
 export const subscribeUser = optionalAuthActionClient
   .metadata({ actionName: "subscribeUser" })
   .schema(schemaPushSubscriptionTopic)
-  .action(async ({ parsedInput: { sub, topic }, ctx: { session } }) => {
+  .action(async ({ parsedInput: { sub, topics }, ctx: { session, payload } }) => {
     // .action(async ({ parsedInput: {sub, topic}, ctx: {session}}) =>
     //     subscribeUser(sub,topic,session))
 // async function subscribeUser(sub: webpush.PushSubscription, topic: string, session) {
@@ -40,14 +45,14 @@ export const subscribeUser = optionalAuthActionClient
     console.log('Subscribe user: ', JSON.stringify(sub))
     // const session = await auth()
     console.log('Session: ', JSON.stringify(session))
-    await prisma.notificationSubscription.create({
+    await payload.create({
+      collection: 'notificationSubscription',
       data: {
         endpoint: sub.endpoint,
-        expirationTime: sub.expirationTime,
-        keys_p256dh: sub.keys.p256dh,
-        keys_auth: sub.keys.auth,
-        topic: topic,
-        userId: session?.user?.id
+        expirationTime: sub.expirationTime ? new Date(sub.expirationTime * 1000).toISOString() : null,
+        keys: sub.keys,
+        topics: topics as NotificationTopic,
+        user: session?.user
       },
     });
     // In a production environment, you would want to store the subscription in a database
@@ -57,20 +62,26 @@ export const subscribeUser = optionalAuthActionClient
 export const unsubscribeUser = optionalAuthActionClient
   .metadata({ actionName: "unsubscribeUser" })
   .schema(z.object({ sub: schemaPushSubscription }))
-  .action(async ({ parsedInput: { sub }, ctx: { session } }) => {
+  .action(async ({ parsedInput: { sub }, ctx: { session, payload } }) => {
 // export async function unsubscribeUser(sub: webpush.PushSubscription | null) {
     console.log('Unsubscribe user: ', JSON.stringify(sub))
     const userId = session?.user?.id
 
-    const dbsubscription = await prisma.notificationSubscription.findFirst({ where: { endpoint: sub.endpoint } })
-    if (dbsubscription?.userId) {
-      if (dbsubscription.userId !== userId) {
+    const dbsubscription: PaginatedDocs<NotificationSubscription> = await payload.find({
+      collection:'notificationSubscription',
+      limit: 1,
+      pagination: false,
+      where: { endpoint: {equals: sub.endpoint} } })
+    if (dbsubscription.totalDocs > 0 && dbsubscription.docs[0]?.user && typeof dbsubscription.docs[0].user !== "string" ) {
+      if (dbsubscription.docs[0].user.id !== userId) {
         // allow deletion of subscription with userid only by that user
         return { success: false }
       }
     }
 
-    await prisma.notificationSubscription.delete({ where: { endpoint: sub.endpoint } })
+    await payload.delete({
+      collection:'notificationSubscription',
+      where: { endpoint: {equals:sub.endpoint }} })
     // subscription = null
 
     // In a production environment, you would want to remove the subscription from the database
@@ -81,21 +92,22 @@ export const unsubscribeUser = optionalAuthActionClient
 export const sendNotification = authActionClient
   .metadata({ actionName: "sendNotification: " })
   .schema(z.object({ message: z.string() }))
-  .action(async ({ parsedInput: { message } }) => {
+  .action(async ({ parsedInput: { message }, ctx:{payload} }) => {
 // export async function sendNotification(message: string) {
     // if (!subscription) {
     //     throw new Error('No subscription available')
     // }
-    const notifySubscriptions: NotificationSubscription[] = await prisma.notificationSubscription.findMany({ where: { topic: { contains: "" } } })
+    const notifySubscriptions = (await payload.find({
+      collection:'notificationSubscription',
+      pagination: false,
+      // where: { topics: { contains: "" } }
+    })).docs
     console.log("notifySubscriptions", notifySubscriptions)
     const failedSubcriptions: webpush.PushSubscription[] = []
     for (const dbsubscription of notifySubscriptions) {
       const subscription: webpush.PushSubscription = {
         endpoint: dbsubscription.endpoint,
-        keys: {
-          p256dh: dbsubscription.keys_p256dh,
-          auth: dbsubscription.keys_auth
-        }
+        keys: dbsubscription.keys
       }
 
       try {
@@ -111,7 +123,9 @@ export const sendNotification = authActionClient
       } catch (error) {
         failedSubcriptions.push(subscription)
         console.error('Error sending push notification:', error, subscription)
-        await prisma.notificationSubscription.delete({ where: { endpoint: subscription.endpoint } })
+        await payload.delete({
+          collection:'notificationSubscription',
+          where: { endpoint: { equals: subscription.endpoint } } })
       }
     }
     if (failedSubcriptions.length > 0) {

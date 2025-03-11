@@ -1,10 +1,11 @@
 "use client";
 
-import type { CollectionSlug, DataFromCollectionSlug } from "payload";
+import type { DataFromCollectionSlug } from "payload";
 import { createContext, type ReactNode, useCallback, useEffect, useState } from "react";
 import type { PayloadSession } from "./getPayloadSession";
+import { AuthCollectionSlug } from "@/lib/payload-authjs-custom";
 
-export interface SessionContext<TSlug extends CollectionSlug> {
+export interface SessionContext<TSlug extends AuthCollectionSlug> {
   /**
    * The status of the session
    */
@@ -23,16 +24,14 @@ export interface SessionContext<TSlug extends CollectionSlug> {
   refetch: () => Promise<PayloadSession<TSlug> | null>;
 }
 
-type ExtendedCollectionSlug =  CollectionSlug
-
-export const Context = createContext<SessionContext<CollectionSlug>>({
+export const Context = createContext<SessionContext<AuthCollectionSlug>>({
   status: "loading",
   session: null,
   refresh: () => new Promise(resolve => resolve(null)),
   refetch: () => new Promise(resolve => resolve(null)),
 });
 
-interface Props<TSlug extends CollectionSlug> {
+interface Props<TSlug extends AuthCollectionSlug> {
   /**
    * The slug of the collection that contains the users
    *
@@ -54,8 +53,8 @@ interface Props<TSlug extends CollectionSlug> {
 /**
  * PayloadSessionProvider that provides the session to the context provider
  */
-export const PayloadSessionProvider: React.FC<Props<CollectionSlug>> = <
-  TSlug extends CollectionSlug = "users",
+export const PayloadSessionProvider: React.FC<Props<AuthCollectionSlug>> = <
+  TSlug extends AuthCollectionSlug = "users",
 >({
     userCollectionSlug = "users" as TSlug,
     session = null,
@@ -76,7 +75,7 @@ export const PayloadSessionProvider: React.FC<Props<CollectionSlug>> = <
       const result: {
         user: DataFromCollectionSlug<TSlug> | null;
         exp: number;
-        collection?: CollectionSlug;
+        collection?: AuthCollectionSlug;
         strategy?: string;
       } = await response.json();
 

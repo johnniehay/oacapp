@@ -3,24 +3,17 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 
 export const Users: CollectionConfig = {
-  slug: 'users',
-  access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
-  },
-  admin: {
-    defaultColumns: ['name', 'email'],
-    useAsTitle: 'name',
-  },
-  auth: true,
+  // populated by payload-authjs-custom
+  slug: "users",
   fields: [
     {
-      name: 'name',
-      type: 'text',
+      name: "role",
+      type: "text",
+      label: "Role"
     },
+    // {
+    //   name: "notificationSubscription",
+    //   type:
+    // }
   ],
-  timestamps: true,
 }
