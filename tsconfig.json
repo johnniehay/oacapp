@@ -44,6 +44,7 @@
     "node_modules",
     "mantine-tailwind-template",
     "references",
-    "vendor"
+    "vendor",
+    "components/unused"
   ]
 }

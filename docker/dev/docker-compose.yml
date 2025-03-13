@@ -47,10 +47,12 @@ services:
 #      context: ../../.
       dockerfile: docker/dev/Dockerfile
 #      dockerfile: /home/johnnie/MEGA/code/oacapp/docker/dev/Dockerfile
+      additional_contexts:
+        local: ../../.
     env_file:
       - ./.env.dev
     ports:
-      - 3001:3001
+      - 146.64.84.46:3002:3000
 
 networks:
   postgres:
