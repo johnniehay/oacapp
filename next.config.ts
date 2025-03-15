@@ -34,4 +34,4 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({})
 
-export default withPayload(withMDX(nextConfig));
+export default withPayload(withMDX(nextConfig),{ devBundleServerPackages: false });

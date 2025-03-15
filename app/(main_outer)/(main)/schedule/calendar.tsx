@@ -59,6 +59,9 @@ export function CalendarList(props: CalendarOptionsProps) {
   return (<CalendarComponent plugins={[CalList]} {...props}/>)
 }
 
+export function CalendarTimeGridOrList(props: CalendarOptionsProps) {
+  return (<CalendarComponent plugins={[TimeGrid,CalList]} {...props}/>)
+}
 // let ec = new Calendar({
 //     target: document.getElementById('ec'),
 //     props: {
