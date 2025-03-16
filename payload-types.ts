@@ -77,6 +77,8 @@ export interface Config {
     media: Media;
     categories: Category;
     notificationSubscription: NotificationSubscription;
+    team: Team;
+    event: Event;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -86,7 +88,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    team: {
+      events: 'event';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
@@ -94,6 +100,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     notificationSubscription: NotificationSubscriptionSelect<false> | NotificationSubscriptionSelect<true>;
+    team: TeamSelect<false> | TeamSelect<true>;
+    event: EventSelect<false> | EventSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -787,6 +795,40 @@ export interface NotificationSubscription {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team".
+ */
+export interface Team {
+  id: string;
+  number: string;
+  name: string;
+  country?: string | null;
+  events?: {
+    docs?: (string | Event)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "event".
+ */
+export interface Event {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  eventType: 'robotgame' | 'judging' | 'cultural' | 'general';
+  description?: string | null;
+  location?: string | null;
+  forAll?: ('teams' | 'volunteers')[] | null;
+  teams?: (string | Team)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -980,6 +1022,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notificationSubscription';
         value: string | NotificationSubscription;
+      } | null)
+    | ({
+        relationTo: 'team';
+        value: string | Team;
+      } | null)
+    | ({
+        relationTo: 'event';
+        value: string | Event;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1393,6 +1443,34 @@ export interface NotificationSubscriptionSelect<T extends boolean = true> {
   keys?: T;
   topics?: T;
   user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team_select".
+ */
+export interface TeamSelect<T extends boolean = true> {
+  number?: T;
+  name?: T;
+  country?: T;
+  events?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "event_select".
+ */
+export interface EventSelect<T extends boolean = true> {
+  title?: T;
+  start?: T;
+  end?: T;
+  eventType?: T;
+  description?: T;
+  location?: T;
+  forAll?: T;
+  teams?: T;
   updatedAt?: T;
   createdAt?: T;
 }

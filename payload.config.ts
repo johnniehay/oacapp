@@ -14,6 +14,8 @@ import { plugins } from '@/payload/plugins'
 import sharp from "sharp";
 import { defaultLexical } from "@/payload/fields/defaultLexical";
 import { NotificationSubscriptions } from "@/payload/collections/NotificationSubscriptions";
+import { Teams } from "@/payload/collections/Teams";
+import { Events } from "@/payload/collections/Events";
 // import {SignInWithAuthjsButton} from "@/components/SignInWithAuthjsButton";
 
 export default buildConfig({
@@ -37,7 +39,7 @@ export default buildConfig({
     //     label: "Role"
     //   }]
     // }
-  Users, Pages, Updates, Media, Categories,NotificationSubscriptions],
+  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events],
 
   globals: [Header, Footer],
 
