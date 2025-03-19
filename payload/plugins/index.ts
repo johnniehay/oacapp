@@ -4,6 +4,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+// import { importExportPlugin } from "@payloadcms/plugin-import-export";
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/payload/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -13,6 +14,8 @@ import { beforeSyncWithSearch } from '@/payload/search/beforeSync'
 
 import { Page, Update } from '@/payload-types'
 import { getServerSideURL } from '@/payload/utilities/getURL'
+// import path from "path";
+// import { fileURLToPath } from "url";
 
 const generateTitle: GenerateTitle<Update | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -23,6 +26,9 @@ const generateURL: GenerateURL<Update | Page> = ({ doc }) => {
 
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
+
+// const filename = fileURLToPath(import.meta.url)
+// const dirname = path.dirname(filename)
 
 export const plugins: Plugin[] = [
   redirectsPlugin({
@@ -90,5 +96,25 @@ export const plugins: Plugin[] = [
       },
     },
   }),
+  // importExportPlugin({}),
+  // importExportPlugin({
+  //   overrideExportCollection: (collection) => {
+  //     collection.admin.group = 'System'
+  //     collection.upload.staticDir = path.resolve(dirname, '../../.next/uploads')
+  //     return collection
+  //   },
+  //   disableJobsQueue: true,
+  // }),
+  // importExportPlugin({
+  //   collections: ['pages'],
+  //   overrideExportCollection: (collection) => {
+  //     collection.slug = 'exports-tasks'
+  //     if (collection.admin) {
+  //       collection.admin.group = 'System'
+  //     }
+  //     collection.upload.staticDir = path.resolve(dirname, '../../.next/uploads')
+  //     return collection
+  //   },
+  // }),
   // payloadCloudPlugin(),
 ]
