@@ -21,6 +21,7 @@ import type {
 import { BannerBlock } from '@/payload/blocks/Banner/Component'
 import { CallToActionBlock } from '@/payload/blocks/CallToAction/Component'
 import { cn } from '@/payload/utilities/ui'
+import { HotelsBlock } from "@/payload/blocks/HotelsBlock/Component";
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -54,6 +55,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+    hotelsBlock: () => (<HotelsBlock />)
   },
 })
 

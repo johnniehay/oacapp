@@ -8,6 +8,7 @@ import { ContentBlock } from '@/payload/blocks/Content/Component'
 import { FormBlock } from '@/payload/blocks/Form/Component'
 import { MediaBlock } from '@/payload/blocks/MediaBlock/Component'
 import { AccordionBlock } from "@/payload/blocks/Accordion/Component";
+import { HotelsBlock } from "@/payload/blocks/HotelsBlock/Component";
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,6 +17,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   accordion: AccordionBlock,
+  hotelsBlock: HotelsBlock,
 }
 
 export const RenderBlocks: React.FC<{

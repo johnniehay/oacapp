@@ -9,7 +9,7 @@ const config = {
     '@/src/**/*.{ts,tsx}',
     '@/payload/**/*.{ts,tsx}'
   ],
-  darkMode: ['selector', '[data-theme="dark"]'],
+  darkMode: ['selector', '[data-mantine-color-scheme="dark"]'],
   plugins: [tailwindcssAnimate, typography],
   prefix: '',
   safelist: [
@@ -38,11 +38,11 @@ const config = {
         xl: '2rem',
       },
       screens: {
-        '2xl': '86rem',
-        lg: '64rem',
-        md: '48rem',
         sm: '40rem',
+        md: '54rem',
+        lg: '64rem',
         xl: '80rem',
+        '2xl': '86rem',
       },
     },
     extend: {

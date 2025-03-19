@@ -9,11 +9,12 @@ import {
   type LinkFields, defaultEditorFeatures, BlocksFeature, EXPERIMENTAL_TableFeature,
 } from '@payloadcms/richtext-lexical'
 import { MediaBlock } from "@/payload/blocks/MediaBlock/config";
+import { HotelsBlock } from "@/payload/blocks/HotelsBlock/config";
 
 export const defaultLexical = lexicalEditor({
   features: [...defaultEditorFeatures,
     EXPERIMENTAL_TableFeature(),
-    BlocksFeature({blocks:[MediaBlock]})
+    BlocksFeature({blocks:[MediaBlock,HotelsBlock]})
     // ParagraphFeature(),
     // UnderlineFeature(),
     // BoldFeature(),

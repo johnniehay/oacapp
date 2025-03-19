@@ -29,11 +29,13 @@
     /* breakpoints */
     --breakpoint-xs: 36em;
 
-    --breakpoint-sm: 48em;
+    --breakpoint-sm: 44em;
 
-    --breakpoint-md: 62em;
+    --breakpoint-md: 54em;
 
-    --breakpoint-lg: 75em;
+    --breakpoint-lg: 64em;
 
-    --breakpoint-xl: 88em;
+    --breakpoint-xl: 80em;
+
+    --breakpoint-2xl: 86em;
 }
