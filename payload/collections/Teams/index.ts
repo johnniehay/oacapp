@@ -1,15 +1,16 @@
-import type { CollectionConfig } from "payload";
+import type { CollectionConfig, Field } from "payload";
 import { anyone } from "@/payload/access/anyone";
-import { authenticated } from "@/payload/access/authenticated";
+import { checkPermission } from "@/payload/access/checkPermission";
+
 
 export const Teams: CollectionConfig<"team"> = {
   slug: "team",
 
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: checkPermission("create:team"),
+    delete: checkPermission("remove:team"),
     read: anyone,
-    update: authenticated,
+    update: checkPermission("update:team"),
   },
   admin: {useAsTitle:"number"},
   fields:[

@@ -1,15 +1,14 @@
 import type { CollectionConfig } from 'payload'
-import { anyone } from "@/payload/access/anyone";
-import { authenticated } from "@/payload/access/authenticated";
+import { checkPermission } from "@/payload/access/checkPermission";
 
 export const NotificationSubscriptions: CollectionConfig<"notificationSubscription"> = {
   slug: "notificationSubscription",
 
   access: {
-    create: anyone,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: checkPermission("admin"),
+    delete: checkPermission("admin"),
+    read: checkPermission("admin"),
+    update: checkPermission("admin"),
   },
   fields:[
     // endpoint       String   @unique

@@ -1,15 +1,15 @@
 import type { CollectionConfig } from "payload";
-import { authenticated } from "@/payload/access/authenticated";
+import { checkPermission } from "@/payload/access/checkPermission";
 import { anyone } from "@/payload/access/anyone";
 
 export const Events: CollectionConfig<"event"> = {
   slug: "event",
 
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: checkPermission("create:event"),
+    delete: checkPermission("remove:event"),
     read: anyone,
-    update: authenticated,
+    update: checkPermission("update:event"),
   },
   fields: [
     { name: "title", type: "text", required: true },

@@ -9,7 +9,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { authenticated } from '../../access/authenticated'
+import { checkPermission } from "@/payload/access/checkPermission"
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
@@ -30,10 +30,11 @@ import { slugField } from '@/payload/fields/slug'
 export const Updates: CollectionConfig<'updates'> = {
   slug: 'updates',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
+    create: checkPermission("create:update"),
+    delete: checkPermission("remove:update"),
+    read: authenticatedOrPublished("update:update"),
+    update: checkPermission("update:update"),
+    readVersions: checkPermission("update:update"),
   },
   // This config controls what's populated by default when a update is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

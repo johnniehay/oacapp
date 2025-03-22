@@ -14,6 +14,8 @@ import { beforeSyncWithSearch } from '@/payload/search/beforeSync'
 
 import { Page, Update } from '@/payload-types'
 import { getServerSideURL } from '@/payload/utilities/getURL'
+import { checkPermission } from "@/payload/access/checkPermission";
+import { anyone } from "@/payload/access/anyone";
 // import path from "path";
 // import { fileURLToPath } from "url";
 
@@ -34,6 +36,12 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'updates'],
     overrides: {
+      access:{
+        read: checkPermission("admin"),
+        create: checkPermission("admin"),
+        delete: checkPermission("admin"),
+        update: checkPermission("admin")
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -66,6 +74,12 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
+      access:{
+        read: checkPermission("all:forms"),
+        create: checkPermission("all:forms"),
+        delete: checkPermission("all:forms"),
+        update: checkPermission("all:forms")
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -86,11 +100,25 @@ export const plugins: Plugin[] = [
         })
       },
     },
+    formSubmissionOverrides:{
+      access:{
+        create: anyone,
+        read: checkPermission("all:forms"),
+        delete: checkPermission("all:forms"),
+        update: checkPermission("all:forms")
+      },
+    }
   }),
   searchPlugin({
     collections: ['updates'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      access:{
+        create: checkPermission("create:update"),
+        read: checkPermission("update:update"),
+        delete: checkPermission("remove:update"),
+        update: checkPermission("update:update")
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
