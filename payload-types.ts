@@ -12,6 +12,20 @@
  */
 export type NotificationTopic = 'test'[] | null;
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "peopleRole".
+ */
+export type PeopleRole =
+  | 'coach'
+  | 'mentor'
+  | 'team_member'
+  | 'supporter'
+  | 'candidate-coach'
+  | 'candidate-mentor'
+  | 'candidate-member'
+  | 'candidate-supporter'
+  | 'affiliated';
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -79,6 +93,7 @@ export interface Config {
     notificationSubscription: NotificationSubscription;
     team: Team;
     event: Event;
+    people: Person;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -102,6 +117,7 @@ export interface Config {
     notificationSubscription: NotificationSubscriptionSelect<false> | NotificationSubscriptionSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     event: EventSelect<false> | EventSelect<true>;
+    people: PeopleSelect<false> | PeopleSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -829,6 +845,19 @@ export interface Event {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people".
+ */
+export interface Person {
+  id: string;
+  name: string;
+  user?: (string | null) | User;
+  team?: (string | null) | Team;
+  role: PeopleRole;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1030,6 +1059,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'event';
         value: string | Event;
+      } | null)
+    | ({
+        relationTo: 'people';
+        value: string | Person;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1471,6 +1504,18 @@ export interface EventSelect<T extends boolean = true> {
   location?: T;
   forAll?: T;
   teams?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people_select".
+ */
+export interface PeopleSelect<T extends boolean = true> {
+  name?: T;
+  user?: T;
+  team?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
 }

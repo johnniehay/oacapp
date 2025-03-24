@@ -1,4 +1,4 @@
-import type { Access, FieldAccess, PayloadRequest, Where } from 'payload'
+import type { Access, Condition, FieldAccess, PayloadRequest, Where } from 'payload'
 import { hasPermissionReq } from "@/lib/permissions-payload";
 import { Permission } from "@/lib/roles";
 
@@ -17,6 +17,10 @@ export function checkPermission( permission:Permission, where?: Where | ((payloa
 
 export function checkFieldPermission( permission:Permission): FieldAccess {
   return ({ req: { user } }) => (user ? hasPermissionReq(permission, user) : false)
+}
+
+export function checkConditionPermission( permission:Permission): Condition {
+  return ({ ctx }) => ((ctx && ctx.user) ? hasPermissionReq(permission, ctx.user) : false)
 }
 
 export function checkFieldPermissionOrIf( permission:Permission, condfunc: FieldAccess): FieldAccess {

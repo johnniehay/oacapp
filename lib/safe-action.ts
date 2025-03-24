@@ -27,7 +27,7 @@ export const actionClient = createSafeActionClient({
     });
   },
   // Define logging middleware.
-}).use(async ({ next, clientInput, metadata }) => {
+}).use(async ({ next, clientInput, metadata, bindArgsClientInputs }) => {
   console.log("LOGGING MIDDLEWARE");
 
   const startTime = performance.now();
@@ -36,11 +36,19 @@ export const actionClient = createSafeActionClient({
   const result = await next();
 
   const endTime = performance.now();
+  const durationInMs = endTime - startTime;
 
-  console.log("Result ->", result);
-  console.log("Client input ->", clientInput);
-  console.log("Metadata ->", metadata);
-  console.log("Action execution took", endTime - startTime, "ms");
+  const logObject: Record<string, unknown> = { durationInMs };
+
+  logObject.clientInput = clientInput;
+  logObject.bindArgsClientInputs = bindArgsClientInputs;
+  logObject.metadata = metadata;
+  const {ctx:resultctx, ...resultwithoutctx} = result
+  const {payload:_, ...ctxwithoutpayload} = { payload: "", ...resultctx };
+  const resultwithoutpayload = {ctx:ctxwithoutpayload, ...resultwithoutctx};
+  logObject.result = resultwithoutpayload;
+
+  console.dir(logObject, { depth: null });
 
   // And then return the result of the awaited action.
   return result;

@@ -16,6 +16,7 @@ import { defaultLexical } from "@/payload/fields/defaultLexical";
 import { NotificationSubscriptions } from "@/payload/collections/NotificationSubscriptions";
 import { Teams } from "@/payload/collections/Teams";
 import { Events } from "@/payload/collections/Events";
+import { People } from "@/payload/collections/People";
 // import {SignInWithAuthjsButton} from "@/components/SignInWithAuthjsButton";
 
 export default buildConfig({
@@ -39,7 +40,7 @@ export default buildConfig({
     //     label: "Role"
     //   }]
     // }
-  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events],
+  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events,People],
 
   globals: [Header, Footer],
 
