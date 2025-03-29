@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Group, MultiSelect, Radio, RadioGroup, Select } from "@mantine/core";
+import { Button, Group, MultiSelect, Radio, RadioGroup, Select, TextInput } from "@mantine/core";
 import { useContext, useState } from "react";
 import { doUserSetup } from "@/app/(main_outer)/setup/setup-actions";
 import { ModalStateContext } from "@/components/modal";
@@ -12,6 +12,7 @@ type LabeledValue = {
 } ;
 type LabeledValueOrString = LabeledValue | string
 interface SetupClientProps {
+  user_name: string|null|undefined;
   teams: LabeledValueOrString[]
   roleGroups: LabeledValue[]
   rolesbyGroup: {[rolegroup:string]:LabeledValueOrString[]}
@@ -30,6 +31,7 @@ const teamDescription: { [r:string]: string } = {
 export function SetupClient(props: SetupClientProps) {
   const {teams, roleGroups, rolesbyGroup}: SetupClientProps = props
   const [selectedRoleGroup, setSelectedRoleGroup] = useState<string>("")
+  const [userName, setUserName] = useState(props.user_name ?? "")
   const [roleGroupError, setRoleGroupError] = useState<string>("")
   const [roleError, setRoleError] = useState<string>("")
   const {close} = useContext(ModalStateContext)
@@ -39,6 +41,7 @@ export function SetupClient(props: SetupClientProps) {
   }})
   return <>
     <form action={dosetupaction}>
+      <TextInput name="user_name" label="Your Name" description="Preffered name you wish to use at OAC, will also be printed on lanyard" value={userName} onChange={(e) => setUserName(e.target.value)} />
     <RadioGroup
       name="roleGroup"
       label="In what capacity will you be involved in the OAC?"

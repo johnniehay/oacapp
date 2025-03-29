@@ -17,6 +17,7 @@ export default async function Page() {
       <Title order={3}> to get started we need the following information to complete your user setup</Title>
 
       <SetupClient
+        user_name={session.user.name}
         roleGroups={[{ label: "Team", value: "team" }, { label: "Volunteer", value: "volunteer" }]}
         rolesbyGroup={{
           "team": peopleRoleOptions.filter((pr) => !pr.value.includes("candidate")),

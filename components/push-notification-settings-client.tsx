@@ -186,7 +186,7 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
   }
 
   return (
-    <div>
+    <>
       <Fieldset legend="Push Notifications">
         {/*<Switch*/}
         {/*  // defaultChecked={!!subscription}*/}
@@ -248,18 +248,13 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
         }
 
         {visibleTopics.includes("test") &&
-          <Switch
-            checked={topics.includes("test")}
-            onChange={handleOnChangeSubscribedSwitch("test")}
-            labelPosition="left"
-            label="Test Notifcations"
-          />
-        }
-        {subscription ? (
           <>
-
-            {/*<p>You are subscribed to push notifications.</p>*/}
-            {/*<button onClick={unsubscribeFromPush}>Unsubscribe</button>*/}
+            <Switch
+              checked={topics.includes("test")}
+              onChange={handleOnChangeSubscribedSwitch("test")}
+              labelPosition="left"
+              label="Test Notifcations"
+            />
             <Group>
               <TextInput
                 placeholder="Enter notification message"
@@ -268,9 +263,7 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
               />
               <Button onClick={sendTestNotification}>Send Test</Button>
             </Group>
-          </>
-        ) : (
-          <>
+
             {/*<p>You are not subscribed to push notifications.</p>*/}
             {/*<button onClick={subscribeToPush}>Subscribe</button>*/}
             <MultiSelect
@@ -279,11 +272,9 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
               value={topics}
               onChange={(e) => setTopics(e as NotificationTopics)}
             />
-
-          </>
-        )}
+          </>}
       </Fieldset>
-    </div>
+    </>
   )
 }
 

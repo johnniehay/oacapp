@@ -25,7 +25,9 @@ export function getRoleFromUser(user: UserWithIdRole | null | undefined, noOverr
     return null
   }
   const userRole = user.role === "" ? "default" : user.role
-
+  if (userRole && userRole.includes("candidate")) {
+    return "candidate"
+  }
   if (!userRole || !RoleList.includes(userRole as Role)) {
     return null
   }

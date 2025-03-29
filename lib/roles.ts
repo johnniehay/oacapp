@@ -23,8 +23,10 @@ export type PermissionList = readonly Permission[]
 
 export const RoleList = [
   "default",// default empty role
+  "candidate",// default setup pending confirmation
   "coach" ,"mentor", "supporter", "team_member",
-  "judge", "judge_advisor", "field_manager", "team_admin", "volunteer_admin", "admin" ] as const
+  "volunteer", "judge", "judge_advisor", "field_manager", "team_admin", "volunteer_admin", "admin" ] as const
+// when changing the above also update roleToNotificationTopicsMap in components/push-notification-settings.tsx
 
 export type Role = typeof RoleList[number]
 export const rolePermissions: Record<Role, PermissionList> = {
@@ -33,11 +35,14 @@ export const rolePermissions: Record<Role, PermissionList> = {
   "supporter":BaseTeamPermissions,
   "team_member":BaseTeamPermissions,
 
+  "volunteer": VolunteerPermissions,
   "judge": JudgePermissions,
   "judge_advisor": JudgeAdvisorPermissions,
   "field_manager": FieldManagerPermissions,
   "team_admin": TeamAdminPermissions,
-  "volunteer_admin": VolunteerPermissions,
+  "volunteer_admin": VolunteerAdminPermissions,
   "admin": AllPermissions,
+
+  "candidate": NonPublicPermissions,
   "default": NonPublicPermissions
 } as const

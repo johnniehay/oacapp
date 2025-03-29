@@ -13,12 +13,14 @@ const roleToNotificationTopicsMap: RoleToNotificationTopicsMap = {
   "mentor":["team",...defaultNotifcationTopics],
   "supporter":["team",...defaultNotifcationTopics],
   "team_member":["team",...defaultNotifcationTopics],
+  "volunteer":["volunteer",...defaultNotifcationTopics],
   "judge": ["volunteer",...defaultNotifcationTopics],
   "judge_advisor": ["volunteer",...defaultNotifcationTopics],
   "field_manager": ["team","volunteer",...defaultNotifcationTopics],
   "team_admin": ["team","volunteer",...defaultNotifcationTopics],
   "volunteer_admin": ["volunteer",...defaultNotifcationTopics],
   "admin": ["test","team","volunteer",...defaultNotifcationTopics],
+  "candidate":defaultNotifcationTopics,
   "default":defaultNotifcationTopics
 };
 

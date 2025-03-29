@@ -10,7 +10,7 @@ export default function SignIn({ className }: { className?: string }) {
 
   async function doEmailSignIn(formData: FormData) {
     "use server"
-    await signIn("email", formData)
+    await signIn("nodemailer", formData)
   }
 
   return (

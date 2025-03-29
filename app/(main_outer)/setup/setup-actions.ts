@@ -15,6 +15,7 @@ function objectFromArrayByKey<T extends Record<string, any>>(ar:T[],k: keyof T):
 }
 
 const schemaUserSetup = zfd.formData({
+  user_name: z.string().min(1).max(100),
   roleGroup: z.string().max(15),
   role: z.string().transform((inrole, ctx) => {
     if (!inrole || inrole.length === 0) {
@@ -35,17 +36,18 @@ const schemaUserSetup = zfd.formData({
 export const doUserSetup = authActionClient
   .metadata({ actionName: "doUserSetup" })
   .schema(schemaUserSetup)
-  .action(async ({ parsedInput: { roleGroup, role, teamids }, ctx: { user, payload } }) => {
+  .action(async ({ parsedInput: { user_name, roleGroup, role, teamids }, ctx: { user, payload } }) => {
     console.log("doUserSetup",{roleGroup,role,teamids});
     const isVolunteer = roleGroup === "volunteer"
-    const userpeople = await payload.find({collection:"people",where:{user:{equals:user.id}}})
+    const userpeople = await payload.find({collection:"people",depth:0,where:{user:{equals:user.id}}})
     const userpeoplebyteam = objectFromArrayByKey(userpeople.docs,"team")
     for (const teamid of teamids) {
       if (!(teamid in userpeoplebyteam)) {
-        await payload.create({collection:"people", data:{name:user.name??user.email, user:user.id, team:teamid,role: isVolunteer?"affiliated":role}})
+        await payload.create({collection:"people", data:{name:user_name, user:user.id, team:teamid,role: isVolunteer?"affiliated":role}})
       }
     }
-    await payload.update({collection:"users",id:user.id,data:{role:role}})
+    const update_user_name = (user_name !== user.name) ? {name:user_name} : {}
+    await payload.update({collection:"users",id:user.id,data:{role:role, ...update_user_name}})
     return {result:"done"}
   })
 

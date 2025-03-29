@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import SignIn from "@/components/sign-in";
 import { Avatar, Button, Menu, MenuDropdown, MenuItem, MenuTarget, Select, Text } from "@mantine/core";
 import { ClientModal } from "@/components/modal";
@@ -20,6 +20,10 @@ export default async function Userbox({ className }: { className?: string }) {
     }
     roleOverrides[session.user.id]=value
     return {success: {roleOverride:value}}
+  }
+  async function doSignOut(): Promise<void> {
+    "use server"
+    await signOut()
   }
 
   const session = await auth()
@@ -50,7 +54,7 @@ export default async function Userbox({ className }: { className?: string }) {
             <Select label={"Override Role"} data={RoleList} onChange={onChangeRoleOverride}/>
           </MenuItem>
         )}
-        <MenuItem>
+        <MenuItem onClick={doSignOut}>
           Logout
         </MenuItem>
       </MenuDropdown>
