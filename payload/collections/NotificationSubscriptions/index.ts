@@ -27,7 +27,13 @@ export const NotificationSubscriptions: CollectionConfig<"notificationSubscripti
         uri: 'notification://keys'
       }, required:true },
     // topic          String
-    { name:"topics", type:"select", interfaceName:"NotificationTopic", hasMany:true, options:[{label:"Test Notifications", value:"test"}] },
+    { name:"topics", type:"select", interfaceName:"NotificationTopicsOptions", hasMany:true, options:[
+      {label:"Test Notifications", value:"test"},
+      {label:"Event Updates", value:"event-updates"},
+      {label:"Event Broadcast", value:"event-broadcast"},
+      {label:"Team", value:"team"},
+      {label:"Volunteer", value:"volunteer"},
+      {label:"All Notifications", value:"all"},] },
     // userId         String?
     { name: "user", type:"relationship",relationTo:"users",hasMany:false}
 

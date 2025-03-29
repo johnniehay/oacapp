@@ -1,12 +1,14 @@
 import type { User } from "@/payload-types";
-import { NonPublicPermissions, Permission, rolePermissions, Roles } from "@/lib/roles";
+import { NonPublicPermissions, Permission, Role, rolePermissions } from "@/lib/roles";
+import { getRoleFromUser } from "@/lib/get-role";
 
 export function getPermissionsReq(user: User | null, accesscookie?: string){
   if (user) {
-    if (!user.role || !(user.role in rolePermissions)) {
+    const userRole = getRoleFromUser(user);
+    if (!userRole) { //role in rolePermissions vs rolesList.includes
       return []
     }
-    return rolePermissions[user.role]
+    return rolePermissions[userRole]
   } else {
     if (accesscookie && accesscookie === process.env.NONPUBLIC_ACCESS) {
       return NonPublicPermissions

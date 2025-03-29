@@ -17,6 +17,8 @@ import { NotificationSubscriptions } from "@/payload/collections/NotificationSub
 import { Teams } from "@/payload/collections/Teams";
 import { Events } from "@/payload/collections/Events";
 import { People } from "@/payload/collections/People";
+import { AdminRoleOverride } from "@/payload/collections/AdminRoleOverride";
+import { updateRoleOverridesCache } from "@/lib/get-role";
 // import {SignInWithAuthjsButton} from "@/components/SignInWithAuthjsButton";
 
 export default buildConfig({
@@ -29,7 +31,7 @@ export default buildConfig({
     }),
     ...plugins
   ],
-
+  onInit: updateRoleOverridesCache,
   // Define and configure your collections in this array
   collections: [
     // {
@@ -40,7 +42,7 @@ export default buildConfig({
     //     label: "Role"
     //   }]
     // }
-  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events,People],
+  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events,People, AdminRoleOverride],
 
   globals: [Header, Footer],
 

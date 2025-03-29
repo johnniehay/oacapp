@@ -8,9 +8,11 @@
 
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NotificationTopic".
+ * via the `definition` "NotificationTopicsOptions".
  */
-export type NotificationTopic = 'test'[] | null;
+export type NotificationTopicsOptions =
+  | ('test' | 'event-updates' | 'event-broadcast' | 'team' | 'volunteer' | 'all')[]
+  | null;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "peopleRole".
@@ -73,6 +75,7 @@ export type SupportedTimezones =
   | 'Asia/Singapore'
   | 'Asia/Tokyo'
   | 'Asia/Seoul'
+  | 'Australia/Brisbane'
   | 'Australia/Sydney'
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
@@ -94,6 +97,7 @@ export interface Config {
     team: Team;
     event: Event;
     people: Person;
+    'admin-role-override': AdminRoleOverride;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -118,6 +122,7 @@ export interface Config {
     team: TeamSelect<false> | TeamSelect<true>;
     event: EventSelect<false> | EventSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
+    'admin-role-override': AdminRoleOverrideSelect<false> | AdminRoleOverrideSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -690,6 +695,7 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             defaultValue?: string | null;
+            placeholder?: string | null;
             options?:
               | {
                   label: string;
@@ -804,7 +810,7 @@ export interface NotificationSubscription {
     auth: string;
     [k: string]: unknown;
   };
-  topics?: NotificationTopic;
+  topics?: NotificationTopicsOptions;
   user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -853,6 +859,17 @@ export interface Person {
   user?: (string | null) | User;
   team?: (string | null) | Team;
   role: PeopleRole;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admin-role-override".
+ */
+export interface AdminRoleOverride {
+  id: string;
+  user: string | User;
+  role: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1063,6 +1080,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'people';
         value: string | Person;
+      } | null)
+    | ({
+        relationTo: 'admin-role-override';
+        value: string | AdminRoleOverride;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1521,6 +1542,16 @@ export interface PeopleSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admin-role-override_select".
+ */
+export interface AdminRoleOverrideSelect<T extends boolean = true> {
+  user?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1600,6 +1631,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               defaultValue?: T;
+              placeholder?: T;
               options?:
                 | T
                 | {

@@ -3,9 +3,7 @@ import { getPayload } from "payload";
 import config from '@payload-config'
 import { Title } from "@mantine/core";
 import { CalendarTimeGridOrList } from "@/app/(main_outer)/(main)/schedule/calendar";
-// import { transformObject } from "@/lib/payload-authjs-custom/authjs/utils/transformObject";
-import Calendar from "@event-calendar/core";
-import { Event } from "@/payload-types"
+import Flag from "@/components/flag";
 
 type Args = {
   params: Promise<{
@@ -30,7 +28,7 @@ export default async function TeamSchedule({ params: paramsPromise }: Args) {
     return {start:new Date(start), end: new Date(end), ...restpevent}
     // return transformObject<Event,Calendar.Event>(pevent)
   }).filter((cevent) => !!cevent)
-  return (<><Title order={1}>{teamnum} {team.name}</Title>
+  return (<><Title order={1}>{teamnum} {team.name} <Flag country={team.country}/></Title>
     {/*<pre className={"text-wrap"}>{JSON.stringify(team.events?.docs)}</pre>*/}
     <CalendarTimeGridOrList options={{
       view: "timeGridDay",

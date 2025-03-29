@@ -45,14 +45,14 @@ export default function RootLayout({
   return (
     <html lang="en">
     <Head>
-      <ColorSchemeScript/>
+      <ColorSchemeScript defaultColorScheme="auto" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     </Head>
     <body
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       className={"antialiased"}
     >
-    <MantineProvider theme={theme}>{children}</MantineProvider>
+    <MantineProvider defaultColorScheme="auto" theme={theme}>{children}</MantineProvider>
     </body>
     </html>
   );

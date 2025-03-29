@@ -1,7 +1,8 @@
 import { CollectionConfig, DefaultValue, FilterOptions, PayloadRequest, Where } from "payload";
 import { checkConditionPermission, checkPermissionOrWhere } from "@/payload/access/checkPermission";
 import { updateuser } from "@/payload/collections/People/hooks/updateuser";
-import { snakeCase } from "lodash";
+import snakeCase from "lodash/snakeCase";
+import { getRoleFromUser } from "@/lib/get-role";
 
 export const peopleRoleOptions =[
   {label:"Coach",value:"coach"},
@@ -22,7 +23,7 @@ export const volunteerRoleOptions = volunteerRolesLabels.map(role => {return {la
 export const volunteerRoles = volunteerRolesLabels.map(role => snakeCase(role));
 
 const coachteams = async (payloadreq: PayloadRequest) => {
-  if (payloadreq.user?.role === "coach") {
+  if (getRoleFromUser(payloadreq.user) === "coach") {
     const teams = (await payloadreq.payload.find({
       collection: "people",
       select: { team: true },
@@ -37,7 +38,7 @@ const coachteams = async (payloadreq: PayloadRequest) => {
 
 
 const wherecoach = async (payloadreq: PayloadRequest) => {
-  if (payloadreq.user?.role === "coach") {
+  if (getRoleFromUser(payloadreq.user) === "coach") {
     const teamids = await coachteams(payloadreq)
     return {team:{in:teamids.join(",")}} as Where
   } else {
@@ -46,7 +47,7 @@ const wherecoach = async (payloadreq: PayloadRequest) => {
 }
 
 const teamwherecoach: FilterOptions = async ({req: payloadreq, user}) => {
-  if (user && user.role === "coach") {
+  if (getRoleFromUser(user) === "coach") {
     const teamids = await coachteams(payloadreq)
     return {id:{in:teamids.join(",")}} as Where
   } else {
@@ -55,7 +56,7 @@ const teamwherecoach: FilterOptions = async ({req: payloadreq, user}) => {
 }
 
 const defaultteam: DefaultValue =  async ({req: payloadreq, user}) => {
-  if (user && user.role === "coach") {
+  if (getRoleFromUser(user) === "coach") {
     const teamids = await coachteams(payloadreq)
     if (teamids.length === 1) {
       return teamids[0]

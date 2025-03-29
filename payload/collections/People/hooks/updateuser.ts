@@ -16,7 +16,7 @@ export const updateuser: CollectionAfterChangeHook<Person> = async ({
       if (userCurrent.role) {
         const userCurrentRoleIdx = peopleRoles.indexOf(userCurrent.role)
         const newRoleIdx = peopleRoles.indexOf(doc.role)
-        if (newRoleIdx >= 0 && userCurrentRoleIdx >= 0 && newRoleIdx < userCurrentRoleIdx){
+        if (newRoleIdx >= 0 && userCurrentRoleIdx >= 0 && newRoleIdx < userCurrentRoleIdx && !doc.role.includes("candidate")){
           updaterole = true
         }
       }

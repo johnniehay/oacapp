@@ -1,12 +1,13 @@
 import type { Access, Condition, FieldAccess, PayloadRequest, Where } from 'payload'
 import { hasPermissionReq } from "@/lib/permissions-payload";
-import { Permission } from "@/lib/roles";
+import type { Permission } from "@/lib/roles";
+import { getRoleFromUser } from "@/lib/get-role";
 
 export function checkPermission( permission:Permission, where?: Where | ((payloadreq:PayloadRequest) => boolean|Where|Promise<Where|boolean>)){
   const checkClosurePermission: Access =  ({ req: payloadreq }) => {
     const { user } = payloadreq
-    const role = user?.role
-    if (!role || role === "") {
+    const role = getRoleFromUser(user)
+    if (!role) {
       return false
     }
     const wherefunc = typeof where === "function" ? where : (_:PayloadRequest) => where??true

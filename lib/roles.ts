@@ -2,8 +2,9 @@ export const VolunteerPermissions = ["view:team:details:basic","view:volunteer"]
 
 export const NonPublicPermissions = ["view:nonpublic"] as const
 
-export const CoachPermissions = ["view:people","update:people"] as const
-export const AllTeamPermissions = [...CoachPermissions] as const
+export const BaseTeamPermissions = [...NonPublicPermissions] as const
+export const CoachPermissions = ["view:people","update:people",...NonPublicPermissions] as const
+export const AllTeamPermissions = [...BaseTeamPermissions,...CoachPermissions] as const
 
 export const PagesPermissions = ["all:pages","create:media","all:forms"] as const
 export const UpdateManagementPermissions = ["create:update","update:update","remove:update"] as const
@@ -20,12 +21,23 @@ export const AllPermissions = [...VolunteerAdminPermissions, ...JudgeAdvisorPerm
 export type Permission = typeof AllPermissions[number]
 export type PermissionList = readonly Permission[]
 
-export const rolePermissions: { [key: string]: PermissionList } = {
+export const RoleList = [
+  "default",// default empty role
+  "coach" ,"mentor", "supporter", "team_member",
+  "judge", "judge_advisor", "field_manager", "team_admin", "volunteer_admin", "admin" ] as const
+
+export type Role = typeof RoleList[number]
+export const rolePermissions: Record<Role, PermissionList> = {
+  "coach": CoachPermissions,
+  "mentor":BaseTeamPermissions,
+  "supporter":BaseTeamPermissions,
+  "team_member":BaseTeamPermissions,
+
   "judge": JudgePermissions,
   "judge_advisor": JudgeAdvisorPermissions,
   "field_manager": FieldManagerPermissions,
   "team_admin": TeamAdminPermissions,
   "volunteer_admin": VolunteerPermissions,
   "admin": AllPermissions,
+  "default": NonPublicPermissions
 } as const
-export type Roles = keyof typeof rolePermissions

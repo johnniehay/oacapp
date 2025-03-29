@@ -3,11 +3,9 @@
 import { z } from "zod";
 import { authActionClient, optionalAuthActionClient } from "@/lib/safe-action";
 import webpush from 'web-push'
-import { NotificationSubscription, NotificationTopic } from "@/payload-types";
-// import { getPayloadSession } from "@/lib/payload-authjs-custom/payload/session/getLocalPayloadSession";
-import { auth } from "@/auth";
+import { NotificationSubscription } from "@/payload-types";
 import { PaginatedDocs } from "payload";
-import { equals } from "sift/lib/utils";
+import { NotificationTopics } from "@/lib/types";
 // import { prisma } from "@/prisma";
 // import { NotificationSubscription } from "@prisma/client";
 
@@ -31,7 +29,7 @@ const schemaPushSubscription = z.object({
 // const schemaPushSubscription = z.custom<webpush.PushSubscription>
 const schemaPushSubscriptionTopic = z.object({
   sub: schemaPushSubscription,
-  topics: z.array(z.string().max(100)),
+  topics: z.custom<NotificationTopics>(),
 });
 
 export const subscribeUser = optionalAuthActionClient
@@ -51,7 +49,7 @@ export const subscribeUser = optionalAuthActionClient
         endpoint: sub.endpoint,
         expirationTime: sub.expirationTime ? new Date(sub.expirationTime * 1000).toISOString() : null,
         keys: sub.keys,
-        topics: topics as NotificationTopic,
+        topics: topics as NotificationTopics,
         user: session?.user
       },
     });
@@ -89,6 +87,44 @@ export const unsubscribeUser = optionalAuthActionClient
     return { success: true }
   })
 
+export const getSubscriptionTopics = optionalAuthActionClient
+  .metadata({ actionName: "getSubscriptionTopics" })
+  .schema(z.object({ sub: schemaPushSubscription }))
+  .action(async ({ parsedInput: { sub }, ctx: { session, payload } }) => {
+    // const userId = session?.user?.id
+
+    const dbsubscription: PaginatedDocs<NotificationSubscription> = await payload.find({
+      collection:'notificationSubscription',
+      limit: 1,
+      pagination: false,
+      where: { and: [{endpoint: {equals: sub.endpoint} },{keys: {equals: sub.keys} }]}})
+    if (dbsubscription.totalDocs > 0 ) {
+      return dbsubscription.docs[0].topics
+    } else {
+      return null
+    }
+  })
+
+export const setSubscriptionTopics = optionalAuthActionClient
+  .metadata({ actionName: "setSubscriptionTopics" })
+  .schema(schemaPushSubscriptionTopic)
+  .action(async ({ parsedInput: { sub , topics }, ctx: { session, payload } }) => {
+    // const userId = session?.user?.id
+
+    const dbsubscription = await payload.update({
+      collection:'notificationSubscription',
+      limit: 1,
+      where: { and: [{endpoint: {equals: sub.endpoint} },{keys: {equals: sub.keys} }]},
+      data: {topics: topics }}) //TODO: handle case where endpoint changed
+    if (dbsubscription.errors.length === 0 ) {
+      return {success: topics}
+    } else {
+      return {failed: dbsubscription.errors}
+    }
+  })
+
+
+
 export const sendNotification = authActionClient
   .metadata({ actionName: "sendNotification: " })
   .schema(z.object({ message: z.string() }))
@@ -100,7 +136,7 @@ export const sendNotification = authActionClient
     const notifySubscriptions = (await payload.find({
       collection:'notificationSubscription',
       pagination: false,
-      // where: { topics: { contains: "" } }
+      where: { topics: { in: "test" } }
     })).docs
     console.log("notifySubscriptions", notifySubscriptions)
     const failedSubcriptions: webpush.PushSubscription[] = []
