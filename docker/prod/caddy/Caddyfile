@@ -1,0 +1,8 @@
+https://app.oac.firstsa.org:443 {
+	reverse_proxy prodapp:3000
+	tls {
+		issuer acme {
+			disable_http_challenge
+		}
+	}
+}

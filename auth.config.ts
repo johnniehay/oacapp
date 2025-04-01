@@ -28,6 +28,9 @@ export const authConfig: NextAuthConfig = {
     })],
   session: { strategy: "database" },
   // providers: [],
+  pages:{
+    signIn: "/signin",
+  },
   debug: true,
 // redirectProxyUrl: "https://dev.oac.cids.org.za/api/auth"
 }

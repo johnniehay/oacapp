@@ -1,0 +1,57 @@
+services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy:/etc/caddy
+      - caddy_data:/data
+      - caddy_config:/config
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-changeme}
+    ports:
+      - "${MONGODB_PORT:-27017}:27017"
+    volumes:
+      - mongodb:/data/db
+      - mongoconfigdb:/data/configdb
+
+  prodapp:
+    build:
+      context: https://github.com/johnniehay/oacapp.git#main
+#      context: ../../.
+      dockerfile: docker/prod/Dockerfile
+#      dockerfile: /home/johnnie/oacapp/Dockerfile
+      additional_contexts:
+        local: .
+      secrets:
+        - env-production
+    env_file:
+      - ./.env.production
+#    ports:
+#      - "3003:3000"
+    volumes:
+      - prodmedia:/app/public/media
+
+networks:
+  default:
+    enable_ipv6: true
+
+secrets:
+  env-production:
+    file: ./.env.production
+
+volumes:
+  caddy_data:
+  caddy_config:
+  mongodb:
+  mongoconfigdb:
+  prodmedia:
