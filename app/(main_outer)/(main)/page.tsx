@@ -20,8 +20,9 @@ export default function Home() {
           </Stack>
         </Center>
       </Box>
-      <Group grow><NavLinks className="w-auto"/></Group>
+      <Group mt={"md"} align={"stretch"} preventGrowOverflow={false} grow><NavLinks isNavbar={false} /></Group>
     </>
+    // NavLinks className="w-auto min-w-max min-h-[125px] text-center rounded-[16px] bg-black/30"
     // <div className="flex justify-center mt-10">
     //     <ColorSchemesSwitcher/>
     // </div>

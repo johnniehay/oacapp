@@ -1,8 +1,8 @@
-import { CollectionConfig, DefaultValue, FilterOptions, PayloadRequest, Where } from "payload";
+import { BasePayload, CollectionConfig, DefaultValue, FilterOptions, PayloadRequest, Where } from "payload";
 import { checkConditionPermission, checkPermissionOrWhere } from "@/payload/access/checkPermission";
 import { updateuser } from "@/payload/collections/People/hooks/updateuser";
 import snakeCase from "lodash/snakeCase";
-import { getRoleFromUser } from "@/lib/get-role";
+import { getRoleFromUser, type UserWithIdRole } from "@/lib/get-role";
 
 export const peopleRoleOptions =[
   {label:"Coach",value:"coach"},
@@ -22,13 +22,13 @@ const volunteerRolesLabels = ["Judge", "Referee", "Other Volunteer"]
 export const volunteerRoleOptions = volunteerRolesLabels.map(role => {return {label: role, value: snakeCase(role)}});
 export const volunteerRoles = volunteerRolesLabels.map(role => snakeCase(role));
 
-const coachteams = async (payloadreq: PayloadRequest) => {
-  if (getRoleFromUser(payloadreq.user) === "coach") {
-    const teams = (await payloadreq.payload.find({
+export const coachteamsquery = async (user: UserWithIdRole | null | undefined, payload: BasePayload)=> {
+  if (getRoleFromUser(user) === "coach") {
+    const teams = (await payload.find({
       collection: "people",
       select: { team: true },
       depth:0,
-      where: { and: [{ user: { equals: payloadreq.user?.id } }, { role: { equals: "coach" } }] }
+      where: { and: [{ user: { equals: user?.id } }, { role: { equals: "coach" } }] }
     })).docs
     return teams.map(t => t.team)
   } else {
@@ -36,10 +36,14 @@ const coachteams = async (payloadreq: PayloadRequest) => {
   }
 }
 
+const coachteams = async (payloadreq: PayloadRequest) => {
+  return coachteamsquery(payloadreq.user, payloadreq.payload)
+}
 
-const wherecoach = async (payloadreq: PayloadRequest) => {
+export const wherecoach = async (payloadreq: PayloadRequest) => {
   if (getRoleFromUser(payloadreq.user) === "coach") {
     const teamids = await coachteams(payloadreq)
+    if (teamids.length === 0) return false
     return {team:{in:teamids.join(",")}} as Where
   } else {
     return false
@@ -49,6 +53,7 @@ const wherecoach = async (payloadreq: PayloadRequest) => {
 const teamwherecoach: FilterOptions = async ({req: payloadreq, user}) => {
   if (getRoleFromUser(user) === "coach") {
     const teamids = await coachteams(payloadreq)
+    if (teamids.length === 0) return false
     return {id:{in:teamids.join(",")}} as Where
   } else {
     return true

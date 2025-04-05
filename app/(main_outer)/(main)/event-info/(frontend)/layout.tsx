@@ -6,8 +6,8 @@ import type { Metadata } from 'next'
 import React from 'react'
 
 import { AdminBar } from '@/payload/components/AdminBar'
-import { Footer } from '@/payload/Footer/Component'
-import { Header } from '@/payload/Header/Component'
+// import { Footer } from '@/payload/Footer/Component'
+// import { Header } from '@/payload/Header/Component'
 import { Providers } from '@/payload/providers'
 // import { InitTheme } from '@/payload/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/payload/utilities/mergeOpenGraph'
@@ -36,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
       {/*<Header/>*/}
       {children}
-      <Footer/>
+      {/*<Footer/>*/}
     </Providers>
     //   </body>
     // </html>
@@ -48,6 +48,6 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
+    creator: 'Johnnie',
   },
 }

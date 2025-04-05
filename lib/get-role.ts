@@ -1,7 +1,7 @@
 import { Role, RoleList } from "@/lib/roles";
 import { BasePayload } from "payload";
 
-interface UserWithIdRole {
+export interface UserWithIdRole {
   id?: string;
   role?: string | null;
 }

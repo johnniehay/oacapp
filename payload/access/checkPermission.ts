@@ -21,7 +21,7 @@ export function checkFieldPermission( permission:Permission): FieldAccess {
 }
 
 export function checkConditionPermission( permission:Permission): Condition {
-  return ({ ctx }) => ((ctx && ctx.user) ? hasPermissionReq(permission, ctx.user) : false)
+  return (_data, _siblingData, { user }) => ((user) ? hasPermissionReq(permission, user) : false)
 }
 
 export function checkFieldPermissionOrIf( permission:Permission, condfunc: FieldAccess): FieldAccess {

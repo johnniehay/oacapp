@@ -17,6 +17,9 @@ const whereMyself = (payloadreq: PayloadRequest)=> {
 export const Users: CollectionConfig = {
   // populated by payload-authjs-custom
   slug: "users",
+  admin: {
+    useAsTitle: "email"
+  },
   access: {
     create: () => false,
     read: checkPermissionOrWhere("view:users",whereMyself),
