@@ -9,7 +9,7 @@ import { hasPermission } from "@/lib/permissions";
 import NavCard from "@/components/nav-card";
 import {
   IconArrowUpRight,
-  IconCalendarEvent,
+  IconCalendarEvent, IconContract,
   IconHome,
   IconInfoCircle,
   IconSettings, IconUsersGroup
@@ -19,8 +19,11 @@ import {
 export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean, className?: string }) {
   const payload = await getPayload({ config: configPromise })
   const session = await getLocalPayloadSession()
-  
-  const checkTeamPeopleAdmin = (await hasPermission("view:people")) || (await coachteamsquery(session?.user ,payload)).length > 0
+  const coachteamids = await coachteamsquery(session?.user ,payload) as string[]
+  const checkTeamPeopleAdmin = (await hasPermission("view:people")) || (coachteamids).length > 0
+  const coachteamadminurl =
+    coachteamids.length > 1 ? '/admin/collections/team?limit=10&page=1&'+encodeURIComponent('where[or][0][and][0][id][in]')+'='+coachteamids.join(',') :
+    coachteamids.length === 1 ? '/admin/collections/team/'+coachteamids[0] : ""
   console.log("checkTeamPeopleAdmin", checkTeamPeopleAdmin,(await hasPermission("view:people")),(await coachteamsquery(session?.user ,payload)))
   const eventInfoPages = await payload.find({
     collection: "pages",
@@ -41,7 +44,8 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
         return {href:`/event-info/${page.slug}`, label:page.title}})},
     {href:"/schedule", label:"Schedule", icon:IconCalendarEvent},
     {href:"/settings", label:"Settings", icon:IconSettings},
-    checkTeamPeopleAdmin && { href:'/admin/collections/people?columns=%5B"name"%2C"-user"%2C"team"%2C"role"%2C"-id"%2C"-updatedAt"%2C"createdAt"%5D', label:"Team Admin", icon:IconUsersGroup},
+    checkTeamPeopleAdmin && { href:'/admin/collections/people?columns='+encodeURIComponent('["name","-user","team","role","-id","-updatedAt","-createdAt","dietary_requirements","-allergies_and_other","-special_needs"]'), label:"Team People Admin", icon:IconUsersGroup},
+    checkTeamPeopleAdmin && { href:coachteamadminurl, label:"Team Admin", icon:IconContract},
   ]
 
   return navData.map((navItem) => (!navItem ? "" :

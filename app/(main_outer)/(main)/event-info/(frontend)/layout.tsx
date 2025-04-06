@@ -15,10 +15,11 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/payload/utilities/getURL'
+import { hasPermission } from '@/lib/permissions'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-
+  const canEditPage = await hasPermission("all:pages")
   return (
     // <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
     //   <head>
@@ -28,11 +29,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     //   </head>
     //   <body>
     <Providers>
-      <AdminBar
+      { canEditPage && <AdminBar
         adminBarProps={{
           preview: isEnabled,
         }}
-      />
+      />}
 
       {/*<Header/>*/}
       {children}

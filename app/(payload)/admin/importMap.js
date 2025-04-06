@@ -1,6 +1,7 @@
 import { AccountRowLabel as AccountRowLabel_f46c6aa763b35e61734ff23bde1ff3c6 } from '@/lib/payload-authjs-custom/components'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
+import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { FixedToolbarFeatureClient as FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HeadingFeatureClient as HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
@@ -34,12 +35,14 @@ import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloa
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_ef1777998f20cb87d581e9fb460d55bb } from '@/payload/Header/RowLabel'
 import { RowLabel as RowLabel_b1d02ac03d11f7b38650c3919ff7a625 } from '@/payload/Footer/RowLabel'
+import { default as default_c6f122b5a1a5c20de1109da9d8119e98 } from '@/components/payload-admin-header'
 import { SignInWithAuthjsButton as SignInWithAuthjsButton_f46c6aa763b35e61734ff23bde1ff3c6 } from '@/lib/payload-authjs-custom/components'
 
 export const importMap = {
   "@/lib/payload-authjs-custom/components#AccountRowLabel": AccountRowLabel_f46c6aa763b35e61734ff23bde1ff3c6,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
+  "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#FixedToolbarFeatureClient": FixedToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HeadingFeatureClient": HeadingFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
@@ -73,5 +76,6 @@ export const importMap = {
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/payload/Header/RowLabel#RowLabel": RowLabel_ef1777998f20cb87d581e9fb460d55bb,
   "@/payload/Footer/RowLabel#RowLabel": RowLabel_b1d02ac03d11f7b38650c3919ff7a625,
+  "@/components/payload-admin-header#default": default_c6f122b5a1a5c20de1109da9d8119e98,
   "@/lib/payload-authjs-custom/components#SignInWithAuthjsButton": SignInWithAuthjsButton_f46c6aa763b35e61734ff23bde1ff3c6
 }
