@@ -22,11 +22,20 @@ export type PeopleRole =
   | 'mentor'
   | 'team_member'
   | 'supporter'
+  | 'translator'
   | 'candidate-coach'
   | 'candidate-mentor'
   | 'candidate-member'
   | 'candidate-supporter'
+  | 'candidate-translator'
   | 'affiliated';
+/**
+ * For food provided during cultural night. For Other please specify below.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dietaryOption".
+ */
+export type DietaryOption = 'None' | 'Halal' | 'Kosher' | 'Vegetarian' | 'Vegan' | 'Other';
 /**
  * Supported timezones in IANA format.
  *
@@ -824,6 +833,11 @@ export interface Team {
   number: string;
   name: string;
   country?: string | null;
+  /**
+   * Contact information that other teams can use to get touch with you such as a team email or social-media page/handle
+   */
+  shared_contact?: string | null;
+  parking_req?: number | null;
   events?: {
     docs?: (string | Event)[];
     hasNextPage?: boolean;
@@ -855,10 +869,19 @@ export interface Event {
  */
 export interface Person {
   id: string;
+  /**
+   * Name that will be printed on lanyard
+   */
   name: string;
   user?: (string | null) | User;
   team?: (string | null) | Team;
   role: PeopleRole;
+  dietary_requirements: DietaryOption;
+  allergies_and_other?: string | null;
+  /**
+   * Any special needs or conditions that volunteers/judges needs to be aware of such as students with autism, or speech disorders. Add "difficulty walking" for anyone unable to make the 1.5km walk to the aquarium.
+   */
+  special_needs?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1508,6 +1531,8 @@ export interface TeamSelect<T extends boolean = true> {
   number?: T;
   name?: T;
   country?: T;
+  shared_contact?: T;
+  parking_req?: T;
   events?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1537,6 +1562,9 @@ export interface PeopleSelect<T extends boolean = true> {
   user?: T;
   team?: T;
   role?: T;
+  dietary_requirements?: T;
+  allergies_and_other?: T;
+  special_needs?: T;
   updatedAt?: T;
   createdAt?: T;
 }

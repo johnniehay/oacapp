@@ -2,8 +2,8 @@
 
 import { authActionClient } from "@/lib/safe-action";
 import { z } from "zod";
-import { peopleRoles, volunteerRoles } from "@/payload/collections/People";
-import { PeopleRole } from "@/payload-types";
+import { dietaryOptions, peopleRoles, volunteerRoles } from "@/payload/collections/People";
+import { PeopleRole, DietaryOption } from "@/payload-types";
 import { zfd } from "zod-form-data";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,20 +30,25 @@ const schemaUserSetup = zfd.formData({
     }
     return `candidate-${inrole}` as PeopleRole
   }),
-  teamids: z.string().transform((teamscsv,) => teamscsv.split(","))
-})
+  teamids: z.string().transform((teamscsv,) => teamscsv.split(",").filter(t => t !== '')),
+  dietary: z.custom<DietaryOption>((data) => dietaryOptions.includes(data)).optional()
+}).refine(({ roleGroup, teamids }) => roleGroup !== "team" || (roleGroup === "team") && teamids.length !== 0,
+  {
+    path: ["teamids"],
+    message: "No team selected",
+  })
 
 export const doUserSetup = authActionClient
   .metadata({ actionName: "doUserSetup" })
   .schema(schemaUserSetup)
-  .action(async ({ parsedInput: { user_name, roleGroup, role, teamids }, ctx: { user, payload } }) => {
+  .action(async ({ parsedInput: { user_name, roleGroup, role, teamids, dietary }, ctx: { user, payload } }) => {
     console.log("doUserSetup",{roleGroup,role,teamids});
     const isVolunteer = roleGroup === "volunteer"
     const userpeople = await payload.find({collection:"people",depth:0,where:{user:{equals:user.id}}})
     const userpeoplebyteam = objectFromArrayByKey(userpeople.docs,"team")
     for (const teamid of teamids) {
       if (!(teamid in userpeoplebyteam)) {
-        await payload.create({collection:"people", data:{name:user_name, user:user.id, team:teamid,role: isVolunteer?"affiliated":role}})
+        await payload.create({collection:"people", data:{name:user_name, user:user.id, team:teamid,role: isVolunteer?"affiliated":role, dietary_requirements: dietary??"Other"}})
       }
     }
     const update_user_name = (user_name !== user.name) ? {name:user_name} : {}

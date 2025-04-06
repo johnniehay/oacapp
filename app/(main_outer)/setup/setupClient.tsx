@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { doUserSetup } from "@/app/(main_outer)/setup/setup-actions";
 import { ModalStateContext } from "@/components/modal";
 import { useAction } from "next-safe-action/hooks";
+import { dietaryOptions } from "@/payload/collections/People";
 
 type LabeledValue = {
   label:string,
@@ -34,10 +35,14 @@ export function SetupClient(props: SetupClientProps) {
   const [userName, setUserName] = useState(props.user_name ?? "")
   const [roleGroupError, setRoleGroupError] = useState<string>("")
   const [roleError, setRoleError] = useState<string>("")
+  const [teamidsError, setTeamidsError] = useState<string>("")
+  const [dietaryError, setDietaryError] = useState<string>("")
   const {close} = useContext(ModalStateContext)
   const { execute: dosetupaction } = useAction(doUserSetup,{onSuccess:close, onError:(error) => {
     setRoleGroupError(error.error.validationErrors?.roleGroup?._errors?.join(" ") ?? "")
     setRoleError(error.error.validationErrors?.role?._errors?.join(" ") ?? "")
+    setTeamidsError(error.error.validationErrors?.teamids?._errors?.join(" ") ?? "")
+    setDietaryError(error.error.validationErrors?.dietary?._errors?.join(" ") ?? "")
   }})
   return <>
     <form action={dosetupaction}>
@@ -48,6 +53,7 @@ export function SetupClient(props: SetupClientProps) {
       value={selectedRoleGroup}
       error={roleGroupError}
       onChange={(e) => {setSelectedRoleGroup(e);setRoleGroupError("")}}
+      required
     >
       <Group mt="xs">
         {roleGroups.map((rolegroup) => {
@@ -59,10 +65,12 @@ export function SetupClient(props: SetupClientProps) {
     <Select name="role" label={"Role"} description={selectedRoleGroup in roleDescription && roleDescription[selectedRoleGroup]}
             error={roleError}
             onChange={() => {setRoleError("")}}
-            data={rolesbyGroup[selectedRoleGroup]
-    }/>
+            data={rolesbyGroup[selectedRoleGroup]}
+            required
+    />
     <MultiSelect name="teamids" label={"Team"} description={selectedRoleGroup in teamDescription && teamDescription[selectedRoleGroup]}
-            data={teams}/>
+            data={teams} error={teamidsError} required={selectedRoleGroup==="team"}/>
+    {selectedRoleGroup==="team" && <Select name="dietary" label={"Dietary Requirement"} error={dietaryError} data={dietaryOptions} required></Select>}
     <Button type={"submit"}>Submit</Button>
   </form>
   </>;

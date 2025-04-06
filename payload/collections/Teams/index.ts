@@ -1,7 +1,43 @@
-import type { CollectionConfig, Field } from "payload";
+import type { CollectionConfig } from "payload";
 import { anyone } from "@/payload/access/anyone";
-import { checkPermission } from "@/payload/access/checkPermission";
+import {
+  checkFieldPermission,
+  checkFieldPermissionOrIf,
+  checkPermission,
+  checkPermissionOrWhere
+} from "@/payload/access/checkPermission";
+import { coachteamsquery, teamwherecoachReq } from "@/payload/collections/People";
+import { Permission } from "@/lib/roles";
 
+const viewonlyunlesspermission = {
+  create: checkFieldPermission("create:team"),
+  read: () => true,
+  update: checkFieldPermission("update:team"),
+}
+
+const checkFieldPermissionOrCoach = (permission: Permission) => checkFieldPermissionOrIf(permission,async (args) => {
+    const { id, req: { user, payload } } = args
+    // console.log("shared_contact update access", user?.role,getRoleFromUser(user), id, doc?.id)
+    if (id === undefined) return true //not necessary to check coach as just a pre-check
+    const teamids = await coachteamsquery(user, payload)
+    // console.log("shared_contact update access teamids", teamids)
+    if (typeof id !== "string") {
+      console.log("Got id as %s in Teams shared_contact update access", typeof id, id)
+      return false
+    }
+    return teamids.includes(id);
+  })
+
+const viewonlybutcoachupdateable = {
+  ...viewonlyunlesspermission,
+  update: checkFieldPermissionOrCoach("update:team"),
+}
+
+const viewteamdetailsbutcoachupdateable = {
+  create: checkFieldPermission("create:team"),
+  read: checkFieldPermissionOrCoach("view:team:details"),
+  update: checkFieldPermissionOrCoach("update:team"),
+}
 
 export const Teams: CollectionConfig<"team"> = {
   slug: "team",
@@ -10,34 +46,19 @@ export const Teams: CollectionConfig<"team"> = {
     create: checkPermission("create:team"),
     delete: checkPermission("remove:team"),
     read: anyone,
-    update: checkPermission("update:team"),
+    update: checkPermissionOrWhere("update:team",teamwherecoachReq),
   },
   admin: {useAsTitle:"number"},
   fields:[
-    { name:"number", type:"text", required:true,unique:true, },
-    { name:"name", type:"text", required:true, unique:true },
-    { name:"country", type:"text"},
+    { name:"number", type:"text", required:true,unique:true, access:viewonlyunlesspermission },
+    { name:"name", type:"text", required:true, unique:true, access:viewonlyunlesspermission },
+    { name:"country", type:"text", access:viewonlyunlesspermission },
 
-    { name:"events", type:"join", collection:"event", on:"teams", defaultLimit:0}
-    // endpoint       String   @unique
-    // { name:"endpoint", type:"text", required:true },
-    // // expirationTime Int?
-    // { name:"expirationTime", type:"date" },
-    // // keys_p256dh    String
-    // // keys_auth      String
-    // { name:"keys", type:"json", jsonSchema: {
-    //     schema: {
-    //       type: "object",
-    //       properties: { p256dh: { type: "string" }, auth: { type: "string" } },
-    //       required: ["p256dh", "auth"]
-    //     },
-    //     fileMatch: ['notification://keys'],
-    //     uri: 'notification://keys'
-    //   }, required:true },
-    // // topic          String
-    // { name:"topics", type:"select", interfaceName:"NotificationTopic", hasMany:true, options:[{label:"Test Notifications", value:"test"}] },
-    // // userId         String?
-    // { name: "user", type:"relationship",relationTo:"users",hasMany:false}
-
+    { name:"shared_contact", label:"Team contact details visible to other Teams", type:"text",
+      admin:{description:"Contact information that other teams can use to get touch with you such as a team email or social-media page/handle"},
+      access:viewonlybutcoachupdateable,
+    },
+    { name: "parking_req", label: "Number of parking bays required", type: "number", access:viewteamdetailsbutcoachupdateable },
+    { name:"events", type:"join", collection:"event", on:"teams", defaultLimit:0},
   ]
 }

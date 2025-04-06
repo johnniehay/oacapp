@@ -12,6 +12,7 @@ const roleToNotificationTopicsMap: RoleToNotificationTopicsMap = {
   "coach": ["team",...defaultNotifcationTopics],
   "mentor":["team",...defaultNotifcationTopics],
   "supporter":["team",...defaultNotifcationTopics],
+  "translator":["team",...defaultNotifcationTopics],
   "team_member":["team",...defaultNotifcationTopics],
   "volunteer":["volunteer",...defaultNotifcationTopics],
   "judge": ["volunteer",...defaultNotifcationTopics],
