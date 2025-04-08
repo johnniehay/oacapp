@@ -8,12 +8,12 @@ export interface ProviderWithUrls {
   id: string
   name: string
 }
-
-const excludeProviders: string[]  = ['google']
+const penv = process.env
+const excludeProviders: string[] = ( penv.HIDE_AUTH_GOOGLE ?? false ) ? ['google'] : []
 
 export default async function CustomSigninPage() {
   // console.log("providers",withPayloadAuthConfig.providers)
-  const providers: ProviderWithUrls[] = withPayloadAuthConfig.providers.filter(provider => {
+  const providers: ProviderWithUrls[] = withPayloadAuthConfig.providers.toReversed().filter(provider => {
     if(typeof provider !== 'function' && !excludeProviders.includes(provider.id)){
       return true
     } else return false

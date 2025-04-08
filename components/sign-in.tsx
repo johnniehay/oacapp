@@ -1,6 +1,7 @@
 import { signIn } from "@/auth"
-import { Button, Divider, Popover, PopoverDropdown, PopoverTarget, TextInput } from "@mantine/core";
+import { Button, Divider, Popover, PopoverDropdown, PopoverTarget, TextInput, Text } from "@mantine/core";
 import Form from "next/form";
+import GoogleSigninButton from "@/components/google/google-signin-button";
 
 export default function SignIn({ className }: { className?: string }) {
   async function doGoogleSignIn() {
@@ -12,6 +13,9 @@ export default function SignIn({ className }: { className?: string }) {
     "use server"
     await signIn("nodemailer", formData)
   }
+
+  const penv = process.env
+  const hidegoogle: boolean = !!( penv.HIDE_AUTH_GOOGLE ?? false )
 
   return (
     // <form
@@ -27,12 +31,15 @@ export default function SignIn({ className }: { className?: string }) {
         <Button>Sign in</Button>
       </PopoverTarget>
       <PopoverDropdown>
-        <Button onClick={doGoogleSignIn} fullWidth>Sign in with Google</Button>
-        <Divider mt="xs" label="or" labelPosition="center"/>
         <Form action={doEmailSignIn}>
           <TextInput name="email" label={"Email"} placeholder={"email@example.com"}/>
-          <Button type={"submit"} fullWidth>Sign in with email</Button>
+          <Button classNames={{root:"gsi-material-button",inner:"gsi-material-button-content-wrapper",label:"gsi-material-button-contents justify-center"}} type={"submit"} fullWidth>Sign in with email</Button>
         </Form>
+        { !hidegoogle && <>
+          <Divider mt="xs" label="or" labelPosition="center"/>
+          <Text size={"sm"} fw={500}>For Volunteers only</Text>
+          <GoogleSigninButton onClick={doGoogleSignIn} />
+        </>}
       </PopoverDropdown>
 
 

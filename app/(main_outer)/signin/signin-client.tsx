@@ -26,7 +26,9 @@ export default function CustomSigninPageClient(
   }
   return <>
     <style key={"pagecss"}>{pagecss}</style>
-    <style key={"provider_image_height"}>{".signin .button img { height: 24px; }"}</style>
+    <style key={"provider_image_height"}>{".signin .button img { height: 24px; order: -1; margin-right: 12px }"}</style>
+    <style key={"provider_buttons"}>{"button { justify-content: center; box-shadow: 1px 1px 3px #1f1f1f }"}</style>
+    <style key={"provider_mail_button"}>{"#submitButton { --color-info-text: #1f1f1f; --color-info: #ffffff }"}</style>
     <div className={`__next-auth-theme-${ signinprops.theme?.colorScheme ?? "auto" }`}>
       <Suspense fallback={ReactPreactSigninPageBridge(SigninPage,signinprops)}>
         <CustomSigninPageClientWithCallbackUrl signinprops={signinprops}/>
