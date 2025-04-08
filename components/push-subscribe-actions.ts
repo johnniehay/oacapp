@@ -152,7 +152,8 @@ export const sendNotification = authActionClient
           JSON.stringify({
             title: 'Test Notification',
             body: message,
-            icon: '/icon.png',
+            icon: '/icon-192.png',
+            url: '/'
           })
         )
         // return {success: true}

@@ -9,18 +9,19 @@ import {
   setSubscriptionTopics
 } from './push-subscribe-actions'
 import {
-  Button,
+  Button, Collapse, Divider,
   Fieldset,
   Group, InputDescription,
   InputLabel,
-  InputWrapper,
   MultiSelect,
   SegmentedControl,
   Switch,
   TextInput
 } from "@mantine/core";
 import { subscribeContext } from "@/components/client-shell";
-import { NotificationTopic, NotificationTopics } from "@/lib/types";
+import type { NotificationTopic, NotificationTopics } from "@/lib/types";
+import { IconChevronDown } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 
 
 
@@ -47,6 +48,7 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
   const [message, setMessage] = useState('')
   const [topics, setTopics] = useState<NotificationTopics>([])
   const lastTopics = useRef<NotificationTopics>([])
+  const [open, {toggle}] = useDisclosure(false)
 
 
   useEffect(() => {
@@ -187,7 +189,7 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
 
   return (
     <>
-      <Fieldset legend="Push Notifications">
+      <Fieldset legend="Push Notifications (recommended)">
         {/*<Switch*/}
         {/*  // defaultChecked={!!subscription}*/}
         {/*  checked={!!subscription}*/}
@@ -213,6 +215,8 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
             onChange={handleOnChangeSubscribeAll}
           />
         </Group>
+        <Divider label={<IconChevronDown/>} onClick={toggle} />
+        <Collapse in={open}>
         {visibleTopics.includes("event-updates") &&
           <Switch
             checked={topics.includes("event-updates")}
@@ -273,6 +277,7 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
               onChange={(e) => setTopics(e as NotificationTopics)}
             />
           </>}
+        </Collapse>
       </Fieldset>
     </>
   )

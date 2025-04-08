@@ -25,7 +25,7 @@ services:
       - mongoconfigdb:/data/configdb
 
   prodapp:
-    build:
+    build: &build-prod
       context: https://github.com/johnniehay/oacapp.git#main
 #      context: ../../.
       dockerfile: docker/prod/Dockerfile
@@ -34,10 +34,18 @@ services:
         local: .
       secrets:
         - env-production
-    env_file:
+    env_file: &build-prod-env
       - ./.env.production
 #    ports:
 #      - "3003:3000"
+    volumes:
+      - prodmedia:/app/public/media
+
+  prodapp-builder:
+    build:
+      <<: *build-prod
+      target: builder
+    env_file: *build-prod-env
     volumes:
       - prodmedia:/app/public/media
 

@@ -42,19 +42,28 @@ services:
       - mongoconfigdb:/data/configdb
 
   devapp:
-    build:
+    build: &build-dev
       context: https://github.com/johnniehay/oacapp.git#dev
 #      context: ../../.
       dockerfile: docker/dev/Dockerfile
 #      dockerfile: /home/johnnie/MEGA/code/oacapp/docker/dev/Dockerfile
       additional_contexts:
         local: ../../.
-    env_file:
+    env_file: &build-dev-env
       - ./.env.dev
     ports:
       - 146.64.84.46:3002:3000
     volumes:
       - devmedia:/app/public/media
+
+  devapp-builder:
+    build:
+      <<: *build-dev
+      target: builder
+    env_file: *build-dev-env
+    volumes:
+      - devmedia:/app/public/media
+
 
 networks:
   postgres:

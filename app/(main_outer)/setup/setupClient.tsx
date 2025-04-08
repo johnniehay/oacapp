@@ -6,6 +6,9 @@ import { doUserSetup } from "@/app/(main_outer)/setup/setup-actions";
 import { ModalStateContext } from "@/components/modal";
 import { useAction } from "next-safe-action/hooks";
 import { dietaryOptions } from "@/payload/collections/People";
+import PushNotificationSettingsClient from "@/components/push-notification-settings-client";
+import { roleToNotificationTopicsMap } from "@/lib/role-to-notificationtopics";
+import { type Role, RoleList } from "@/lib/roles";
 
 type LabeledValue = {
   label:string,
@@ -33,6 +36,7 @@ export function SetupClient(props: SetupClientProps) {
   const {teams, roleGroups, rolesbyGroup}: SetupClientProps = props
   const [selectedRoleGroup, setSelectedRoleGroup] = useState<string>("")
   const [userName, setUserName] = useState(props.user_name ?? "")
+  const [role, setRole] = useState("default")
   const [roleGroupError, setRoleGroupError] = useState<string>("")
   const [roleError, setRoleError] = useState<string>("")
   const [teamidsError, setTeamidsError] = useState<string>("")
@@ -44,7 +48,7 @@ export function SetupClient(props: SetupClientProps) {
     setTeamidsError(error.error.validationErrors?.teamids?._errors?.join(" ") ?? "")
     setDietaryError(error.error.validationErrors?.dietary?._errors?.join(" ") ?? "")
   }})
-  return <>
+  return (<>
     <form action={dosetupaction}>
       <TextInput name="user_name" label="Your Name" description="Preffered name you wish to use at OAC, will also be printed on lanyard" value={userName} onChange={(e) => setUserName(e.target.value)} />
     <RadioGroup
@@ -64,14 +68,17 @@ export function SetupClient(props: SetupClientProps) {
     </RadioGroup>
     <Select name="role" label={"Role"} description={selectedRoleGroup in roleDescription && roleDescription[selectedRoleGroup]}
             error={roleError}
-            onChange={() => {setRoleError("")}}
+            onChange={(e) => {setRole(e??"default"); setRoleError("")}}
             data={rolesbyGroup[selectedRoleGroup]}
             required
     />
     <MultiSelect name="teamids" label={"Team"} description={selectedRoleGroup in teamDescription && teamDescription[selectedRoleGroup]}
             data={teams} error={teamidsError} required={selectedRoleGroup==="team"}/>
     {selectedRoleGroup==="team" && <Select name="dietary" label={"Dietary Requirement"} error={dietaryError} data={dietaryOptions} required></Select>}
-    <Button type={"submit"}>Submit</Button>
-  </form>
-  </>;
+      <PushNotificationSettingsClient visibleTopics={RoleList.includes(role as Role) ? roleToNotificationTopicsMap[role as Role] : roleToNotificationTopicsMap["default"]}/>
+      <Button type={"submit"}>Submit</Button>
+    </form>
+    {/*<PushNotificationSettingsClient visibleTopics={["event-broadcast","event-updates", "all"]}/>*/}
+    {/*<PushNotificationSettingsClient visibleTopics={role in roleToNotificationTopicsMap ? roleToNotificationTopicsMap[role as keyof typeof roleToNotificationTopicsMap] : roleToNotificationTopicsMap["default"]}/>*/}
+  </>);
 }

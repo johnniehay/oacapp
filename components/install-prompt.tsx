@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { Button, Fieldset } from "@mantine/core";
 
 export default function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false)
@@ -19,9 +20,8 @@ export default function InstallPrompt() {
   }
 
   return (
-    <div>
-      <h3>Install App</h3>
-      <button>Add to Home Screen</button>
+    <Fieldset legend={"Install App"}>
+      <Button>Add to Home Screen</Button>
       {isIOS && (
         <p>
           To install this app on your iOS device, tap the share button
@@ -36,6 +36,6 @@ export default function InstallPrompt() {
           </span>.
         </p>
       )}
-    </div>
+    </Fieldset>
   )
 }
