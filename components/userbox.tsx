@@ -51,7 +51,7 @@ export default async function Userbox({ className }: { className?: string }) {
       <MenuDropdown>
         {realRole==="admin" && (
           <MenuItem closeMenuOnClick={false}>
-            <Select label={"Override Role"} data={RoleList} onChange={onChangeRoleOverride}/>
+            <Select label={"Override Role"} data={RoleList} onChange={onChangeRoleOverride} defaultValue={userRole}/>
           </MenuItem>
         )}
         <MenuItem onClick={doSignOut}>
