@@ -5,7 +5,7 @@ import oacLogo from "@/public/oac-logo.jpg";
 import { IconArrowLeft, IconChevronLeft } from "@tabler/icons-react";
 import Link from "next/link";
 
-export default async function OACAdminHeader() {
+export async function OACAdminHeader() {
   return (
     <header>
       <div style={{height:"40px", display:"flex", flexDirection:"row", alignItems:"center"}}>

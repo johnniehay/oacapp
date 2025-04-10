@@ -6,7 +6,7 @@ import { mergePeople } from "@/payload/collections/People/merge-server-action";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 
-export default function PeopleMergeButton( ){
+export function PeopleMergeButton( ){
   const { selected, count } = useSelection()
   const {executeAsync:executeMergePeople} = useAction(mergePeople,{onSuccess:({data}) => setMergeResult(data?.error??"")})
   const [mergeResult, setMergeResult] = useState("")
