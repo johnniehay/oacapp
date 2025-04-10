@@ -26,7 +26,7 @@ COPY . .
 RUN #--mount=type=secret,id=env-production ln -s /run/secrets/env-production .env.production
 RUN #--mount=type=secret,id=env-production,target=/app/.env.production ls -la /app/.
 #COPY --from=local .env.production .env.production
-COPY --from=local package.json .
+#COPY --from=local package.json .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
