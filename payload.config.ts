@@ -51,7 +51,7 @@ export default buildConfig({
   admin: {
     user: "users",
     components: {
-      header: ['@/components/payload-admin-header'],
+      header: ['@/components/payload-admin-header#OACAdminHeader'],
     },
     livePreview: {
       breakpoints: [

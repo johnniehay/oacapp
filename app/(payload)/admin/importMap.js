@@ -31,11 +31,12 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugComponent as SlugComponent_2f7cb6d15a7be4cbd9d669ac9f96d997 } from '@/payload/fields/slug/SlugComponent'
+import { PeopleMergeButton as PeopleMergeButton_b26c09f3e435b0cb4bd3f135e0e8ade6 } from '@/payload/collections/People/merge-button'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_ef1777998f20cb87d581e9fb460d55bb } from '@/payload/Header/RowLabel'
 import { RowLabel as RowLabel_b1d02ac03d11f7b38650c3919ff7a625 } from '@/payload/Footer/RowLabel'
-import { default as default_c6f122b5a1a5c20de1109da9d8119e98 } from '@/components/payload-admin-header'
+import { OACAdminHeader as OACAdminHeader_06217b5dccf65478d9eabd3bb89e4a1d } from '@/components/payload-admin-header'
 import { SignInWithAuthjsButton as SignInWithAuthjsButton_f46c6aa763b35e61734ff23bde1ff3c6 } from '@/lib/payload-authjs-custom/components'
 
 export const importMap = {
@@ -72,10 +73,11 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@/payload/fields/slug/SlugComponent#SlugComponent": SlugComponent_2f7cb6d15a7be4cbd9d669ac9f96d997,
+  "@/payload/collections/People/merge-button#PeopleMergeButton": PeopleMergeButton_b26c09f3e435b0cb4bd3f135e0e8ade6,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/payload/Header/RowLabel#RowLabel": RowLabel_ef1777998f20cb87d581e9fb460d55bb,
   "@/payload/Footer/RowLabel#RowLabel": RowLabel_b1d02ac03d11f7b38650c3919ff7a625,
-  "@/components/payload-admin-header#default": default_c6f122b5a1a5c20de1109da9d8119e98,
+  "@/components/payload-admin-header#OACAdminHeader": OACAdminHeader_06217b5dccf65478d9eabd3bb89e4a1d,
   "@/lib/payload-authjs-custom/components#SignInWithAuthjsButton": SignInWithAuthjsButton_f46c6aa763b35e61734ff23bde1ff3c6
 }

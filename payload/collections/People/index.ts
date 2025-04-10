@@ -90,6 +90,9 @@ export const People: CollectionConfig<"people"> = {
   },
   admin: {
     useAsTitle:"name",
+    components: {
+      beforeList: ['@/payload/collections/People/merge-button#PeopleMergeButton'],
+    }
   },
   fields:[
     {name:"name",type:"text",label:"Name",required:true, admin:{description: "Name that will be printed on lanyard"}},
