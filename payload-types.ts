@@ -25,7 +25,7 @@ export type PeopleRole =
   | 'translator'
   | 'candidate-coach'
   | 'candidate-mentor'
-  | 'candidate-member'
+  | 'candidate-team_member'
   | 'candidate-supporter'
   | 'candidate-translator'
   | 'affiliated';

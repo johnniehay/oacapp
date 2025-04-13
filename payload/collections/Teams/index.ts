@@ -48,7 +48,7 @@ export const Teams: CollectionConfig<"team"> = {
     read: anyone,
     update: checkPermissionOrWhere("update:team",teamwherecoachReq),
   },
-  admin: {useAsTitle:"number"},
+  admin: {useAsTitle:"name"},
   fields:[
     { name:"number", type:"text", required:true,unique:true, access:viewonlyunlesspermission },
     { name:"name", type:"text", required:true, unique:true, access:viewonlyunlesspermission },
