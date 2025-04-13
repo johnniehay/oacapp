@@ -10,7 +10,7 @@ export default async function Page() {
   const session = await getLocalPayloadSession()
   const payload = await getPayload({config})
   if (!session || !session.user) redirect("/api/auth/signin")
-  const teamselect = (await payload.find({collection:"team",select:{name:true,number:true}})).docs.map((t) => { return {label:t.name,value:t.id} });
+  const teamselect = (await payload.find({collection:"team",pagination:false,depth:0,sort:'name',select:{name:true,number:true}})).docs.map((t) => { return {label:t.name,value:t.id} });
   return (
     <div>
       <Title order={2}> Welcome {session.user.name ?? session.user.email} </Title>

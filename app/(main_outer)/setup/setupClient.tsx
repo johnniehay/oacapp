@@ -29,7 +29,7 @@ const roleDescription: { [r:string]: string } = {
 
 const teamDescription: { [r:string]: string } = {
   "team":"Team(s) who you are part of",
-  "volunteer":"Teams who want to see updates for",
+  "volunteer":"Optionally select any Teams you want to see updates for",
   "":"Select above first"}
 
 export function SetupClient(props: SetupClientProps) {
