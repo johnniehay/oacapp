@@ -20,11 +20,11 @@ const day_programme_events: ({
     "start": "2025-05-07 11:00:00",
     "end": "2025-05-07 13:00:00"
   },
-  {
-    "title": "Lunch",
-    "start": "2025-05-07 13:00:00",
-    "end": "2025-05-07 13:30:00"
-  },
+  // {
+  //   "title": "Lunch",
+  //   "start": "2025-05-07 13:00:00",
+  //   "end": "2025-05-07 13:30:00"
+  // },
   {
     "title": "Coaches Meeting",
     "start": "2025-05-07 13:00:00",
@@ -62,12 +62,12 @@ const day_programme_events: ({
     "start": "2025-05-08 11:00:00",
     "end": "2025-05-08 13:50:00"
   },
-  {
-    "title": "Lunch",
-    "start": "2025-05-08 12:00:00",
-    "end": "2025-05-08 12:30:00",
-    "className": "ec-fullwidth-event"
-  },
+  // {
+  //   "title": "Lunch",
+  //   "start": "2025-05-08 12:00:00",
+  //   "end": "2025-05-08 12:30:00",
+  //   "className": "ec-fullwidth-event"
+  // },
   {
     "title": "Games - Round 2",
     "start": "2025-05-08 13:50:00",
@@ -88,11 +88,11 @@ const day_programme_events: ({
     "start": "2025-05-09 10:50:00",
     "end": "2025-05-09 12:00:00"
   },
-  {
-    "title": "Lunch",
-    "start": "2025-05-09 12:00:00",
-    "end": "2025-05-09 12:30:00"
-  },
+  // {
+  //   "title": "Lunch",
+  //   "start": "2025-05-09 12:00:00",
+  //   "end": "2025-05-09 12:30:00"
+  // },
   {
     "title": "Medal Ceremony",
     "start": "2025-05-09 12:30:00",
@@ -108,10 +108,10 @@ const day_programme_events: ({
     "start": "2025-05-09 16:00:00",
     "end": "2025-05-09 17:00:00"
   },
-  {
-    "title": "Volunteer Close-out",
-    "start": "2025-05-09 16:00:00",
-    "end": "2025-05-09 17:30:00"
-  }
+  // {
+  //   "title": "Volunteer Close-out",
+  //   "start": "2025-05-09 16:00:00",
+  //   "end": "2025-05-09 17:30:00"
+  // }
 ]
 export default day_programme_events;

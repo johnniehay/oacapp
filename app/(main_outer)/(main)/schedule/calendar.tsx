@@ -8,6 +8,7 @@ import '@event-calendar/core/index.css';
 import '@/app/(main_outer)/(main)/schedule/calendar.css';
 // import {SvelteComponent} from "svelte";
 import { useLayoutEffect, useRef } from "react";
+import { useMediaQuery } from "@mantine/hooks";
 
 // function SvelteWrapper<ComponentType>(Component: SvelteComponent) {
 //   return (props: ComponentType.ComponentProps) => {
@@ -43,7 +44,7 @@ export function CalendarComponent(props: Calendar.ComponentProps) {
     return () => {
       calRef.current?.destroy()
     }
-  }, []);
+  }, [props]);
   // const SvelteCalendar = SvelteWrapper<Calendar>(Calendar);
 
   return (<div ref={svelteRef}></div>)
@@ -59,8 +60,17 @@ export function CalendarList(props: CalendarOptionsProps) {
   return (<CalendarComponent plugins={[CalList]} {...props}/>)
 }
 
-export function CalendarTimeGridOrList(props: CalendarOptionsProps) {
-  return (<CalendarComponent plugins={[TimeGrid,CalList]} {...props}/>)
+export function CalendarTimeGridOrList(props: CalendarOptionsProps & {overrideDaysOnWidth?: boolean}) {
+  const {overrideDaysOnWidth, ...origprops} = props
+  // const mqarr = overrideDaysOnWidth?.entries().map(mqstr => useMediaQuery(mqstr,false) )
+  const mqsingle = useMediaQuery('(max-width: 500px)',false)
+  const mqdouble = useMediaQuery('(max-width: 700px) and (min-width: 500px)',false)
+  const overriddenoptions = overrideDaysOnWidth && (mqsingle || mqdouble) ? {...origprops.options, duration: mqsingle ? {days: 1} : {days: 2}} : origprops.options
+  const overriddenprops = overrideDaysOnWidth && (mqsingle || mqdouble) ? {...origprops, options:overriddenoptions,}: origprops
+  return (<>
+    {/*<div>{"mq"+mq}</div>*/}
+    <CalendarComponent plugins={[TimeGrid,CalList]} {...overriddenprops}/>
+  </>)
 }
 // let ec = new Calendar({
 //     target: document.getElementById('ec'),

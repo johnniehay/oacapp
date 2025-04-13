@@ -3,6 +3,10 @@
     left: 0% !important;
 }
 
+.ec-event {
+    box-shadow: inset 0 0 2px 0px var(--ec-border-color);
+}
+
 .ec-event-body {
     flex-wrap: wrap;
 }
