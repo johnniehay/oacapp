@@ -8,8 +8,8 @@ import { Media } from '@/payload/collections/Media'
 import { Pages } from '@/payload/collections/Pages'
 import { Updates } from '@/payload/collections/Updates'
 import { Users } from '@/payload/collections/Users'
-import { Footer } from '@/payload/Footer/config'
-import { Header } from '@/payload/Header/config'
+import { Footer } from '@/payload/globals/Footer/config'
+import { Header } from '@/payload/globals/Header/config'
 import { plugins } from '@/payload/plugins'
 import sharp from "sharp";
 import { defaultLexical } from "@/payload/fields/defaultLexical";
@@ -19,6 +19,7 @@ import { Events } from "@/payload/collections/Events";
 import { People } from "@/payload/collections/People";
 import { AdminRoleOverride } from "@/payload/collections/AdminRoleOverride";
 import { updateRoleOverridesCache } from "@/lib/get-role";
+import { EventConfig } from "@/payload/globals/EventConfig";
 // import {SignInWithAuthjsButton} from "@/components/SignInWithAuthjsButton";
 
 export default buildConfig({
@@ -44,7 +45,7 @@ export default buildConfig({
     // }
   Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events,People, AdminRoleOverride],
 
-  globals: [Header, Footer],
+  globals: [Header, Footer, EventConfig],
 
   sharp,
 

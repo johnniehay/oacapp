@@ -12,7 +12,7 @@ export const peopleRoleOptions =[
   {label:"Translator",value:"translator"},
   {label:"Candidate Coach",value:"candidate-coach"},
   {label:"Candidate Mentor",value:"candidate-mentor"},
-  {label:"Candidate Team Member",value:"candidate-member"},
+  {label:"Candidate Team Member",value:"candidate-team_member"},
   {label:"Candidate Supporter",value:"candidate-supporter"},
   {label:"Candidate Translator",value:"candidate-translator"},
   {label:"Affiliated",value:"affiliated"},

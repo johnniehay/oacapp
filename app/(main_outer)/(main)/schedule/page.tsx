@@ -12,11 +12,13 @@ export default function ScheduleHome() {
       duration: { days: 3 },
       date: "2025-05-07",
       slotMinTime: "08:00:00",
-      slotMaxTime: "20:00:00",
+      slotMaxTime: "21:00:00",
       slotEventOverlap: false,
       slotDuration: "00:30:00",
+      validRange:{start:"2025-05-07",end:"2025-05-09"},
       events: dayProgrammeEvents,
       headerToolbar:{start: 'title', center: 'timeGridDay listDay', end: 'today prev,next'},
+      allDaySlot: false,
       nowIndicator: true
     }}
     overrideDaysOnWidth={true}

@@ -70,13 +70,13 @@ const day_programme_events: ({
   // },
   {
     "title": "Games - Round 2",
-    "start": "2025-05-08 13:50:00",
+    "start": "2025-05-08 14:20:00",
     "end": "2025-05-08 16:10:00"
   },
   {
     "title": "Cape Town Aquarium Excursion",
-    "start": "2025-05-08 17:00:00",
-    "end": "2025-05-08 19:00:00"
+    "start": "2025-05-08 18:00:00",
+    "end": "2025-05-08 21:00:00"
   },
   {
     "title": "Games Round 3",

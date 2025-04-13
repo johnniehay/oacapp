@@ -50,7 +50,11 @@ export function CalendarComponent(props: Calendar.ComponentProps) {
   return (<div ref={svelteRef}></div>)
 }
 
-type CalendarOptionsProps = Omit<Calendar.ComponentProps, "plugins">
+interface additionalCalendarOptions {
+  validRange?: { start: string, end: string };
+}
+
+type CalendarOptionsProps = Omit<Calendar.ComponentProps, "plugins"> & { options: additionalCalendarOptions }
 
 export function CalendarTimeGrid(props: CalendarOptionsProps) {
   return (<CalendarComponent plugins={[TimeGrid]} {...props}/>)
