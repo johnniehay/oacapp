@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import type { Media, Page, Update, Config } from '../payload-types'
+import type { Media, Page, Update, Config } from '@/payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
@@ -27,8 +27,8 @@ export const generateMeta = async (args: {
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+    ? doc?.meta?.title + ' | OAC App'
+    : 'OAC App'
 
   return {
     description: doc?.meta?.description,

@@ -2,7 +2,7 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 
-import type { Update } from '../../../payload-types'
+import type { Update } from '@/payload-types'
 
 export const revalidateUpdate: CollectionAfterChangeHook<Update> = ({
                                                                       doc,

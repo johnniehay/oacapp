@@ -34,8 +34,8 @@ import { SlugComponent as SlugComponent_2f7cb6d15a7be4cbd9d669ac9f96d997 } from 
 import { PeopleMergeButton as PeopleMergeButton_b26c09f3e435b0cb4bd3f135e0e8ade6 } from '@/payload/collections/People/merge-button'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
-import { RowLabel as RowLabel_ef1777998f20cb87d581e9fb460d55bb } from '@/payload/globals/Header/RowLabel'
-import { RowLabel as RowLabel_b1d02ac03d11f7b38650c3919ff7a625 } from '@/payload/globals/Footer/RowLabel'
+import { RowLabel as RowLabel_19e8a9033e6a2d5d6a04b3762ec81d80 } from '@/payload/globals/Header/RowLabel'
+import { RowLabel as RowLabel_d2aff3abcb7b90b04c6a0836d1455041 } from '@/payload/globals/Footer/RowLabel'
 import { OACAdminHeader as OACAdminHeader_06217b5dccf65478d9eabd3bb89e4a1d } from '@/components/payload-admin-header'
 import { SignInWithAuthjsButton as SignInWithAuthjsButton_f46c6aa763b35e61734ff23bde1ff3c6 } from '@/lib/payload-authjs-custom/components'
 
@@ -76,8 +76,8 @@ export const importMap = {
   "@/payload/collections/People/merge-button#PeopleMergeButton": PeopleMergeButton_b26c09f3e435b0cb4bd3f135e0e8ade6,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
-  "@/payload/Header/RowLabel#RowLabel": RowLabel_ef1777998f20cb87d581e9fb460d55bb,
-  "@/payload/Footer/RowLabel#RowLabel": RowLabel_b1d02ac03d11f7b38650c3919ff7a625,
+  "@/payload/globals/Header/RowLabel#RowLabel": RowLabel_19e8a9033e6a2d5d6a04b3762ec81d80,
+  "@/payload/globals/Footer/RowLabel#RowLabel": RowLabel_d2aff3abcb7b90b04c6a0836d1455041,
   "@/components/payload-admin-header#OACAdminHeader": OACAdminHeader_06217b5dccf65478d9eabd3bb89e4a1d,
   "@/lib/payload-authjs-custom/components#SignInWithAuthjsButton": SignInWithAuthjsButton_f46c6aa763b35e61734ff23bde1ff3c6
 }

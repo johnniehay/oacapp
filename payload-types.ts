@@ -839,6 +839,9 @@ export interface Team {
    * Contact information that other teams can use to get touch with you such as a team email or social-media page/handle
    */
   shared_contact?: string | null;
+  /**
+   * Enter 0 if no parking required. Cost(low) will be communicated
+   */
   parking_req?: number | null;
   events?: {
     docs?: (string | Event)[];

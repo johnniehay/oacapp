@@ -20,7 +20,7 @@ import { anyone } from "@/payload/access/anyone";
 // import { fileURLToPath } from "url";
 
 const generateTitle: GenerateTitle<Update | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | OAC App` : 'OAC App'
 }
 
 const generateURL: GenerateURL<Update | Page> = ({ doc }) => {

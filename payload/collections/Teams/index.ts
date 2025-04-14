@@ -58,7 +58,8 @@ export const Teams: CollectionConfig<"team"> = {
       admin:{description:"Contact information that other teams can use to get touch with you such as a team email or social-media page/handle"},
       access:viewonlybutcoachupdateable,
     },
-    { name: "parking_req", label: "Number of parking bays required", type: "number", access:viewteamdetailsbutcoachupdateable },
+    { name: "parking_req", label: "Number of parking bays required", type: "number",
+      admin:{description:"Enter 0 if no parking required. Cost(low) will be communicated"},access:viewteamdetailsbutcoachupdateable },
     { name:"events", type:"join", collection:"event", on:"teams", defaultLimit:0},
   ]
 }
