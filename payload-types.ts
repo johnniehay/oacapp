@@ -118,6 +118,7 @@ export interface Config {
   };
   collectionsJoins: {
     team: {
+      people: 'people';
       events: 'event';
     };
   };
@@ -843,28 +844,16 @@ export interface Team {
    * Enter 0 if no parking required. Cost(low) will be communicated
    */
   parking_req?: number | null;
+  people?: {
+    docs?: (string | Person)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   events?: {
     docs?: (string | Event)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "event".
- */
-export interface Event {
-  id: string;
-  title: string;
-  start: string;
-  end: string;
-  eventType: 'robotgame' | 'judging' | 'cultural' | 'general';
-  description?: string | null;
-  location?: string | null;
-  forAll?: ('teams' | 'volunteers')[] | null;
-  teams?: (string | Team)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -887,6 +876,23 @@ export interface Person {
    * Any special needs or conditions that volunteers/judges needs to be aware of such as students with autism, or speech disorders. Add "difficulty walking" for anyone unable to make the 1.5km walk to the aquarium.
    */
   special_needs?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "event".
+ */
+export interface Event {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  eventType: 'robotgame' | 'judging' | 'cultural' | 'general';
+  description?: string | null;
+  location?: string | null;
+  forAll?: ('teams' | 'volunteers')[] | null;
+  teams?: (string | Team)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1538,6 +1544,7 @@ export interface TeamSelect<T extends boolean = true> {
   country?: T;
   shared_contact?: T;
   parking_req?: T;
+  people?: T;
   events?: T;
   updatedAt?: T;
   createdAt?: T;

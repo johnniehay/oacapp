@@ -90,11 +90,11 @@ export const QRmodalContext = createContext<{
   }
 })
 
-export function QRScannerModalProvider({ children, fps, startopened }: Readonly<{
+export function QRScannerModalProvider({ children, fps, startopened, ...qrprops }: Readonly<{
   children: React.ReactNode,
   fps?: number | undefined,
   startopened?: boolean
-}>) {
+}> & Partial<QRScannerProps>) {
   // const [qrSuccessCallback, setqrSuccessCallback] = useState<QrcodeSuccessCallback|null>(null)
   const [qrtext, setQrtext] = useState<string | null>(startopened ? null : "")
   const scannedSuccess: QrcodeSuccessCallback = (result) => {
@@ -109,7 +109,7 @@ export function QRScannerModalProvider({ children, fps, startopened }: Readonly<
 
   return (<>
     <Modal opened={qrtext === null} onClose={modalOnClose}>
-      <QRScanner qrCodeSuccessCallback={scannedSuccess} fps={fps}/>
+      <QRScanner qrCodeSuccessCallback={scannedSuccess} fps={fps} {...qrprops}/>
     </Modal>
     <QRmodalContext value={{ qrtext, setQrtext }}>
       {children}

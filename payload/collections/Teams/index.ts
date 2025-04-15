@@ -60,6 +60,7 @@ export const Teams: CollectionConfig<"team"> = {
     },
     { name: "parking_req", label: "Number of parking bays required", type: "number",
       admin:{description:"Enter 0 if no parking required. Cost(low) will be communicated"},access:viewteamdetailsbutcoachupdateable },
+    { name:"people", type:"join", collection:"people", on:"team", defaultLimit:0, admin:{defaultColumns:["name","role"]}},
     { name:"events", type:"join", collection:"event", on:"teams", defaultLimit:0},
   ]
 }
