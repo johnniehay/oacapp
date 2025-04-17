@@ -35,6 +35,7 @@ export interface VerificationToken {
   id?: string | null;
   token: string;
   expires: string;
+  uses_remaining: number;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;

@@ -21,6 +21,7 @@ export const verificationTokensField: Field = {
       fields: [
         { name: "token", type: "text", required: true, index: true },
         { name: "expires", type: "date", required: true },
+        { name: "uses_remaining", type: "number",required: true,defaultValue:5}
       ],
     },
   ],

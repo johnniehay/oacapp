@@ -430,7 +430,10 @@ export function PayloadAdapter({
           collection: userCollectionSlug,
           id: payloadUser.id,
           data: {
-            verificationTokens: [...(payloadUser.verificationTokens || []), {...token, expires:token.expires.toISOString()}],
+            verificationTokens: [
+              ...(payloadUser.verificationTokens?.filter(t => t.uses_remaining > 0 )
+                .filter(t => Date.parse(t.expires) > Date.now()) || []),
+              {...token, expires:token.expires.toISOString()}],
           },
         })) as unknown as User;
       }
@@ -465,16 +468,36 @@ export function PayloadAdapter({
       if (!payloadUser) {
         return null;
       }
-
-      const verificationToken = payloadUser.verificationTokens?.find(t => t.token === token);
-
+      // Purge all overused or expired tokens
       payloadUser = (await (
         await payload
       ).update({
         collection: userCollectionSlug,
         id: payloadUser.id,
         data: {
-          verificationTokens: payloadUser.verificationTokens?.filter(t => t.token !== token),
+          verificationTokens: payloadUser.verificationTokens?.filter(t => t.uses_remaining > 0 )
+            .filter(t => Date.parse(t.expires) > Date.now()),
+        },
+      })) as User;
+
+      const verificationToken = payloadUser.verificationTokens?.find(t => t.token === token);
+
+      // payloadUser = (await (
+      //   await payload
+      // ).update({
+      //   collection: userCollectionSlug,
+      //   id: payloadUser.id,
+      //   data: {
+      //     verificationTokens: payloadUser.verificationTokens?.filter(t => t.token !== token),
+      //   },
+      // })) as User;
+      payloadUser = (await (
+        await payload
+      ).update({
+        collection: userCollectionSlug,
+        id: payloadUser.id,
+        data: {
+          verificationTokens: payloadUser.verificationTokens?.filter(t => t.token !== token || t.uses_remaining > 1 ).map(t => t.token === token ? {...t, uses_remaining: t.uses_remaining-1 } : t),
         },
       })) as User;
 

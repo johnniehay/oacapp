@@ -219,6 +219,7 @@ export interface User {
         id?: string | null;
         token: string;
         expires: string;
+        uses_remaining: number;
       }[]
     | null;
   updatedAt: string;
@@ -1213,6 +1214,7 @@ export interface UsersSelect<T extends boolean = true> {
         id?: T;
         token?: T;
         expires?: T;
+        uses_remaining?: T;
       };
   updatedAt?: T;
   createdAt?: T;
