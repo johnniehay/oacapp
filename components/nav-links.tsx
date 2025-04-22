@@ -11,8 +11,8 @@ import {
   IconArrowUpRight,
   IconCalendarEvent, IconContract,
   IconHome,
-  IconInfoCircle,
-  IconSettings, IconUsersGroup
+  IconInfoCircle, IconLayoutDashboard, IconList,
+  IconSettings, IconShoppingBag, IconUsersGroup
 } from "@tabler/icons-react"
 
 
@@ -21,6 +21,7 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
   const session = await getLocalPayloadSession()
   const coachteamids = await coachteamsquery(session?.user ,payload) as string[]
   const checkTeamPeopleAdmin = (await hasPermission("view:people")) || (coachteamids).length > 0
+  const checkVolunteer = await hasPermission("view:volunteer")
   const coachteamadminurl =
     coachteamids.length > 1 ? '/admin/collections/team?limit=10&page=1&'+encodeURIComponent('where[or][0][and][0][id][in]')+'='+coachteamids.join(',') :
     coachteamids.length === 1 ? '/admin/collections/team/'+coachteamids[0] : ""
@@ -43,12 +44,15 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
       children:eventInfoPages.docs.map(page => {
         return {href:`/event-info/${page.slug}`, label:page.title}})},
     {href:"/schedule", label:"Schedule", icon:IconCalendarEvent},
+    {href:"/teams", label:"Teams List", icon:IconList},
+    checkVolunteer && {href:"/volunteer", label: "Volunteer Dashboard", icon:IconLayoutDashboard},
+    {href:"https://oac.firstsa.org/collections/all", label:"Merchandise", icon:IconShoppingBag},
     {href:"/settings", label:"Settings", icon:IconSettings},
     checkTeamPeopleAdmin && { href:'/admin/collections/people?columns='+encodeURIComponent('["name","-user","team","role","-id","-updatedAt","-createdAt","dietary_requirements","-allergies_and_other","-special_needs"]'), label:"Team People Admin", icon:IconUsersGroup},
     checkTeamPeopleAdmin && { href:coachteamadminurl, label:"Team Admin", icon:IconContract},
   ]
 
-  return navData.map((navItem) => (!navItem ? "" :
+  return navData.filter(navItem => navItem && (!isNavbar || navItem.label !== "Home")).map((navItem) => (!navItem ? "" :
       <NavCard key={navItem.href} isNavbar={isNavbar} icon={<navItem.icon size={"4rem"}/>}
         navlinkprops={{ href: navItem.href, label: navItem.label, ...commonnavlinkprops }}>
       {navItem.children && navItem.children.map(page =>

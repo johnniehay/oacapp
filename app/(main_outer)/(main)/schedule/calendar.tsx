@@ -3,12 +3,16 @@
 import Calendar from '@event-calendar/core';
 import TimeGrid from '@event-calendar/time-grid';
 import CalList from '@event-calendar/list';
+import ResourceTimeline from '@event-calendar/resource-timeline';
+import ResourceTimeGrid from '@event-calendar/resource-time-grid';
 
 import '@event-calendar/core/index.css';
 import '@/app/(main_outer)/(main)/schedule/calendar.css';
 // import {SvelteComponent} from "svelte";
-import { useLayoutEffect, useRef } from "react";
-import { useMediaQuery } from "@mantine/hooks";
+import { ReactNode, useContext, useLayoutEffect, useRef, useState } from "react";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { Team, Location } from "@/payload-types";
+import { Group, Modal, Stack } from "@mantine/core";
 
 // function SvelteWrapper<ComponentType>(Component: SvelteComponent) {
 //   return (props: ComponentType.ComponentProps) => {
@@ -27,7 +31,7 @@ import { useMediaQuery } from "@mantine/hooks";
 // }
 
 
-export function CalendarComponent(props: Calendar.ComponentProps) {
+export function BaseCalendarComponent(props: Calendar.ComponentProps) {
   const svelteRef = useRef<HTMLDivElement>(null);
   const calRef = useRef<Calendar>(null);
   useLayoutEffect(() => {
@@ -50,11 +54,71 @@ export function CalendarComponent(props: Calendar.ComponentProps) {
   return (<div ref={svelteRef}></div>)
 }
 
-interface additionalCalendarOptions {
-  validRange?: { start: string, end: string };
+const eventContentServerMapKeys = ["titleonly","titlewithteamnames"] as const;
+type EventContentServerMapKey = typeof eventContentServerMapKeys[number]
+
+const eventContentServerMap: Record<EventContentServerMapKey,((info: Calendar.EventContentInfo) => (Calendar.Content | undefined))> = {
+  titleonly: ({event}) => {console.log(event.extendedProps); return {html:`<p class="break-all overflow-hidden">${event.title}</p>`}},
+  titlewithteamnames: ({event, view}) => {
+    const teamnames = view.type.includes("Timeline") ? "" : " "+event.extendedProps.teamnames
+    return {html:`<p class="break-all overflow-hidden">${event.title}${teamnames}</p>`}}
 }
 
-type CalendarOptionsProps = Omit<Calendar.ComponentProps, "plugins"> & { options: additionalCalendarOptions }
+const eventClickServerMapKeys = ["teaminfo"] as const;
+type EventClickServerMapKey = typeof eventClickServerMapKeys[number]
+const eventClickServerMap: Record<EventClickServerMapKey,((setModalContent: ((modalcontent: ReactNode, view?:string, date?: Date) => void),info: Calendar.EventClickInfo) => void)> = {
+  teaminfo: (setModalContent,{event, view}) => {
+    const eprops = event.extendedProps as {teams: Team[],location: Location, title: string }
+    const teams = eprops.teams
+    const teamgrp = <Group>{teams.map(team => <div key={team.id}>{team.number} {team.name} ({team.country})</div>)}</Group>
+    setModalContent(<Stack>
+      {eprops.title}
+      {teamgrp}
+      <p>{eprops.location.name}</p>
+      <p>Room: {eprops.location.room}</p>
+      <p>Floor: {eprops.location.floor}</p>
+    </Stack>,view.type,view.currentStart)
+  }
+}
+
+interface additionalCalendarOptions {
+  validRange?: { start: string, end: string };
+  slotLabelInterval?: Calendar.DurationInput;
+  eventContentServer?: EventContentServerMapKey;
+  eventClickServer?: EventClickServerMapKey;
+}
+
+type BaseCalendarComponentProps = Calendar.ComponentProps & { options: additionalCalendarOptions }
+type CalendarOptionsProps = Omit<BaseCalendarComponentProps, "plugins">
+
+export function CalendarComponent(props: BaseCalendarComponentProps) {
+  const modalContent = useRef<ReactNode>(<></>)
+  const [opened, { open, close }] = useDisclosure(false);
+  const [view, setView] = useState(props.options.view)
+  const [date, setDate] = useState(props.options.date)
+  const { options: {eventContentServer, eventClickServer} } = props;
+  if (eventContentServer && (eventContentServerMapKeys as readonly string[]).includes(eventContentServer)) {
+    props.options.eventContent = eventContentServerMap[eventContentServer]
+  }
+  function setModalContentAndOpen(modalcontent:ReactNode, view?:string, date?:Date):void {
+    modalContent.current = modalcontent
+    setView(view)
+    setDate(date)
+    open()
+
+  }
+  if (eventClickServer && (eventClickServerMapKeys as readonly string[]).includes(eventClickServer)) {
+    props.options.eventClick = eventClickServerMap[eventClickServer].bind(null,setModalContentAndOpen)
+  }
+  props.options.view = view
+  props.options.date = date
+  return (<>
+    <BaseCalendarComponent {...props}/>
+    <Modal opened={opened} onClose={close} title={"Event"}>
+      {modalContent.current}
+    </Modal>
+  </>)
+}
 
 export function CalendarTimeGrid(props: CalendarOptionsProps) {
   return (<CalendarComponent plugins={[TimeGrid]} {...props}/>)
@@ -62,6 +126,26 @@ export function CalendarTimeGrid(props: CalendarOptionsProps) {
 
 export function CalendarList(props: CalendarOptionsProps) {
   return (<CalendarComponent plugins={[CalList]} {...props}/>)
+}
+
+export function CalendarResourceTimeline(props: CalendarOptionsProps) {
+  return (<CalendarComponent plugins={[ResourceTimeline]} {...props}/>)
+}
+
+export function CalendarResourceTimeGrid(props: CalendarOptionsProps) {
+  const { options: {eventContentServer} } = props;
+  if (eventContentServer && (eventContentServerMapKeys as readonly string[]).includes(eventContentServer)) {
+    props.options.eventContent = eventContentServerMap[eventContentServer]
+  }
+  return (<CalendarComponent plugins={[ResourceTimeGrid]} {...props}/>)
+}
+
+export function CalendarResourceTimeGridOrLine(props: CalendarOptionsProps) {
+  const { options: {eventContentServer} } = props;
+  if (eventContentServer && (eventContentServerMapKeys as readonly string[]).includes(eventContentServer)) {
+    props.options.eventContent = eventContentServerMap[eventContentServer]
+  }
+  return (<CalendarComponent plugins={[ResourceTimeGrid,ResourceTimeline]} {...props}/>)
 }
 
 export function CalendarTimeGridOrList(props: CalendarOptionsProps & {overrideDaysOnWidth?: boolean}) {

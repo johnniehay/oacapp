@@ -9,6 +9,7 @@ import { dietaryOptions } from "@/payload/collections/People";
 import PushNotificationSettingsClient from "@/components/push-notification-settings-client";
 import { roleToNotificationTopicsMap } from "@/lib/role-to-notificationtopics";
 import { type Role, RoleList } from "@/lib/roles";
+import { useRouter } from "next/navigation";
 
 type LabeledValue = {
   label:string,
@@ -42,11 +43,17 @@ export function SetupClient(props: SetupClientProps) {
   const [teamidsError, setTeamidsError] = useState<string>("")
   const [dietaryError, setDietaryError] = useState<string>("")
   const {close} = useContext(ModalStateContext)
-  const { execute: dosetupaction } = useAction(doUserSetup,{onSuccess:close, onError:(error) => {
-    setRoleGroupError(error.error.validationErrors?.roleGroup?._errors?.join(" ") ?? "")
-    setRoleError(error.error.validationErrors?.role?._errors?.join(" ") ?? "")
-    setTeamidsError(error.error.validationErrors?.teamids?._errors?.join(" ") ?? "")
-    setDietaryError(error.error.validationErrors?.dietary?._errors?.join(" ") ?? "")
+  const router = useRouter()
+  const { execute: dosetupaction } = useAction(doUserSetup,{
+    onSuccess:() => {
+      router.refresh()
+      close()
+    },
+    onError:(error) => {
+      setRoleGroupError(error.error.validationErrors?.roleGroup?._errors?.join(" ") ?? "")
+      setRoleError(error.error.validationErrors?.role?._errors?.join(" ") ?? "")
+      setTeamidsError(error.error.validationErrors?.teamids?._errors?.join(" ") ?? "")
+      setDietaryError(error.error.validationErrors?.dietary?._errors?.join(" ") ?? "")
   }})
   return (<>
     <form action={dosetupaction}>

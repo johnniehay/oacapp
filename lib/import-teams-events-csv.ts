@@ -1,8 +1,9 @@
 import { getPayload, RequiredDataFromCollection } from 'payload'
 import config from '@payload-config'
-import { Event, Team } from "@/payload-types"
+import { Event, Team, Location } from "@/payload-types"
 import { parse } from 'csv-parse'
 import { add, parse as dateparse } from "date-fns";
+import { difference } from "next/dist/build/utils";
 
 
 const seed = async () => {
@@ -33,11 +34,30 @@ const seed = async () => {
     return accum
   }, {})
 
+  const locationquery = await payload.find({collection:"location",pagination:false})
+  const locationcache = locationquery.docs.reduce((accum: { [key: string]: Location }, location) => {
+    return { ...accum, [location.name]: location }
+  },{})
+  type LocationData = Omit<Location,"id"|"updatedAt"|"createdAt">
+  const rgloc = ["A", "B", "C", "D", "E", "F", "G", "H"].reduce((accum: { [key: string]: LocationData }, abbr) => {
+    return {...accum, [`Table ${abbr}`]: {name:`Table ${abbr}`, abbreviation:abbr, location_type: "robotgame"} as LocationData}
+  },{})
+  const judgloc = [1,2,3,4,5,6,7,8].reduce((accum: { [key: string]: LocationData }, abbr) => {
+    return {...accum, [`Room ${abbr}`]: {name:`Room ${abbr}`, abbreviation:`Room ${abbr}`, location_type: "judging"} as LocationData}
+  },{})
+  const minlocations:{[key: string]: LocationData } = {...rgloc, ...judgloc }
+  const missinglocations = difference(Object.keys(minlocations), Object.keys(locationcache))
+  for (const loc of missinglocations) {
+    locationcache[loc] = await payload.create({ collection: "location", data: minlocations[loc] });
+  }
+
+
   const parser = process.stdin.pipe(parse({
     columns:(header) => header.map((col:string) => col.replace(' ','').replace('#','')),
     on_record: async (record,context) => {
       console.log(record)
       console.log(context)
+      if (record.Venue === "\n") return {skipping: record}
       const dryrun = false
       const eventTitleMap:{[key: string]: string} = {
         R1:"Robot Game Round 1",
@@ -70,7 +90,7 @@ const seed = async () => {
           start: eventstartdate.toISOString(),
           end: add(eventstartdate,{minutes:record.Round !== '' ? 10 : 30}).toISOString(),
           title: eventTitleMap[record.Round],
-          location: (record.Venue).includes("Room") ? record.Venue : eventLocationMap[record.Venue]
+          location: locationcache[(record.Venue).includes("Room") ? record.Venue : eventLocationMap[record.Venue]].id
         }
       }
       if (retrecpart.team.number?.length !== 3) {
@@ -81,6 +101,7 @@ const seed = async () => {
         const newteampart = { ...teamcache[retrecpart.team.number], ...retrecpart.team }
         if (newteampart != teamcache[retrecpart.team.number] && !(retrecpart.team.number in teamsaddedupdated)) {
           retrecpart.team = newteampart
+          const dryrun = true // disable team updates
           if (dryrun) {
             console.log("would update team", retrecpart.team.number, teamcache[retrecpart.team.number], "with", newteampart)
             teamcache[retrecpart.team.number] = newteampart
