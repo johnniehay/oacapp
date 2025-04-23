@@ -1,8 +1,7 @@
-import { Button, ButtonProps, NavLink, NavLinkProps, Stack } from "@mantine/core";
+import { NavLink, NavLinkProps } from "@mantine/core";
 import Link, { LinkProps } from "next/link";
-import { getPayload, PayloadRequest } from "payload";
+import { getPayload} from "payload";
 import configPromise from '@payload-config'
-import { AnchorHTMLAttributes, JSX, ReactNode } from "react";
 import { getLocalPayloadSession } from "@/lib/payload-authjs-custom/payload/session/getLocalPayloadSession";
 import { coachteamsquery } from "@/payload/collections/People";
 import { hasPermission } from "@/lib/permissions";

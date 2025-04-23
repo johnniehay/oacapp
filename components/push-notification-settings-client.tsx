@@ -209,9 +209,9 @@ export default function PushNotificationSettingsClient({ visibleTopics, vapidPub
             value={subscriptionSwitchvalue}
             data={[
             {value:"off",label:"Off"},
-            {value:"some",label:"Some",disabled:true},
-            {value:"all",label:"All"}]}
-            color={subscriptionSwitchvalue === "all" ? "green" : ""}
+            subscriptionSwitchvalue === "some" && {value:"some",label:"Some",disabled:true},
+            {value:"all",label:"All"}].filter(v => !!v)}
+            color={subscriptionSwitchvalue === "all" ? "green" : (subscriptionSwitchvalue === "off" ? "red" : "")}
             onChange={handleOnChangeSubscribeAll}
           />
         </Group>
