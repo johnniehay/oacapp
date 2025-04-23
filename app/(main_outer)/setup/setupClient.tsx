@@ -21,6 +21,7 @@ interface SetupClientProps {
   teams: LabeledValueOrString[]
   roleGroups: LabeledValue[]
   rolesbyGroup: {[rolegroup:string]:LabeledValueOrString[]}
+  vapidPublicKey: string
 }
 
 const roleDescription: { [r:string]: string } = {
@@ -34,7 +35,7 @@ const teamDescription: { [r:string]: string } = {
   "":"Select above first"}
 
 export function SetupClient(props: SetupClientProps) {
-  const {teams, roleGroups, rolesbyGroup}: SetupClientProps = props
+  const {teams, roleGroups, rolesbyGroup, vapidPublicKey}: SetupClientProps = props
   const [selectedRoleGroup, setSelectedRoleGroup] = useState<string>("")
   const [userName, setUserName] = useState(props.user_name ?? "")
   const [role, setRole] = useState("default")
@@ -82,7 +83,7 @@ export function SetupClient(props: SetupClientProps) {
     <MultiSelect name="teamids" label={"Team"} description={selectedRoleGroup in teamDescription && teamDescription[selectedRoleGroup]}
             data={teams} error={teamidsError} required={selectedRoleGroup==="team"}/>
     {selectedRoleGroup==="team" && <Select name="dietary" label={"Dietary Requirement"} error={dietaryError} data={dietaryOptions} required></Select>}
-      <PushNotificationSettingsClient visibleTopics={RoleList.includes(role as Role) ? roleToNotificationTopicsMap[role as Role] : roleToNotificationTopicsMap["default"]}/>
+      <PushNotificationSettingsClient visibleTopics={RoleList.includes(role as Role) ? roleToNotificationTopicsMap[role as Role] : roleToNotificationTopicsMap["default"]} vapidPublicKey={vapidPublicKey}/>
       <Button type={"submit"}>Submit</Button>
     </form>
     {/*<PushNotificationSettingsClient visibleTopics={["event-broadcast","event-updates", "all"]}/>*/}
