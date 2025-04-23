@@ -17,7 +17,7 @@ export const Events: CollectionConfig<"event"> = {
     { name: "end", type: "date", required: true, admin:{date:{pickerAppearance: "dayAndTime",displayFormat:"EEE do MMM HH:mm"}} },
     { name: "eventType", type: "select",required:true,options:["robotgame","judging","cultural","general"]},
     { name: "description", type: "text" },
-    { name: "location", type: "text" },
+    { name: "location", type: "relationship", relationTo: "location" },
     { name: "forAll", type: "select",options:["teams","volunteers"], hasMany:true },
     { name: "teams", type: "relationship", relationTo:"team", hasMany:true },
   ]

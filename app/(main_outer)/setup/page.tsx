@@ -7,6 +7,9 @@ import { SetupClient } from "@/app/(main_outer)/setup/setupClient";
 import { peopleRoleOptions, volunteerRoleOptions } from "@/payload/collections/People";
 
 export default async function Page() {
+  const penv = process.env
+  if (!penv['NEXT_PUBLIC_VAPID_PUBLIC_KEY']) throw "VAPID Key not defined"
+  const vapid_public_key = penv['NEXT_PUBLIC_VAPID_PUBLIC_KEY']
   const session = await getLocalPayloadSession()
   const payload = await getPayload({config})
   if (!session || !session.user) redirect("/api/auth/signin")
@@ -24,6 +27,7 @@ export default async function Page() {
           "volunteer": volunteerRoleOptions//["Judge", "Referee", { label: "Other Volunteer", value: "volunteer" }]
         }}
         teams={teamselect}
+        vapidPublicKey={vapid_public_key}
       />
     </div>
   )

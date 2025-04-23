@@ -106,6 +106,7 @@ export interface Config {
     team: Team;
     event: Event;
     people: Person;
+    location: Location;
     'admin-role-override': AdminRoleOverride;
     redirects: Redirect;
     forms: Form;
@@ -132,6 +133,7 @@ export interface Config {
     team: TeamSelect<false> | TeamSelect<true>;
     event: EventSelect<false> | EventSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
+    location: LocationSelect<false> | LocationSelect<true>;
     'admin-role-override': AdminRoleOverrideSelect<false> | AdminRoleOverrideSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -891,9 +893,23 @@ export interface Event {
   end: string;
   eventType: 'robotgame' | 'judging' | 'cultural' | 'general';
   description?: string | null;
-  location?: string | null;
+  location?: (string | null) | Location;
   forAll?: ('teams' | 'volunteers')[] | null;
   teams?: (string | Team)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "location".
+ */
+export interface Location {
+  id: string;
+  name: string;
+  abbreviation: string;
+  location_type: 'robotgame' | 'judging' | 'cultural' | 'general' | 'pit' | 'volunteer';
+  room?: string | null;
+  floor?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1115,6 +1131,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'people';
         value: string | Person;
+      } | null)
+    | ({
+        relationTo: 'location';
+        value: string | Location;
       } | null)
     | ({
         relationTo: 'admin-role-override';
@@ -1584,6 +1604,19 @@ export interface PeopleSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "location_select".
+ */
+export interface LocationSelect<T extends boolean = true> {
+  name?: T;
+  abbreviation?: T;
+  location_type?: T;
+  room?: T;
+  floor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "admin-role-override_select".
  */
 export interface AdminRoleOverrideSelect<T extends boolean = true> {
@@ -1911,6 +1944,8 @@ export interface Footer {
 export interface Eventconfig {
   id: string;
   eventtime?: string | null;
+  robotgameForm?: string | null;
+  judgingForm?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1966,6 +2001,8 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface EventconfigSelect<T extends boolean = true> {
   eventtime?: T;
+  robotgameForm?: T;
+  judgingForm?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

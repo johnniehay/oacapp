@@ -39,7 +39,7 @@ function urlBase64ToUint8Array(base64String: string) {
 }
 
 
-export default function PushNotificationSettingsClient({ visibleTopics }: { visibleTopics: NotificationTopics }) {
+export default function PushNotificationSettingsClient({ visibleTopics, vapidPublicKey }: { visibleTopics: NotificationTopics, vapidPublicKey:string }) {
   const [isSupported, setIsSupported] = useState(false)
   // const [subscription, setSubscription] = useState<PushSubscription | null>(
   //   null
@@ -119,7 +119,7 @@ export default function PushNotificationSettingsClient({ visibleTopics }: { visi
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
+        vapidPublicKey
       ),
     })
     setSubscription(sub)

@@ -9,13 +9,14 @@ export const AllTeamPermissions = [...BaseTeamPermissions,...CoachPermissions] a
 export const PagesPermissions = ["all:pages","create:media","all:forms"] as const
 export const UpdateManagementPermissions = ["create:update","update:update","remove:update"] as const
 export const EventManagementPermissions = ["create:event","update:event","remove:event"] as const
+export const LocationManagementPermissions = ["create:location","update:location","remove:location"] as const
 
 export const JudgePermissions = ["view:schedule:judgingroom", "checkin:judgingroom", ...VolunteerPermissions] as const
 export const JudgeAdvisorPermissions = [...JudgePermissions, "view:judgingroom:status", "update:judgingroom:judges"] as const
-export const FieldManagerPermissions = ["view:queuing:status", ...VolunteerPermissions] as const
+export const FieldManagerPermissions = ["view:queuing:status", "update:location", ...VolunteerPermissions] as const
 export const TeamAdminPermissions = ["view:users","create:team","update:team", "view:team:details", "view:people","update:people", "create:people", "remove:people", ...PagesPermissions, ...UpdateManagementPermissions, ...VolunteerPermissions] as const
 export const VolunteerAdminPermissions = ["view:users", "update:user:role", ...VolunteerPermissions] as const
-export const AdminOnlyPermissions = ["admin", "remove:team", "view:users", "create:users", "update:users", "remove:users",...EventManagementPermissions] as const
+export const AdminOnlyPermissions = ["admin", "remove:team", "view:users", "create:users", "update:users", "remove:users",...EventManagementPermissions,...LocationManagementPermissions] as const
 export const AdminPermissions = [...AdminOnlyPermissions, ...VolunteerAdminPermissions, ...JudgeAdvisorPermissions, ...FieldManagerPermissions, ...TeamAdminPermissions] as const
 export const AllPermissions = [...VolunteerAdminPermissions, ...JudgeAdvisorPermissions, ...FieldManagerPermissions, ...TeamAdminPermissions, ...AdminPermissions, ...AllTeamPermissions, ...NonPublicPermissions] as const
 export type Permission = typeof AllPermissions[number]
