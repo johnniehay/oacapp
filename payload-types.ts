@@ -884,6 +884,7 @@ export interface Person {
    * Any special needs or conditions that volunteers/judges needs to be aware of such as students with autism, or speech disorders. Add "difficulty walking" for anyone unable to make the 1.5km walk to the aquarium.
    */
   special_needs?: string | null;
+  printedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1627,6 +1628,7 @@ export interface PeopleSelect<T extends boolean = true> {
   dietary_requirements?: T;
   allergies_and_other?: T;
   special_needs?: T;
+  printedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

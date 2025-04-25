@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/payload/components/ui/button";
-import { useListQuery, useSelection } from "@payloadcms/ui";
+import { ConfirmationModal, useListQuery, useModal, useSelection } from "@payloadcms/ui";
 import * as qs from 'qs-esm'
 import { useEffect, useState } from "react";
 import { Input } from "@/payload/components/ui/input";
@@ -9,17 +9,25 @@ import { Input } from "@/payload/components/ui/input";
 
 export function GeneratePDFButton(){
   const listquery = useListQuery()
-  const { getQueryParams } = useSelection()
+  const { getQueryParams, count:selectedcount } = useSelection()
   const [iframeopen, setIframeopen] = useState(false)
   const [iframesrc, setIframesrc] = useState("")
   const [startPos, setStartPos] = useState(0)
+  const { openModal } = useModal()
   async function buttonclick() {
     setIframeopen(!iframeopen)
   }
+  async function markprinted() {
+    const resp = await fetch(iframesrc, {method: "POST"})
+    console.log(await resp.json())
+  }
+  const filtered_selected = selectedcount > 0 ? 'selected' : 'filtered'
+  const printcount = selectedcount > 0 ? selectedcount : listquery.data.totalDocs
+
   useEffect(() => {
     const queryParams = getQueryParams()
     const iframeSearchParams = queryParams.length !== 0 ? queryParams : qs.stringify(
-      { where: listquery.query.where },
+      { where: listquery.query.where, sort: listquery.query.sort },
       { addQueryPrefix: true })
     console.log("iframeSearchParams", iframeSearchParams)
     setIframesrc(`/teamadmin/lanyards/pdf${iframeSearchParams}&startPos=${startPos}`)
@@ -31,7 +39,14 @@ export function GeneratePDFButton(){
         <Button style={{marginLeft:"10px"}} onClick={buttonclick}>{!iframeopen?"Show":"Hide"} Lanyards PDF</Button>
         Start position
         <Input type={"number"} min={0} max={3} value={startPos} onChange={(e) => setStartPos(e.target.valueAsNumber)}/>
-      {/* TODO: add mark as printed button to set printedAt*/}
+        <Button style={{marginLeft:"10px"}} onClick={() => openModal("confirmprinted")}>Mark all filtered as printed</Button>
+        <ConfirmationModal
+          body={`Have you actually printed ${printcount > 1 ? "all":"the"} ${printcount} ${filtered_selected} Person record(s)` }
+          confirmingLabel={"Printed"}
+          heading={"Confirm printed"}
+          modalSlug={"confirmprinted"}
+          onConfirm={markprinted}
+        />
       </div>
       <div className="gutter--left gutter--right" >
         {iframeopen && (<embed style={{height: "90vh", width: "100%"}} src={iframesrc}/>)}

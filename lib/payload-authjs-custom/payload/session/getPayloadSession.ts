@@ -68,7 +68,7 @@ export const getPayloadSession = cache(
 /**
  * Get the server URL from the environment variables or the request headers
  */
-const getServerUrl = async () => {
+export const getServerUrl = async () => {
   let serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
   if (!serverUrl) {

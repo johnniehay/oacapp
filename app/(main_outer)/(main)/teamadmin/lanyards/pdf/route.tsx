@@ -8,19 +8,34 @@ import { chunk } from "lodash";
 import { NextRequest } from "next/server";
 import * as qs from 'qs-esm'
 import { Style } from "@react-pdf/stylesheet";
+import { getServerUrl } from "@/lib/payload-authjs-custom/payload/session/getPayloadSession";
 
-
-export async function GET(request: NextRequest){
-  const hasperm = await hasPermission("view:team:details:basic") //TODO: maybe restrict permission
+export async function POST(request: NextRequest){
+  const hasperm = await hasPermission("view:people") //TODO: maybe restrict permission
   if (!hasperm) return new Response(null)
   const payload = await getPayload({config})
   const qsearchParams = qs.parse(request.nextUrl.searchParams.toString(),{ignoreQueryPrefix:true, depth:10});
   console.dir({"qsearch":qsearchParams},{depth:10})
   const qsearchWhere = (qsearchParams.where ?? {}) as Where
+
+  const people = (await payload.db.updateMany({collection:"people",options:{timestamps:false},where:qsearchWhere,data:{printedAt: new Date().toISOString()}}))
+  return new Response(JSON.stringify(people))
+}
+
+export async function GET(request: NextRequest){
+  const hasperm = await hasPermission("view:people") //TODO: maybe restrict permission
+  if (!hasperm) return new Response(null)
+  const payload = await getPayload({config})
+  const qsearchParams = qs.parse(request.nextUrl.searchParams.toString(),{ignoreQueryPrefix:true, depth:10});
+  console.dir({"qsearch":qsearchParams},{depth:10})
+  const qsearchWhere = (qsearchParams.where ?? {}) as Where
+  const qsearchSort = typeof qsearchParams.sort === "string" || (Array.isArray(qsearchParams.sort) && qsearchParams.sort.every(el => typeof el=== "string") )? qsearchParams.sort : undefined
   const qsearchStartPos= qsearchParams.startPos && typeof qsearchParams.startPos === "string" ? qsearchParams.startPos : '0'
   const startpos = ['0','1','2','3'].includes(qsearchStartPos) ? parseInt(qsearchStartPos) : 0
+  console.dir({"payload.config.serverURL":payload.config.serverURL,getServerUrl:await getServerUrl(),NEXT_PUBLIC_SERVER_URL:process.env.NEXT_PUBLIC_SERVER_URL})
+  const serverurl  = await getServerUrl()
 
-  const people = (await payload.find({collection:"people", pagination:false, limit:0,where:qsearchWhere})).docs
+  const people = (await payload.find({collection:"people", pagination:false, limit:0,sort:qsearchSort,where:qsearchWhere})).docs
   const positionOffsets = [
     {top:"0.5cm",  left:"1.2cm",  height:"12.2cm", width:"9.2cm"},
     {top:"0.5cm",  left:"10.7cm", height:"12.2cm", width:"9.2cm"},
@@ -38,7 +53,7 @@ export async function GET(request: NextRequest){
       <Text debug={txtdbg} style={{...commmonTextStyles,top:"5.0cm"/*4.5*/,left: "0.5cm" }} hyphenationCallback={w => [w]}>{person.team.name}</Text>
       {/*TeamNumBotRight<Text debug={txtdbg} style={{position:"absolute",fontSize:"1rem",top:"6.2cm",left: "5.95cm",width: undefined, textAlign:"left"}} hyphenationCallback={w => [w]}>Team #{person.team.number}</Text>*/}
       <Text debug={txtdbg} style={{...commmonTextStyles,fontSize:"3rem",top:"6.2cm",left: "0.5cm", fontWeight:"black"}} hyphenationCallback={w => [w]}>{person.team.number}</Text>
-      <QRCodeSVGPDF style={{position:"absolute",top:"8.8cm",left: "5.85cm"}} width={"29.5mm"} height={"29.5mm"} marginSize={4} value={`https://app.oac.firstsa.org/person/${person.id}`}/>
+      <QRCodeSVGPDF style={{position:"absolute",top:"8.8cm",left: "5.85cm"}} width={"29.5mm"} height={"29.5mm"} marginSize={4} value={`${serverurl}/person/${person.id}`}/>
     </View>
   )
   const peoplefilter = (person:Person) => (!!person.team && typeof person.team !== "string");

@@ -103,6 +103,7 @@ export const People: CollectionConfig<"people"> = {
     {name:"dietary_requirements", label:"Dietary Requirements", type:"select",required:true,options:dietaryOptions,interfaceName:"dietaryOption",admin:{description:"For food provided during cultural night. For Other please specify below."}},
     {name:"allergies_and_other", label:"Allergies and Other Dietary Requirements", type:"text"},
     {name:"special_needs",label:"Special Needs and Disabilities",type:"text", admin:{description: 'Any special needs or conditions that volunteers/judges needs to be aware of such as students with autism, or speech disorders. Add "difficulty walking" for anyone unable to make the 1.5km walk to the aquarium.'}},
+    {name:"printedAt",type:"date", required:false, admin:{condition:checkConditionPermission("view:people")}}
   ],
   hooks:{
     afterChange: [updateuser]
