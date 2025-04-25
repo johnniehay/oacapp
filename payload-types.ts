@@ -107,6 +107,7 @@ export interface Config {
     event: Event;
     people: Person;
     location: Location;
+    checkin: Checkin;
     'admin-role-override': AdminRoleOverride;
     redirects: Redirect;
     forms: Form;
@@ -122,6 +123,9 @@ export interface Config {
       people: 'people';
       events: 'event';
     };
+    location: {
+      checkin: 'checkin';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -134,6 +138,7 @@ export interface Config {
     event: EventSelect<false> | EventSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
     location: LocationSelect<false> | LocationSelect<true>;
+    checkin: CheckinSelect<false> | CheckinSelect<true>;
     'admin-role-override': AdminRoleOverrideSelect<false> | AdminRoleOverrideSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -910,6 +915,25 @@ export interface Location {
   location_type: 'robotgame' | 'judging' | 'cultural' | 'general' | 'pit' | 'volunteer';
   room?: string | null;
   floor?: string | null;
+  checkin?: {
+    docs?: (string | Checkin)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkin".
+ */
+export interface Checkin {
+  id: string;
+  location: string | Location;
+  who: string;
+  team?: (string | null) | Team;
+  person?: (string | null) | Person;
+  user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1135,6 +1159,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'location';
         value: string | Location;
+      } | null)
+    | ({
+        relationTo: 'checkin';
+        value: string | Checkin;
       } | null)
     | ({
         relationTo: 'admin-role-override';
@@ -1612,6 +1640,20 @@ export interface LocationSelect<T extends boolean = true> {
   location_type?: T;
   room?: T;
   floor?: T;
+  checkin?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkin_select".
+ */
+export interface CheckinSelect<T extends boolean = true> {
+  location?: T;
+  who?: T;
+  team?: T;
+  person?: T;
+  user?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -20,8 +20,7 @@ export const Locations: CollectionConfig<"location"> = {
     {name:"location_type", type: "select",required:true,options:["robotgame","judging","cultural","general","pit","volunteer"]},
     {name:"room", type:"text"},
     {name:"floor", type:"text"},
-    // {name:"checkin", type:"join" } add checkin collection
-
+    {name:"checkin", type:"join", collection: "checkin", on: "location"}
 
   ]
 }

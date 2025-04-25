@@ -18,6 +18,7 @@ import { Teams } from "@/payload/collections/Teams";
 import { Events } from "@/payload/collections/Events";
 import { People } from "@/payload/collections/People";
 import { Locations } from "@/payload/collections/Locations";
+import { Checkins } from "@/payload/collections/CheckIn";
 import { AdminRoleOverride } from "@/payload/collections/AdminRoleOverride";
 import { updateRoleOverridesCache } from "@/lib/get-role";
 import { EventConfig } from "@/payload/globals/EventConfig";
@@ -44,7 +45,7 @@ export default buildConfig({
     //     label: "Role"
     //   }]
     // }
-  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events,People,Locations, AdminRoleOverride],
+  Users, Pages, Updates, Media, Categories,NotificationSubscriptions,Teams,Events,People,Locations,Checkins, AdminRoleOverride],
 
   globals: [Header, Footer, EventConfig],
 
