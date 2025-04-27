@@ -13,6 +13,7 @@ import { ReactNode, useContext, useLayoutEffect, useRef, useState } from "react"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Team, Location } from "@/payload-types";
 import { Group, Modal, Stack } from "@mantine/core";
+import { lightFormat } from "date-fns";
 
 // function SvelteWrapper<ComponentType>(Component: SvelteComponent) {
 //   return (props: ComponentType.ComponentProps) => {
@@ -73,6 +74,7 @@ const eventClickServerMap: Record<EventClickServerMapKey,((setModalContent: ((mo
     const teamgrp = <Group>{teams.map(team => <div key={team.id}>{team.number} {team.name} ({team.country})</div>)}</Group>
     setModalContent(<Stack>
       {eprops.title}
+      <p>{lightFormat(event.start,"HH:mm")} - {lightFormat(event.end,"HH:mm")}</p>
       {teamgrp}
       <p>{eprops.location.name}</p>
       <p>Room: {eprops.location.room}</p>
