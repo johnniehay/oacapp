@@ -18,6 +18,11 @@ import { useAction } from "next-safe-action/hooks";
 import { doCreateDayVisitor } from "@/app/(main_outer)/(main)/registration/day_visitors/day-visitor-reg-action";
 import HiddenInput = Combobox.HiddenInput;
 
+function validationErr({currentTarget: tgt}:{currentTarget:EventTarget & HTMLInputElement}): string {
+  if (tgt.validationMessage.length > 0 && !tgt.validationMessage.includes(tgt.title)) return `${tgt.validationMessage} ${tgt.title}`
+  return tgt.validationMessage;
+}
+
 export default function DayVisitorRegistrationClient(props: {setupComplete?: () => void, userName?: string}) {
   const { setupComplete,userName } = props
   const [minorOrAdult, setMinorOrAdult] = useState("minor")
@@ -30,6 +35,7 @@ export default function DayVisitorRegistrationClient(props: {setupComplete?: () 
   const [nameErrors, setNameErrors] = useState("")
   const [parentErrors, setParentErrors] = useState("")
   const [phoneErrors, setPhoneErrors] = useState("")
+  const [consentErrors, setConsentErrors] = useState("")
 
   const formref = useRef<HTMLFormElement>(null);
   const { execute: docreatedayvisitor } = useAction(doCreateDayVisitor, {
@@ -37,6 +43,11 @@ export default function DayVisitorRegistrationClient(props: {setupComplete?: () 
       if (data?.result) {
         setFeedback({ color: "green", message: "Registration successful." });
         formref.current?.reset();
+        setName("")
+        setParent("")
+        setPhone("")
+        setConsent(false)
+        setParking(false)
         if (setupComplete) setupComplete()
       }
       if (!data || !data.result) {
@@ -47,6 +58,7 @@ export default function DayVisitorRegistrationClient(props: {setupComplete?: () 
       setNameErrors(error.error.validationErrors?.name?._errors?.join(" ") ?? "")
       setParentErrors(error.error.validationErrors?.parent?._errors?.join(" ") ?? "")
       setPhoneErrors(error.error.validationErrors?.phone?._errors?.join(" ") ?? "")
+      setConsentErrors(error.error.validationErrors?.consent?._errors?.join(" ") ?? "")
     }
   })
   return (
@@ -60,7 +72,16 @@ export default function DayVisitorRegistrationClient(props: {setupComplete?: () 
         </> }
         <ConsentBlock/>
         { feedback.message !== '' && <Text c={feedback.color}>{feedback.message}</Text>}
-        <TextInput name={"name"} value={name} label="Visitor Name" error={nameErrors} onChange={(e) => {setName(e.target.value);setNameErrors("")}} pattern="[^ ]+ [^ ].*" title="Name requires at least First Name and Surname" required />
+        <TextInput
+          name={"name"}
+          value={name}
+          label="Visitor Name"
+          error={nameErrors}
+          onChange={(e) => {setName(e.target.value);setNameErrors(validationErr(e))}}
+          onInvalid={(e) => setNameErrors(validationErr(e))}
+          pattern="[^ ]+ [^ ].*"
+          title="Name requires at least First Name and Surname"
+          required />
         <Group>
           <div>
             <InputLabel>Visitor Age</InputLabel>
@@ -76,10 +97,43 @@ export default function DayVisitorRegistrationClient(props: {setupComplete?: () 
             onChange={setMinorOrAdult}
           />
         </Group>
-        {minorOrAdult==="minor" && <TextInput name="parent" label="Parent/Guardian Name" value={parent} error={parentErrors} onChange={(e) => {setParent(e.target.value);setParentErrors("")}} pattern="[^ ]+ [^ ].*" title="Name requires at least First Name and Surname" required />}
-        {minorOrAdult==="minor" && <TextInput name="phone" label="Phone Number" value={phone} error={phoneErrors} onChange={(e) => {setPhone(e.target.value);setPhoneErrors("")}} description="Contact number for person supervising the minor at the event" pattern="\+?[0-9 ]+" title="Phone number only numbers and + allowed " required />}
-        <Checkbox name="consent" checked={consent} onChange={(e) => setConsent(e.target.checked)} label="By checking this box I acknowledge that I have read, understand, and agree to this Consent to Participate and Release Agreement." required/>
-        {minorOrAdult==="adult" && <Checkbox name="parking" checked={parking} onChange={(e) => setParking(e.target.checked)} label="Book a parking bay. Cost R65"/>}
+        {minorOrAdult==="minor" &&
+          <TextInput
+            name="parent"
+            label="Parent/Guardian Name"
+            value={parent}
+            error={parentErrors}
+            onChange={(e) => {setParent(e.target.value);setParentErrors(validationErr(e))}}
+            onInvalid={(e) => setParentErrors(validationErr(e))}
+            pattern="[^ ]+ [^ ].*"
+            title="Name requires at least First Name and Surname"
+            required />}
+        {minorOrAdult==="minor" &&
+          <TextInput
+            name="phone"
+            label="Phone Number"
+            value={phone}
+            error={phoneErrors}
+            onChange={(e) => {setPhone(e.target.value);setPhoneErrors(validationErr(e))}}
+            onInvalid={(e) => setPhoneErrors(validationErr(e))}
+            description="Contact number for person supervising the minor at the event"
+            pattern="\+?[0-9 ]+"
+            title="Phone number only numbers and + allowed "
+            required />}
+        <Checkbox
+          name="consent"
+          checked={consent}
+          error={consentErrors}
+          onChange={(e) => {setConsent(e.target.checked);setConsentErrors(validationErr(e))}}
+          onInvalid={(e) => setConsentErrors(validationErr(e))}
+          label="By checking this box I acknowledge that I have read, understand, and agree to this Consent to Participate and Release Agreement."
+          required/>
+        {minorOrAdult==="adult" &&
+          <Checkbox
+            name="parking"
+            checked={parking}
+            onChange={(e) => setParking(e.target.checked)}
+            label="Book a parking bay. Cost R65"/>}
         <HiddenInput name={"setuser"} value={setupComplete?"setup":"registration"}/>
         <Button type={"submit"}>Submit</Button>
       </form>
