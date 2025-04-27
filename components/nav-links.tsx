@@ -11,7 +11,7 @@ import {
   IconCalendarEvent, IconContract,
   IconHome,
   IconInfoCircle, IconLayoutDashboard, IconList,
-  IconSettings, IconShoppingBag, IconUsersGroup
+  IconSettings, IconShoppingBag, IconUserPlus, IconUsersGroup
 } from "@tabler/icons-react"
 
 
@@ -49,6 +49,7 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
     {href:"/settings", label:"Settings", icon:IconSettings},
     checkTeamPeopleAdmin && { href:'/admin/collections/people?columns='+encodeURIComponent('["name","-user","team","role","-id","-updatedAt","-createdAt","dietary_requirements","-allergies_and_other","-special_needs"]'), label:"Team People Admin", icon:IconUsersGroup},
     checkTeamPeopleAdmin && { href:coachteamadminurl, label:"Team Admin", icon:IconContract},
+    {href:"/registration/day_visitors", label:"Day Visitor Registration", icon:IconUserPlus},
   ]
 
   return navData.filter(navItem => navItem && (!isNavbar || navItem.label !== "Home")).map((navItem) => (!navItem ? "" :

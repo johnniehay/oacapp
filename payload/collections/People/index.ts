@@ -10,11 +10,13 @@ export const peopleRoleOptions =[
   {label:"Team Member",value:"team_member"},
   {label:"Supporter",value:"supporter"},
   {label:"Translator",value:"translator"},
+  {label:"Day Visitor",value:"day_visitor"},
   {label:"Candidate Coach",value:"candidate-coach"},
   {label:"Candidate Mentor",value:"candidate-mentor"},
   {label:"Candidate Team Member",value:"candidate-team_member"},
   {label:"Candidate Supporter",value:"candidate-supporter"},
   {label:"Candidate Translator",value:"candidate-translator"},
+  {label:"Candidate Day Visitor",value:"candidate-day_visitor"},
   {label:"Affiliated",value:"affiliated"},
 ];
 

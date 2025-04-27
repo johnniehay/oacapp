@@ -10,6 +10,7 @@ export const EventConfig: GlobalConfig = {
   fields: [
     {name: "eventtime", label: "Event Time", type: "date", admin:{date:{pickerAppearance: "dayAndTime", timeFormat: "HH:mm", timeIntervals: 5,displayFormat:"EEE do MMM HH:mm"}} },
     {name: "robotgameForm", label: "RobotGame Form", type:"text" },
-    {name: "judgingForm", label: "Judging Form", type:"text"}
+    {name: "judgingForm", label: "Judging Form", type:"text"},
+    {name: "dayvisitorparking", label: "Day Visitor Parking Count", type:"number",required:true,defaultValue:0}
   ]
 }

@@ -23,11 +23,13 @@ export type PeopleRole =
   | 'team_member'
   | 'supporter'
   | 'translator'
+  | 'day_visitor'
   | 'candidate-coach'
   | 'candidate-mentor'
   | 'candidate-team_member'
   | 'candidate-supporter'
   | 'candidate-translator'
+  | 'candidate-day_visitor'
   | 'affiliated';
 /**
  * For food provided during cultural night. For Other please specify below.
@@ -1990,6 +1992,7 @@ export interface Eventconfig {
   eventtime?: string | null;
   robotgameForm?: string | null;
   judgingForm?: string | null;
+  dayvisitorparking: number;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2047,6 +2050,7 @@ export interface EventconfigSelect<T extends boolean = true> {
   eventtime?: T;
   robotgameForm?: T;
   judgingForm?: T;
+  dayvisitorparking?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

@@ -17,6 +17,7 @@ export const roleToNotificationTopicsMap: RoleToNotificationTopicsMap = {
   "team_admin": ["team","volunteer",...defaultNotifcationTopics],
   "volunteer_admin": ["volunteer",...defaultNotifcationTopics],
   "admin": ["test","team","volunteer",...defaultNotifcationTopics],
+  "day_visitor":defaultNotifcationTopics,
   "candidate":defaultNotifcationTopics,
   "default":defaultNotifcationTopics
 };

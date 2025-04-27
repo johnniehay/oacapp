@@ -5,6 +5,7 @@ import { ConfirmationModal, useListQuery, useModal, useSelection } from "@payloa
 import * as qs from 'qs-esm'
 import { useEffect, useState } from "react";
 import { Input } from "@/payload/components/ui/input";
+import { useRouter } from "next/navigation";
 
 
 export function GeneratePDFButton(){
@@ -14,12 +15,14 @@ export function GeneratePDFButton(){
   const [iframesrc, setIframesrc] = useState("")
   const [startPos, setStartPos] = useState(0)
   const { openModal } = useModal()
+  const router = useRouter()
   async function buttonclick() {
     setIframeopen(!iframeopen)
   }
   async function markprinted() {
     const resp = await fetch(iframesrc, {method: "POST"})
     console.log(await resp.json())
+    router.refresh()
   }
   const filtered_selected = selectedcount > 0 ? 'selected' : 'filtered'
   const printcount = selectedcount > 0 ? selectedcount : listquery.data.totalDocs

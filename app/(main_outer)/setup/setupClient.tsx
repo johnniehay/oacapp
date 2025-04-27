@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Group, MultiSelect, Radio, RadioGroup, Select, TextInput } from "@mantine/core";
-import { useContext, useState } from "react";
+import { ComponentPropsWithoutRef, ReactNode, useContext, useState } from "react";
 import { doUserSetup } from "@/app/(main_outer)/setup/setup-actions";
 import { ModalStateContext } from "@/components/modal";
 import { useAction } from "next-safe-action/hooks";
@@ -10,6 +10,8 @@ import PushNotificationSettingsClient from "@/components/push-notification-setti
 import { roleToNotificationTopicsMap } from "@/lib/role-to-notificationtopics";
 import { type Role, RoleList } from "@/lib/roles";
 import { useRouter } from "next/navigation";
+import DayVisitorRegistrationClient from "@/app/(main_outer)/(main)/registration/day_visitors/client";
+import { hidden } from "colorette";
 
 type LabeledValue = {
   label:string,
@@ -34,6 +36,10 @@ const teamDescription: { [r:string]: string } = {
   "volunteer":"Optionally select any Teams you want to see updates for",
   "":"Select above first"}
 
+function FormOrDiv({t,children,formprops}:{t:'form'|'div',children:ReactNode,formprops:ComponentPropsWithoutRef<'form'>}) {
+  return t === 'form' ? <form {...formprops}>{children}</form> : <div>{children}</div>
+}
+
 export function SetupClient(props: SetupClientProps) {
   const {teams, roleGroups, rolesbyGroup, vapidPublicKey}: SetupClientProps = props
   const [selectedRoleGroup, setSelectedRoleGroup] = useState<string>("")
@@ -45,26 +51,27 @@ export function SetupClient(props: SetupClientProps) {
   const [dietaryError, setDietaryError] = useState<string>("")
   const {close} = useContext(ModalStateContext)
   const router = useRouter()
+  function refeshAndClose() {
+    router.refresh()
+    close()
+  }
   const { execute: dosetupaction } = useAction(doUserSetup,{
-    onSuccess:() => {
-      router.refresh()
-      close()
-    },
+    onSuccess:refeshAndClose,
     onError:(error) => {
       setRoleGroupError(error.error.validationErrors?.roleGroup?._errors?.join(" ") ?? "")
       setRoleError(error.error.validationErrors?.role?._errors?.join(" ") ?? "")
       setTeamidsError(error.error.validationErrors?.teamids?._errors?.join(" ") ?? "")
       setDietaryError(error.error.validationErrors?.dietary?._errors?.join(" ") ?? "")
   }})
+
   return (<>
-    <form action={dosetupaction}>
-      <TextInput name="user_name" label="Your Name" description="Preffered name you wish to use at OAC, will also be printed on lanyard" value={userName} onChange={(e) => setUserName(e.target.value)} />
+    <FormOrDiv t={selectedRoleGroup === "day_visitor"?"div":"form"} formprops={{action:dosetupaction}}>
     <RadioGroup
       name="roleGroup"
       label="In what capacity will you be involved in the OAC?"
       value={selectedRoleGroup}
       error={roleGroupError}
-      onChange={(e) => {setSelectedRoleGroup(e);setRoleGroupError("")}}
+      onChange={(e) => {setSelectedRoleGroup(e);setRoleGroupError("");if (e==="day_visitor") setRole("day_visitor")}}
       required
     >
       <Group mt="xs">
@@ -74,7 +81,9 @@ export function SetupClient(props: SetupClientProps) {
         )}
       </Group>
     </RadioGroup>
-    <Select name="role" label={"Role"} description={selectedRoleGroup in roleDescription && roleDescription[selectedRoleGroup]}
+      {selectedRoleGroup.length > 0 && selectedRoleGroup !== "day_visitor" && <>
+        <TextInput name="user_name" label="Your Name" description="Preffered name you wish to use at OAC, will also be printed on lanyard" value={userName} onChange={(e) => setUserName(e.target.value)} />
+        <Select name="role" label={"Role"} description={selectedRoleGroup in roleDescription && roleDescription[selectedRoleGroup]}
             error={roleError}
             onChange={(e) => {setRole(e??"default"); setRoleError("")}}
             data={rolesbyGroup[selectedRoleGroup]}
@@ -82,10 +91,16 @@ export function SetupClient(props: SetupClientProps) {
     />
     <MultiSelect name="teamids" label={"Team"} description={selectedRoleGroup in teamDescription && teamDescription[selectedRoleGroup]}
             data={teams} error={teamidsError} required={selectedRoleGroup==="team"}/>
-    {selectedRoleGroup==="team" && <Select name="dietary" label={"Dietary Requirement"} error={dietaryError} data={dietaryOptions} required></Select>}
+    {selectedRoleGroup==="team" && <Select styles={{root:{display:role === "day_visitor"?"none":""}}} name="dietary" label={"Dietary Requirement"} value={role === "day_visitor"?'None':undefined} error={dietaryError} data={dietaryOptions} required></Select>}
+      </>}
+      {selectedRoleGroup === "day_visitor" && <>
+        For day vistors associated with a team select Team above and set Role to Day Visitor
+        <DayVisitorRegistrationClient userName={userName} setupComplete={refeshAndClose}/>
+        {/*<Select name="role" value={"day_visitor"} data={["day_visitor"]} hidden/>*/}
+      </>}
       <PushNotificationSettingsClient visibleTopics={RoleList.includes(role as Role) ? roleToNotificationTopicsMap[role as Role] : roleToNotificationTopicsMap["default"]} vapidPublicKey={vapidPublicKey}/>
-      <Button type={"submit"}>Submit</Button>
-    </form>
+      {selectedRoleGroup !== "day_visitor" && <Button type={"submit"}>Submit</Button>}
+    </FormOrDiv>
     {/*<PushNotificationSettingsClient visibleTopics={["event-broadcast","event-updates", "all"]}/>*/}
     {/*<PushNotificationSettingsClient visibleTopics={role in roleToNotificationTopicsMap ? roleToNotificationTopicsMap[role as keyof typeof roleToNotificationTopicsMap] : roleToNotificationTopicsMap["default"]}/>*/}
   </>);

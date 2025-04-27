@@ -21,7 +21,7 @@ export default async function Page() {
 
       <SetupClient
         user_name={session.user.name}
-        roleGroups={[{ label: "Team", value: "team" }, { label: "Volunteer", value: "volunteer" }]}
+        roleGroups={[{ label: "Team", value: "team" }, { label: "Volunteer", value: "volunteer" }, { label:"Day Visitor", value: "day_visitor" }]}
         rolesbyGroup={{
           "team": peopleRoleOptions.filter((pr) => !pr.value.includes("candidate")),
           "volunteer": volunteerRoleOptions//["Judge", "Referee", { label: "Other Volunteer", value: "volunteer" }]
