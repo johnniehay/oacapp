@@ -1,4 +1,5 @@
 import { AccountRowLabel as AccountRowLabel_f46c6aa763b35e61734ff23bde1ff3c6 } from '@/lib/payload-authjs-custom/components'
+import { GeneratePDFButtonServer as GeneratePDFButtonServer_666d16322878e79fcade73ffba8a2dde } from '@/payload/collections/Users/generatePDFserver'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -42,6 +43,7 @@ import { SignInWithAuthjsButton as SignInWithAuthjsButton_f46c6aa763b35e61734ff2
 
 export const importMap = {
   "@/lib/payload-authjs-custom/components#AccountRowLabel": AccountRowLabel_f46c6aa763b35e61734ff23bde1ff3c6,
+  "@/payload/collections/Users/generatePDFserver#GeneratePDFButtonServer": GeneratePDFButtonServer_666d16322878e79fcade73ffba8a2dde,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,

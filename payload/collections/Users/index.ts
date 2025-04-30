@@ -18,7 +18,10 @@ export const Users: CollectionConfig = {
   // populated by payload-authjs-custom
   slug: "users",
   admin: {
-    useAsTitle: "email"
+    useAsTitle: "email",
+    components: {
+      afterList: ['@/payload/collections/Users/generatePDFserver#GeneratePDFButtonServer'],
+    }
   },
   access: {
     create: () => false,

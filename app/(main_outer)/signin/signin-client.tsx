@@ -40,7 +40,7 @@ export default function CustomSigninPageClient(
 export function CustomSigninPageClientWithCallbackUrl({signinprops}: {signinprops:SigninProps}) {
   const searchParams = useSearchParams()
   // console.log(searchParams.get("callbackUrl"))
-  const callbackUrl = searchParams.get("callbackUrl")
+  const callbackUrl = searchParams?.get("callbackUrl")
   // if (typeof callbackUrl !== "string") return "Error"
   signinprops.providers.forEach(provider => {
     if (!provider.signinUrl.includes('callbackUrl'))

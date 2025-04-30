@@ -2,7 +2,7 @@ import { hasPermission } from "@/lib/permissions";
 import { getPayload, Where } from "payload";
 import config from '@payload-config'
 import { Document, Page, pdf, Text, View } from "@react-pdf/renderer";
-import { QRCodeSVGPDF } from "@/app/(main_outer)/(main)/teamadmin/lanyards/pdf/qrcodePDF";
+import { QRCodeSVGPDF } from "@/lib/qrcodePDF/qrcodePDF";
 import { Person } from "@/payload-types";
 import { chunk } from "lodash";
 import { NextRequest } from "next/server";

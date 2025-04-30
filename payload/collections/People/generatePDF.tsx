@@ -8,7 +8,7 @@ import { Input } from "@/payload/components/ui/input";
 import { useRouter } from "next/navigation";
 
 
-export function GeneratePDFButton(){
+export function GeneratePDFButton({pdfurl}: {pdfurl:string}){
   const listquery = useListQuery()
   const { getQueryParams, count:selectedcount } = useSelection()
   const [iframeopen, setIframeopen] = useState(false)
@@ -33,7 +33,7 @@ export function GeneratePDFButton(){
       { where: listquery.query.where, sort: listquery.query.sort },
       { addQueryPrefix: true })
     console.log("iframeSearchParams", iframeSearchParams)
-    setIframesrc(`/teamadmin/lanyards/pdf${iframeSearchParams}&startPos=${startPos}`)
+    setIframesrc(`${pdfurl}${iframeSearchParams}${iframeSearchParams.length > 0 ? '&' : '?'}startPos=${startPos}`)
   },[iframeopen,listquery,getQueryParams,startPos])
 
   return (
