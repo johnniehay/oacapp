@@ -13,13 +13,13 @@ export const LocationManagementPermissions = ["create:location","update:location
 export const CheckinManagementPermissions = ["create:checkin","update:checkin","remove:checkin", "view:checkin"] as const
 export const PeopleManagementPermissions = ["create:people", "update:people", "remove:people", "view:people"] as const
 
-export const MCPermissions = ["view:queuing:status"] as const
-export const TechnicalPermissions = ["view:queuing:status", "view:checkin", "view:judging", "view:scoring"]
+export const MCPermissions = ["view:queuing:status", ...VolunteerPermissions] as const
+export const TechnicalPermissions = ["view:queuing:status", "view:checkin", "view:judging", "view:scoring",...VolunteerPermissions]
 export const QueuerPermissions = ["view:queuing:status", "checkin:robotgame","checkin:judgingroom", "checkin:queuing", ...VolunteerPermissions]
 export const ScoreKeeperPermissions = ["view:score:resubmit", "view:scoring", ...QueuerPermissions, ...VolunteerPermissions]
 export const RefereePermissions = ["view:schedule:robotgame", "checkin:robotgame","view:score:submissions", "view:scoring", "view:score:resubmit", ...VolunteerPermissions] as const
 export const JudgePermissions = ["view:schedule:judgingroom", "checkin:judgingroom", "view:judging", ...VolunteerPermissions] as const
-export const JudgeAdvisorPermissions = [...JudgePermissions, "view:judgingroom:status", "update:judgingroom:judges"] as const
+export const JudgeAdvisorPermissions = [...JudgePermissions, "view:judgingroom:status", "update:judgingroom:judges", ...VolunteerPermissions] as const
 export const FieldManagerPermissions = [ "update:location", ...RefereePermissions, ...QueuerPermissions, ...VolunteerPermissions] as const
 export const TeamAssistPermissions = ["view:team:details", "view:checkin", "view:people", ...VolunteerPermissions] as const
 export const TeamAdminAssistPermissions = ["view:users","update:team", "view:team:details", "view:checkin", ...TeamAssistPermissions, ...PeopleManagementPermissions, ...PagesPermissions, ...UpdateManagementPermissions, ...VolunteerPermissions] as const
