@@ -61,7 +61,7 @@ export async function GET(request: NextRequest){
     const person = {...inperson, team: augmentedteam}
     return (
     (!!person.team && person.team.name.length > 0 ) &&
-    <View style={{position:"absolute", ...positionOffsets[position]}} debug={true} wrap={false} >
+    <View style={{position:"absolute", ...positionOffsets[position]}} wrap={false} >
       {/*TeamNumberTop<Text debug={txtdbg} style={{position:"absolute",fontSize:"1rem",top:"1.9cm",left: "0.5cm",width: "4.1cm", textAlign:"left"}} hyphenationCallback={w => [w]}>Team #{person.team.number}</Text>*/}
       <Text debug={txtdbg} style={{...commmonTextStyles,bottom:"8cm",left: "0.5cm"}} hyphenationCallback={w => [w]}>{person.name}</Text>
       {/*<Text debug={true}  style={{position:"absolute",bottom:"10cm",left: "2cm", width: "6cm", fontSize:person.name.length>10?10:18,transform:person.name.length>100 ? [{operation:"scale", value:[0.5,0.5]}] : undefined}} >{person.name}</Text>*/}
