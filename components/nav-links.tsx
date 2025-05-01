@@ -52,7 +52,7 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
     {href:"/registration/day_visitors", label:"Day Visitor Registration", icon:IconUserPlus},
   ]
 
-  return navData.filter(navItem => navItem && (!isNavbar || navItem.label !== "Home")).map((navItem) => (!navItem ? "" :
+  return navData.filter(navItem => navItem && (isNavbar || navItem.label !== "Home")).map((navItem) => (!navItem ? "" :
       <NavCard key={navItem.href} isNavbar={isNavbar} icon={<navItem.icon size={"4rem"}/>}
         navlinkprops={{ href: navItem.href, label: navItem.label, ...commonnavlinkprops }}>
       {navItem.children && navItem.children.map(page =>

@@ -5,6 +5,7 @@ import {
   QRTextbox
 } from "@/app/(main_outer)/(main)/scanner-testing/qrscanner";
 import { QRCodeSVG } from "qrcode.react";
+import DownloadableQRCodeSVG from "@/components/downloadableQRCodeSVG";
 
 
 export default function ScanTestHome() {
@@ -16,7 +17,7 @@ export default function ScanTestHome() {
     <QRCodeSVG width={undefined} height="82px" marginSize={4} value="https://app.oac.firstsa.org/person/67fd76dc10e35ed5f31977ac"/>
     <QRCodeSVG width={undefined} height="102.5px" marginSize={4} value="https://app.oac.firstsa.org/person/67fd76dc10e35ed5f31977ac"/>
     <QRCodeSVG width={undefined} height="123px" marginSize={4} value="https://app.oac.firstsa.org/person/67fd76dc10e35ed5f31977ac"/>
-    <QRCodeSVG width={undefined} height="143.5px" marginSize={4} value="https://app.oac.firstsa.org/person/67fd76dc10e35ed5f31977ac"/>
+    <DownloadableQRCodeSVG width={undefined} height="143.5px" marginSize={4} value="https://app.oac.firstsa.org/person/67fd76dc10e35ed5f31977ac"/>
     <QRCodeSVG width={undefined} height="164px" marginSize={4} value="https://app.oac.firstsa.org/person/67fd76dc10e35ed5f31977ac"/>
     </div>
   </QRScannerModalProvider>)

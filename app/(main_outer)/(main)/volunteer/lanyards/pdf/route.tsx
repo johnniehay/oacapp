@@ -1,7 +1,7 @@
 import { hasPermission } from "@/lib/permissions";
 import { getPayload, Where } from "payload";
 import config from '@payload-config'
-import { Document, Page, pdf, Text, View } from "@react-pdf/renderer";
+import { Document, Font, Page, pdf, Text, View } from "@react-pdf/renderer";
 import { QRCodeSVGPDF } from "@/lib/qrcodePDF/qrcodePDF";
 import { User } from "@/payload-types";
 import { chunk } from "lodash";
@@ -10,6 +10,8 @@ import * as qs from 'qs-esm'
 import { Style } from "@react-pdf/stylesheet";
 import { getServerUrl } from "@/lib/payload-authjs-custom/payload/session/getPayloadSession";
 import { rolePermissions } from "@/lib/roles";
+
+Font.register({family:"OpenSans", src:"./public/OpenSans-Medium.ttf", fontWeight: "medium"})
 
 export async function POST(request: NextRequest){
   const hasperm = await hasPermission("view:users") //TODO: maybe restrict permission
@@ -55,7 +57,7 @@ export async function GET(request: NextRequest){
   const usersfilter = (user:User) => (user);
   const blankusers = (n: number)=> Array(n).fill({id: ""}) as User[];
   const OutDoc = ({users, startPos = 0}:{ users:User[], startPos?:number}) => (
-    <Document>
+    <Document style={{fontFamily:"OpenSans", fontWeight: "medium"}}>
       { chunk(users.filter(usersfilter).toSpliced(0,0,...blankusers(startPos)),3).map((pageusers,idx) => (
         <Page key={idx} size="A4">
           {pageusers.map((user,idx) => <UserPDF key={user.id} user={user} position={idx}/>)}

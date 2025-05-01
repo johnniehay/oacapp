@@ -49,6 +49,7 @@ services:
     env_file: *build-prod-env
     volumes:
       - prodmedia:/app/public/media
+      - ./scripts:/app/scripts
     profiles:
      - builder
 
