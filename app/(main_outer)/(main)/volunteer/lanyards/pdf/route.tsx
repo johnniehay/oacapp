@@ -41,9 +41,9 @@ export async function GET(request: NextRequest){
   const volunteerRoles = Object.entries(rolePermissions).filter(([,perms]) => perms.includes("view:volunteer")).map(([role]) => role)
   const users = (await payload.find({collection:"users", pagination:false, limit:0,sort:qsearchSort,where:qsearchWhere})).docs
   const positionOffsets = [
-    {top:"0.49cm",  left:"4.14cm", height:"8.62cm", width:"12.72cm"},
-    {top:"9.39cm",  left:"4.14cm", height:"8.62cm", width:"12.72cm"},
-    {top:"18.29cm", left:"4.14cm", height:"8.62cm", width:"12.72cm"}]
+    {top:"0.44cm",  left:"3.99cm", height:"8.62cm", width:"12.72cm"}, //0.49 4.14 for same printer
+    {top:"9.34cm",  left:"3.99cm", height:"8.62cm", width:"12.72cm"}, //9.39 4.14 for same printer
+    {top:"18.24cm", left:"3.99cm", height:"8.62cm", width:"12.72cm"}] //18.29 4.14 for same printer
   const commmonTextStyles: Style = {position:"absolute", width: "11.72cm", minHeight: "1cm", textAlign:"center"}
   const txtdbg = false
   const UserPDF = ({user, position}: {user:User, position:number} ) => (
