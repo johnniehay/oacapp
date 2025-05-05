@@ -34,7 +34,7 @@ export default async function JudgingSchedule() {
       // view: "resourceTimelineDay",
       view: "resourceTimeGridDay",
       duration: { days: 1 },
-      date: "2025-05-07",
+      date: "2025-05-08",
       slotMinTime: "08:00:00",
       slotMaxTime: "17:00:00",
       slotEventOverlap: false,

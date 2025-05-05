@@ -17,7 +17,7 @@ export const Locations: CollectionConfig<"location"> = {
   fields: [
     {name:"name", type:"text", required:true, unique:true},
     {name:"abbreviation", type:"text", required:true, unique:true},
-    {name:"location_type", type: "select",required:true,options:["robotgame","judging","cultural","general","pit","volunteer"]},
+    {name:"location_type", type: "select",required:true,options:["robotgame","robotgame-queue","judging","judging-queue","cultural","general","pit","volunteer"]},
     {name:"room", type:"text"},
     {name:"floor", type:"text"},
     {name:"checkin", type:"join", collection: "checkin", on: "location"}

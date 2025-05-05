@@ -58,9 +58,10 @@ export function SetupClient(props: SetupClientProps) {
   const { execute: dosetupaction } = useAction(doUserSetup,{
     onSuccess:refeshAndClose,
     onError:(error) => {
+      const errteamids = error.error.validationErrors?.teamids 
       setRoleGroupError(error.error.validationErrors?.roleGroup?._errors?.join(" ") ?? "")
       setRoleError(error.error.validationErrors?.role?._errors?.join(" ") ?? "")
-      setTeamidsError(error.error.validationErrors?.teamids?._errors?.join(" ") ?? "")
+      setTeamidsError(errteamids && "_errors" in errteamids ? errteamids?._errors?.join(" ") ?? "" : "")
       setDietaryError(error.error.validationErrors?.dietary?._errors?.join(" ") ?? "")
   }})
 

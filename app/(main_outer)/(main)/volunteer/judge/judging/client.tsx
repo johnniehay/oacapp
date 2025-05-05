@@ -1,6 +1,6 @@
 "use client"
 
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import * as qs from 'qs-esm'
 
@@ -12,9 +12,8 @@ interface SubmitMessage extends BaseMessage {
   text: string
 }
 
-export default function ScoringClient({referee:propReferee, form}: {referee?: string, form?: string}) {
-  const searchParams = useSearchParams()
-  // const referee = propReferee ?? searchParams?.get("referee")
+export default function JudgingClient({form, formprefillparams}: {form?: string, formprefillparams?: {[s:string]: string}}) {
+  // const searchParams = useSearchParams()
   const [loaded, setLoaded] = useState(false);
   const [submstatus, setSubmstatus] = useState("");
   if (typeof window !== "undefined") window.addEventListener("message", ({data, ...e}: {data:BaseMessage }) => {
@@ -24,10 +23,8 @@ export default function ScoringClient({referee:propReferee, form}: {referee?: st
       setSubmstatus(data.message.split("-")[1]+" "+submMessage.text)
     }
   });
-  const scoringsearch = {form, ...qs.parse(searchParams?.toString()??"")}
-
   return <div>
-    <iframe src={`https://hay.cids.org.za/smsc/index.html?${qs.stringify(scoringsearch)}`} style={{width:'100%',height:'80vh'}} onLoad={(e) => {
+    <iframe src={`https://docs.google.com/forms/d/e/${form}/viewform?${qs.stringify(formprefillparams)}`} style={{width:'100%',height:'80vh'}} onLoad={(e) => {
       console.log("onload",e)
       setLoaded(true)}}
       allowFullScreen={true}

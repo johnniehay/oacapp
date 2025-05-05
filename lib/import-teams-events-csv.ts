@@ -2,8 +2,9 @@ import { getPayload, RequiredDataFromCollection } from 'payload'
 import config from '@payload-config'
 import { Event, Team, Location } from "@/payload-types"
 import { parse } from 'csv-parse'
-import { add, parse as dateparse } from "date-fns";
+import { add, sub, parse as dateparse } from "date-fns";
 import { difference } from "next/dist/build/utils";
+import { flushAndExit } from "next/dist/telemetry/flush-and-exit";
 
 
 const seed = async () => {
@@ -42,21 +43,30 @@ const seed = async () => {
   const rgloc = ["A", "B", "C", "D", "E", "F", "G", "H"].reduce((accum: { [key: string]: LocationData }, abbr) => {
     return {...accum, [`Table ${abbr}`]: {name:`Table ${abbr}`, abbreviation:abbr, location_type: "robotgame"} as LocationData}
   },{})
-  const judgloc = [1,2,3,4,5,6,7,8].reduce((accum: { [key: string]: LocationData }, abbr) => {
-    return {...accum, [`Room ${abbr}`]: {name:`Room ${abbr}`, abbreviation:`Room ${abbr}`, location_type: "judging"} as LocationData}
+  const rgqueueloc = ["A", "B", "C", "D", "E", "F", "G", "H"].reduce((accum: { [key: string]: LocationData }, abbr) => {
+    return {...accum, [`Queue for Table ${abbr}`]: {name:`Queue for Table ${abbr}`, abbreviation:"Q"+abbr, location_type: "robotgame-queue"} as LocationData}
   },{})
-  const minlocations:{[key: string]: LocationData } = {...rgloc, ...judgloc }
+  const judgloc = [1,2,3,4,5,6,7,8].reduce((accum: { [key: string]: LocationData }, abbr) => {
+    return {...accum, [`Judging Room ${abbr}`]: {name:`Judging Room ${abbr}`, abbreviation:`Room ${abbr}`, location_type: "judging"} as LocationData}
+  },{})
+  const judgqueueloc = {'Queue for Judging Rooms':{name:'Queue for Judging Rooms', abbreviation:`QJudging`, location_type: "judging-queue"} as LocationData }
+  const minlocations:{[key: string]: LocationData } = {...rgloc, ...judgloc, ...rgqueueloc, ...judgqueueloc }
   const missinglocations = difference(Object.keys(minlocations), Object.keys(locationcache))
   for (const loc of missinglocations) {
-    locationcache[loc] = await payload.create({ collection: "location", data: minlocations[loc] });
+    console.dir({msg:"creating loc", minloc:minlocations[loc]},{compact:true,breakLength:Infinity})
+    try {
+      locationcache[loc] = await payload.create({ collection: "location", data: minlocations[loc] });
+    } catch(err) {
+      console.error("location create error",err)
+      return
+    }
   }
 
 
   const parser = process.stdin.pipe(parse({
     columns:(header) => header.map((col:string) => col.replace(' ','').replace('#','')),
     on_record: async (record,context) => {
-      console.log(record)
-      console.log(context)
+      console.dir({msg:"record", record,context},{compact:true,breakLength:Infinity})
       if (record.Venue === "\n") return {skipping: record}
       const dryrun = false
       const eventTitleMap:{[key: string]: string} = {
@@ -79,7 +89,11 @@ const seed = async () => {
         H:"Table H",
       };
       const eventstartdate = dateparse(`${record.Date} ${record.Time}`, 'M/d/y H:mm', new Date())
-      const retrecpart: { team: RequiredDataFromCollection<Team>, event: RequiredDataFromCollection<Event> } = {
+      if (!locationcache[(record.Venue).includes("Room") ? "Queue for Judging Rooms" : `Queue for ${eventLocationMap[record.Venue]}` ])
+        console.log("queueeventloc", (record.Venue).includes("Room") ? "Queue for Judging Rooms" : `Queue for ${eventLocationMap[record.Venue]}`)
+      if (!locationcache[(record.Venue).includes("Room") ? `Judging ${record.Venue}` : eventLocationMap[record.Venue]])
+        console.log("eventloc", (record.Venue).includes("Room") ? `Judging ${record.Venue}` : eventLocationMap[record.Venue])
+      const retrecpart: { team: RequiredDataFromCollection<Team>, event: RequiredDataFromCollection<Event>, queue_event: RequiredDataFromCollection<Event> } = {
         team: {
           number: (record.Team as string).split(' ')[1],
           name: record.TeamName,
@@ -90,7 +104,14 @@ const seed = async () => {
           start: eventstartdate.toISOString(),
           end: add(eventstartdate,{minutes:record.Round !== '' ? 10 : 30}).toISOString(),
           title: eventTitleMap[record.Round],
-          location: locationcache[(record.Venue).includes("Room") ? record.Venue : eventLocationMap[record.Venue]].id
+          location: locationcache[(record.Venue).includes("Room") ? `Judging ${record.Venue}` : eventLocationMap[record.Venue]].id
+        },
+        queue_event: {
+          eventType: record.Round !== '' ? 'robotgame-queue' : 'judging-queue',
+          start: sub(eventstartdate,{minutes:record.Round !== '' ? 10 : 15}).toISOString(),
+          end: eventstartdate.toISOString(),
+          title: "Queue for " + eventTitleMap[record.Round],
+          location: locationcache[(record.Venue).includes("Room") ? "Queue for Judging Rooms" : `Queue for ${eventLocationMap[record.Venue]}` ].id
         }
       }
       if (retrecpart.team.number?.length !== 3) {
@@ -103,7 +124,7 @@ const seed = async () => {
           retrecpart.team = newteampart
           const dryrun = true // disable team updates
           if (dryrun) {
-            console.log("would update team", retrecpart.team.number, teamcache[retrecpart.team.number], "with", newteampart)
+            console.dir({msg:"would update team", teamnum:retrecpart.team.number, teamcached:teamcache[retrecpart.team.number], "with":newteampart},{compact:true,breakLength:Infinity})
             teamcache[retrecpart.team.number] = newteampart
             teamsaddedupdated[retrecpart.team.number] = true
           } else {
@@ -113,7 +134,7 @@ const seed = async () => {
               where: { number: { equals: retrecpart.team.number } },
               data: retrecpart.team
             }))
-            console.log("Updated team", teamupdateres)
+            console.dir({msg:"Updated team", teamupdateres},{compact:true,depth:3,breakLength:Infinity})
             if (teamupdateres.errors)
               teamupdateres.errors.map(console.error)
             teamcache[retrecpart.team.number] = teamupdateres.docs[0]
@@ -122,13 +143,13 @@ const seed = async () => {
         }
       } else {
         if (dryrun) {
-          console.log("Would add new team", retrecpart.team.number,  retrecpart.team)
+          console.dir({msg:"Would add new team", teamnum:retrecpart.team.number,  recteam:retrecpart.team},{compact:true,breakLength:Infinity})
           teamcache[retrecpart.team.number] =  {id:"willnotbeused",createdAt:"",updatedAt:"", ...retrecpart.team}
           teamsaddedupdated[retrecpart.team.number] = true
         } else {
           try {
             const newteam = (await payload.create({ collection: "team", data: retrecpart.team }))
-            console.log("Added team",newteam)
+            console.dir({msg:"Added team", newteam},{compact:true,breakLength:Infinity})
             teamcache[retrecpart.team.number] = newteam
             retrecpart.team = newteam
             teamsaddedupdated[retrecpart.team.number] = true
@@ -140,19 +161,34 @@ const seed = async () => {
 
         }
       }
-      if (!(retrecpart.team.number in teamcache))
-        console.warn("Skipping event unable to find team", retrecpart.team.number, teamcache,retrecpart.event)
+      if (!(retrecpart.team.number in teamcache)) {
+        console.dir({msg: "Skipping event unable to find team", teamnumber: retrecpart.team.number, teamcache: Object.keys(teamcache), recevent: retrecpart.event}, { compact: true, breakLength: Infinity })
+        return retrecpart
+      }
       retrecpart.event.teams = [teamcache[retrecpart.team.number].id]
       if (eventcachebyteam[retrecpart.team.number]?.find((event) => (event.title == retrecpart.event.title))) {
         console.warn("Skipping existing event, not updating")
       } else {
         if (dryrun || teamcache[retrecpart.team.number].id == "willnotbeused") {
           if (teamcache[retrecpart.team.number].id == "willnotbeused")
-            console.log("Skipping dummy event", retrecpart.event)
-          console.log("Would add new event", retrecpart.event)
+            console.dir({msg:"Skipping dummy event", newevent:retrecpart.event},{compact:true,breakLength:Infinity})
+          console.dir({msg:"Would add new event", newevent:retrecpart.event},{compact:true,breakLength:Infinity})
         } else {
           const newevent = (await payload.create({collection:"event",data:retrecpart.event}))
-          console.log("Added event", newevent)
+          console.dir({msg:"Added event", newevent},{compact:true,breakLength:Infinity})
+        }
+      }
+      retrecpart.queue_event.teams = [teamcache[retrecpart.team.number].id]
+      if (eventcachebyteam[retrecpart.team.number]?.find((event) => (event.title == retrecpart.queue_event.title))) {
+        console.warn("Skipping existing event, not updating")
+      } else {
+        if (dryrun || teamcache[retrecpart.team.number].id == "willnotbeused") {
+          if (teamcache[retrecpart.team.number].id == "willnotbeused")
+            console.dir({msg:"Skipping dummy event", newevent:retrecpart.queue_event},{compact:true,breakLength:Infinity})
+          console.dir({msg:"Would add new event", newevent:retrecpart.queue_event},{compact:true,breakLength:Infinity})
+        } else {
+          const newevent = (await payload.create({collection:"event",data:retrecpart.queue_event}))
+          console.dir({msg:"Added event", newevent},{compact:true,breakLength:Infinity})
         }
       }
 
@@ -166,9 +202,11 @@ const seed = async () => {
 // Team 096,Name 096,5/8/2025,16:00,,Room 8
 // Team 097,Name 097,5/8/2025,9:40,P2,B
   for await (const record of parser) {
-    console.log(record)
+    // console.dir({msg:"RetRecord",record},{compact:true,breakLength:Infinity})
   }
 }
 
 // Call the function here to run your seed script
 await seed()
+console.log("done")
+await flushAndExit(0)

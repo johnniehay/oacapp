@@ -899,7 +899,7 @@ export interface Event {
   title: string;
   start: string;
   end: string;
-  eventType: 'robotgame' | 'judging' | 'cultural' | 'general';
+  eventType: 'robotgame' | 'judging' | 'robotgame-queue' | 'judging-queue' | 'cultural' | 'general';
   description?: string | null;
   location?: (string | null) | Location;
   forAll?: ('teams' | 'volunteers')[] | null;
@@ -915,7 +915,15 @@ export interface Location {
   id: string;
   name: string;
   abbreviation: string;
-  location_type: 'robotgame' | 'judging' | 'cultural' | 'general' | 'pit' | 'volunteer';
+  location_type:
+    | 'robotgame'
+    | 'robotgame-queue'
+    | 'judging'
+    | 'judging-queue'
+    | 'cultural'
+    | 'general'
+    | 'pit'
+    | 'volunteer';
   room?: string | null;
   floor?: string | null;
   checkin?: {

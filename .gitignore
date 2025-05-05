@@ -41,6 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 #.idea
+.idea/sshConfigs.xml
+.idea/webServers.xml
 
 certificates
 mantine-tailwind-template

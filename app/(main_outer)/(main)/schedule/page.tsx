@@ -19,7 +19,7 @@ export default async function ScheduleHome() {
 
   return (<>
     <Title order={2}>Preliminary General Schedule</Title>
-    All times shown in SAST(South African Standard Time)
+    All times shown in your browser&#39;s local time.
     <CalendarTimeGridOrList options={{
       view: "timeGridDay",
       duration: { days: 3 },

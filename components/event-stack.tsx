@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Event } from "@/payload-types"
+import type { Event } from "@/payload-types"
 import { Paper, PaperProps, Stack } from "@mantine/core";
 
 const EventTimeTypeList = ['past','current','future'] as const;
@@ -21,7 +21,7 @@ export default async function EventStack({events,paperProps,EventItem}:{events:E
   })
   return (
     <Stack>
-      {allevents.map(({event, eventTimeType}) => <Paper key={event?.id}  withBorder={true} shadow={"lg"} p="sm" radius={20} {...paperProps[eventTimeType]}>
+      {allevents.map(({event, eventTimeType},index) => <Paper key={event?.id??index}  withBorder={true} shadow={"lg"} p="sm" radius={20} {...paperProps[eventTimeType]}>
         <EventItem event={event} eventTimeType={eventTimeType}/>
       </Paper>)}
     </Stack>

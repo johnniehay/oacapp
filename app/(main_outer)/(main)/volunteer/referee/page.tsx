@@ -12,8 +12,8 @@ import * as qs from 'qs-esm'
 
 const eventTitleToFormMap:{[key: string]: string} = { // refences to match lib/import-teams-events-csv.ts and form match option
   "Robot Game Round 1": "1",
-  "Robot Game Round 2": "1",
-  "Robot Game Round 3": "1",
+  "Robot Game Round 2": "2",
+  "Robot Game Round 3": "3",
   "Robot Game Practice Round 1": "Practice 1",
   "Robot Game Practice Round 2": "Practice 2",
   "Robot Game Alliance Round": "Alliance 1",// not usable
