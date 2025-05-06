@@ -1,4 +1,4 @@
-export const VolunteerPermissions = ["view:team:details:basic","view:volunteer", "view:schedule:robotgame", "view:schedule:judgingroom"] as const
+export const VolunteerPermissions = ["view:team:details:basic","view:volunteer", "view:schedule:robotgame", "view:schedule:judgingroom","view:users:basic"] as const
 
 export const NonPublicPermissions = ["view:nonpublic"] as const
 

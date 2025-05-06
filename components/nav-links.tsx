@@ -3,14 +3,14 @@ import Link, { LinkProps } from "next/link";
 import { getPayload} from "payload";
 import configPromise from '@payload-config'
 import { getLocalPayloadSession } from "@/lib/payload-authjs-custom/payload/session/getLocalPayloadSession";
-import { coachteamsquery } from "@/payload/collections/People";
+import { coachteamsquery, personteamsquery } from "@/payload/collections/People";
 import { hasPermission } from "@/lib/permissions";
 import NavCard from "@/components/nav-card";
 import {
   IconArrowUpRight,
-  IconCalendarEvent, IconContract,
+  IconCalendarEvent, IconCalendarUser, IconContract,
   IconHome,
-  IconInfoCircle, IconLayoutDashboard, IconList,
+  IconInfoCircle, IconLayoutDashboard, IconList, IconMap,
   IconSettings, IconShoppingBag, IconUserPlus, IconUsersGroup
 } from "@tabler/icons-react"
 
@@ -19,6 +19,8 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
   const payload = await getPayload({ config: configPromise })
   const session = await getLocalPayloadSession()
   const coachteamids = await coachteamsquery(session?.user ,payload) as string[]
+  const personteams = await personteamsquery(session?.user ,payload, 1)
+  const personteamnum = personteams && personteams.length > 0 && personteams[0] && typeof personteams[0] !== 'string' ? personteams[0].number : null
   const checkTeamPeopleAdmin = (await hasPermission("view:people")) || (coachteamids).length > 0
   const checkVolunteer = await hasPermission("view:volunteer")
   const coachteamadminurl =
@@ -42,8 +44,10 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
     {href:"/event-info", label:"Event Info", icon: IconInfoCircle,
       children:eventInfoPages.docs.map(page => {
         return {href:`/event-info/${page.slug}`, label:page.title}})},
-    {href:"/schedule", label:"Schedule", icon:IconCalendarEvent},
+    {href:"/schedule", label:"General Schedule", icon:IconCalendarEvent},
+    personteamnum && {href:`/schedule/team/${personteamnum}`, label: `Team ${personteamnum} Schedule`, icon: IconCalendarUser},
     {href:"/teams", label:"Teams List", icon:IconList},
+    {href:"/event-info/venue-layoutmap", label:"Venue Layout/Map", icon:IconMap},
     checkVolunteer && {href:"/volunteer", label: "Volunteer Dashboard", icon:IconLayoutDashboard},
     {href:"https://oac.firstsa.org/collections/all", label:"Merchandise", icon:IconShoppingBag},
     {href:"/settings", label:"Settings", icon:IconSettings},

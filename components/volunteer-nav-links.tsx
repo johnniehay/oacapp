@@ -19,12 +19,16 @@ export async function VolunteerNavLinks({ isNavbar=true, className }: { isNavbar
   const session = await getLocalPayloadSession()
   const checkTeamPeopleAdmin = await hasPermission("view:people")
   const checkVolunteer = await hasPermission("view:volunteer")
+  const checkReferee = await hasPermission("view:scoring")
+  const checkJudging = await hasPermission("view:judging")
   const commonnavlinkprops = {className:"", rightSection:<IconArrowUpRight size={"1rem"}/>}
 
   const navData = [
     {href:"/", label:"Home", icon: IconHome},
-    checkVolunteer && {href:"/volunteer", label: "Volunteer Dashboard", icon:IconLayoutDashboard},
+    // checkVolunteer && {href:"/volunteer", label: "Volunteer Dashboard", icon:IconLayoutDashboard},
     {href:"/schedule/volunteer", label:"Volunteer Schedule", icon:IconCalendarEvent},
+    checkJudging && {href:"/volunteer/judge", label:"Judge Dashboard", icon:IconLayoutDashboard},
+    checkReferee && {href:"/volunteer/referee", label:"Referee Dashboard", icon:IconLayoutDashboard},
     {href:"/teams", label:"Teams List", icon:IconList},
   ]
 

@@ -5,7 +5,7 @@ import Flag from "@/components/flag";
 import Link from "next/link";
 
 const tableDataTemplate: TableData = {
-  head: ['Team#', 'Team Name', 'Country', 'Contact'/*, "Schedule"*/],
+  head: ['Team#', 'Team Name', 'Country', 'Contact', "Schedule"],
 };
 export default async function Teams(){
   const payload = await getPayload({config})

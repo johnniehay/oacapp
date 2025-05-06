@@ -15,7 +15,7 @@ export default async function RobotgameDisplayPage() {
     const currEventTime = new Date(eventconfig.eventtime)
     const robotgametables = (await payload.find({collection:"location",pagination:false,sort:"abbreviation",where:{location_type:{equals:"robotgame"}}})).docs
 
-    const currentEvents = await payload.find({collection:"event", depth:1, where:{and:[{"end":{"greater_than_equal":currEventTime}}, {"start":{"less_than_equal":currEventTime}}]}})
+    const currentEvents = await payload.find({collection:"event", depth:1, where:{and:[{eventType:{equals:"robotgame"}},{"end":{"greater_than_equal":currEventTime}}, {"start":{"less_than_equal":currEventTime}}]}})
     const gameslistunsorted = currentEvents.docs.filter(ev => ev.eventType === 'robotgame')
     const gamesbytableunsorted = gameslistunsorted.reduce((gbt: Record<string, Event>,ev) => {
         if (!ev.location || typeof ev.location === "string") return gbt
@@ -24,11 +24,11 @@ export default async function RobotgameDisplayPage() {
     },{})
     const gamesbytablegroup = chunk(robotgametables.map(t => gamesbytableunsorted[t.name]),2)
     function teamFromEvent(ev: Event): Team | null {
-        if (!ev.teams || ev.teams.length !== 1 || typeof ev.teams[0] === 'string') return null
+        if (!ev || !ev.teams || ev.teams.length !== 1 || typeof ev.teams[0] === 'string') return null
         return ev.teams[0]
     }
     function locationFromEvent(ev: Event): Location | null {
-        return !ev.location || typeof ev.location === 'string' ? null : ev.location;
+        return !ev || !ev.location || typeof ev.location === 'string' ? null : ev.location;
     }
     return <>
         <Title order={2}>Running Match {currEventTime.toLocaleString()}</Title>

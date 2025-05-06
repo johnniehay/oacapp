@@ -42,6 +42,18 @@ export const coachteamsquery = async (user: UserWithIdRole | null | undefined, p
   }
 }
 
+export const personteamsquery = async (user: UserWithIdRole | null | undefined, payload: BasePayload, depth: number =0) => {
+  // if (getRoleFromUser(user) === "coach") {
+  const teams = (await payload.find({
+    collection: "people",
+    select: { team: true },
+    depth: depth,
+    where: { user: { equals: user?.id } }
+  })).docs
+  return teams.map(t => t.team)
+
+}
+
 const coachteams = async (payloadreq: PayloadRequest) => {
   return coachteamsquery(payloadreq.user, payloadreq.payload)
 }
