@@ -7,10 +7,10 @@ import { coachteamsquery, personteamsquery } from "@/payload/collections/People"
 import { hasPermission } from "@/lib/permissions";
 import NavCard from "@/components/nav-card";
 import {
-  IconArrowUpRight,
+  IconArrowUpRight, IconBrandInstagram,
   IconCalendarEvent, IconCalendarUser, IconContract,
   IconHome,
-  IconInfoCircle, IconLayoutDashboard, IconList, IconMap,
+  IconInfoCircle, IconLayoutDashboard, IconList, IconMap, IconNotes,
   IconSettings, IconShoppingBag, IconUserPlus, IconUsersGroup
 } from "@tabler/icons-react"
 
@@ -37,6 +37,7 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
       slug: true
     }
   })
+  const eventconfig = await payload.findGlobal({slug:"eventconfig"})
   const commonnavlinkprops = {className:"", rightSection:<IconArrowUpRight size={"1rem"}/>}
 
   const navData = [
@@ -49,11 +50,13 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
     {href:"/teams", label:"Teams List", icon:IconList},
     {href:"/event-info/venue-layoutmap", label:"Venue Layout/Map", icon:IconMap},
     checkVolunteer && {href:"/volunteer", label: "Volunteer Dashboard", icon:IconLayoutDashboard},
+    {href: eventconfig.coachesAwardForm ?? "", label: "Coaches Award nomination",  icon:IconNotes },
     {href:"https://oac.firstsa.org/collections/all", label:"Merchandise", icon:IconShoppingBag},
     {href:"/settings", label:"Settings", icon:IconSettings},
     checkTeamPeopleAdmin && { href:'/admin/collections/people?columns='+encodeURIComponent('["name","-user","team","role","-id","-updatedAt","-createdAt","dietary_requirements","-allergies_and_other","-special_needs"]'), label:"Team People Admin", icon:IconUsersGroup},
     checkTeamPeopleAdmin && { href:coachteamadminurl, label:"Team Admin", icon:IconContract},
     {href:"/registration/day_visitors", label:"Day Visitor Registration", icon:IconUserPlus},
+    {href:eventconfig.instagramLink ?? "", label:"OAC Instagram", icon:IconBrandInstagram},
   ]
 
   return navData.filter(navItem => navItem && (isNavbar || navItem.label !== "Home")).map((navItem) => (!navItem ? "" :

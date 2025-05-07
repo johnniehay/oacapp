@@ -40,6 +40,7 @@ export default async function TeamSchedule({ params: paramsPromise }: Args) {
       slotDuration: "00:10:00",
       events: teamcalevents,
       headerToolbar:{start: 'title', center: 'timeGridDay listDay', end: 'today prev,next'},
+      eventClickServer: "teaminfo",
       nowIndicator: true
     }}/>
   </>)

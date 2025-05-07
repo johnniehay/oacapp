@@ -2000,6 +2000,8 @@ export interface Eventconfig {
   eventtime?: string | null;
   robotgameForm?: string | null;
   judgingForm?: string | null;
+  coachesAwardForm?: string | null;
+  instagramLink?: string | null;
   dayvisitorparking: number;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2058,6 +2060,8 @@ export interface EventconfigSelect<T extends boolean = true> {
   eventtime?: T;
   robotgameForm?: T;
   judgingForm?: T;
+  coachesAwardForm?: T;
+  instagramLink?: T;
   dayvisitorparking?: T;
   updatedAt?: T;
   createdAt?: T;
