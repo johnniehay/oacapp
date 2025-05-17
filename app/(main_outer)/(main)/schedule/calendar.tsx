@@ -151,6 +151,10 @@ export function CalendarResourceTimeGridOrLine(props: CalendarOptionsProps) {
 }
 
 export function CalendarTimeGridOrList(props: CalendarOptionsProps & {overrideDaysOnWidth?: boolean}) {
+  const { options: {eventContentServer} } = props;
+  if (eventContentServer && (eventContentServerMapKeys as readonly string[]).includes(eventContentServer)) {
+    props.options.eventContent = eventContentServerMap[eventContentServer]
+  }
   const {overrideDaysOnWidth, ...origprops} = props
   // const mqarr = overrideDaysOnWidth?.entries().map(mqstr => useMediaQuery(mqstr,false) )
   const mqsingle = useMediaQuery('(max-width: 500px)',false)

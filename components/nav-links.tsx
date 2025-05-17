@@ -50,12 +50,12 @@ export async function NavLinks({ isNavbar=true, className }: { isNavbar?:boolean
     {href:"/teams", label:"Teams List", icon:IconList},
     {href:"/event-info/venue-layoutmap", label:"Venue Layout/Map", icon:IconMap},
     checkVolunteer && {href:"/volunteer", label: "Volunteer Dashboard", icon:IconLayoutDashboard},
-    {href: eventconfig.coachesAwardForm ?? "", label: "Coaches Award nomination",  icon:IconNotes },
+    // {href: eventconfig.coachesAwardForm ?? "", label: "Coaches Award nomination",  icon:IconNotes },
     {href:"https://oac.firstsa.org/collections/all", label:"Merchandise", icon:IconShoppingBag},
     {href:"/settings", label:"Settings", icon:IconSettings},
     checkTeamPeopleAdmin && { href:'/admin/collections/people?columns='+encodeURIComponent('["name","-user","team","role","-id","-updatedAt","-createdAt","dietary_requirements","-allergies_and_other","-special_needs"]'), label:"Team People Admin", icon:IconUsersGroup},
     checkTeamPeopleAdmin && { href:coachteamadminurl, label:"Team Admin", icon:IconContract},
-    {href:"/registration/day_visitors", label:"Day Visitor Registration", icon:IconUserPlus},
+    // {href:"/registration/day_visitors", label:"Day Visitor Registration", icon:IconUserPlus},
     {href:eventconfig.instagramLink ?? "", label:"OAC Instagram", icon:IconBrandInstagram},
   ]
 
