@@ -107,7 +107,8 @@ export const People: CollectionConfig<"people"> = {
     components: {
       beforeList: ['@/payload/collections/People/merge-button#PeopleMergeButton'],
       afterList: ['@/payload/collections/People/generatePDFserver#GeneratePDFButtonServer',
-        '@/payload/collections/People/generateParticipationPDFserver#GenerateParticipationPDFButtonServer'],
+        '@/payload/collections/People/generateParticipationPDFserver#GenerateParticipationPDFButtonServer',
+        '@/payload/collections/People/generateAwardPDFserver#GenerateAwardPDFButtonServer'],
     }
   },
   fields:[

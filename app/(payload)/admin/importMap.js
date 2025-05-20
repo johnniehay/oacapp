@@ -34,6 +34,7 @@ import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 }
 import { SlugComponent as SlugComponent_2f7cb6d15a7be4cbd9d669ac9f96d997 } from '@/payload/fields/slug/SlugComponent'
 import { GeneratePDFButtonServer as GeneratePDFButtonServer_042a2d9cccb082b1a320bbe498c90ea3 } from '@/payload/collections/People/generatePDFserver'
 import { GenerateParticipationPDFButtonServer as GenerateParticipationPDFButtonServer_f8b94676d19bef0cd906021d26a84931 } from '@/payload/collections/People/generateParticipationPDFserver'
+import { GenerateAwardPDFButtonServer as GenerateAwardPDFButtonServer_448f6329ae32e6bb1074ba99f473b755 } from '@/payload/collections/People/generateAwardPDFserver'
 import { PeopleMergeButton as PeopleMergeButton_b26c09f3e435b0cb4bd3f135e0e8ade6 } from '@/payload/collections/People/merge-button'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
@@ -79,6 +80,7 @@ export const importMap = {
   "@/payload/fields/slug/SlugComponent#SlugComponent": SlugComponent_2f7cb6d15a7be4cbd9d669ac9f96d997,
   "@/payload/collections/People/generatePDFserver#GeneratePDFButtonServer": GeneratePDFButtonServer_042a2d9cccb082b1a320bbe498c90ea3,
   "@/payload/collections/People/generateParticipationPDFserver#GenerateParticipationPDFButtonServer": GenerateParticipationPDFButtonServer_f8b94676d19bef0cd906021d26a84931,
+  "@/payload/collections/People/generateAwardPDFserver#GenerateAwardPDFButtonServer": GenerateAwardPDFButtonServer_448f6329ae32e6bb1074ba99f473b755,
   "@/payload/collections/People/merge-button#PeopleMergeButton": PeopleMergeButton_b26c09f3e435b0cb4bd3f135e0e8ade6,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,

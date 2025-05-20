@@ -846,6 +846,7 @@ export interface Team {
   number: string;
   name: string;
   country?: string | null;
+  awards?: string | null;
   /**
    * Contact information that other teams can use to get touch with you such as a team email or social-media page/handle
    */
@@ -1603,6 +1604,7 @@ export interface TeamSelect<T extends boolean = true> {
   number?: T;
   name?: T;
   country?: T;
+  awards?: T;
   shared_contact?: T;
   parking_req?: T;
   people?: T;

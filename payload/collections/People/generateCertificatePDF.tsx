@@ -6,7 +6,7 @@ import * as qs from 'qs-esm'
 import { useEffect, useState } from "react";
 
 
-export function GenerateParticipationPDFButton({pdfurl}: {pdfurl:string}){
+export function GenerateCertificatePDFButton({pdfurl, btntext}: {pdfurl:string, btntext:string}) {
   const listquery = useListQuery()
   const { getQueryParams } = useSelection()
   const [iframeopen, setIframeopen] = useState(false)
@@ -27,7 +27,7 @@ export function GenerateParticipationPDFButton({pdfurl}: {pdfurl:string}){
   return (
     <>
       <div className="gutter--left gutter--right" style={{display:"flex"}}>
-        <Button style={{marginLeft:"10px"}} onClick={buttonclick}>{!iframeopen?"Show":"Hide"} Participation Certificate PDF</Button>
+        <Button style={{marginLeft:"10px"}} onClick={buttonclick}>{!iframeopen?"Show":"Hide"} {btntext}</Button>
       </div>
       <div className="gutter--left gutter--right" >
         {iframeopen && (<embed style={{height: "90vh", width: "100%"}} src={iframesrc}/>)}

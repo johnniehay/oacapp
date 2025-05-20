@@ -53,6 +53,7 @@ export const Teams: CollectionConfig<"team"> = {
     { name:"number", type:"text", required:true,unique:true, access:viewonlyunlesspermission },
     { name:"name", type:"text", required:true, unique:true, access:viewonlyunlesspermission },
     { name:"country", type:"text", access:viewonlyunlesspermission },
+    { name:"awards", type:"text", access:viewonlyunlesspermission },
 
     { name:"shared_contact", label:"Team contact details visible to other Teams", type:"text",
       admin:{description:"Contact information that other teams can use to get touch with you such as a team email or social-media page/handle"},
